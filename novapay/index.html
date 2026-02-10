@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaPay — Tu negocio acepta crypto, tú recibes pesos</title>
+    <meta name="description" content="Pasarela de pagos crypto para comercios en México. Acepta pagos en USDT y recibe pesos mexicanos automáticamente en tu cuenta bancaria.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav class="nav" id="nav">
+        <div class="nav__container">
+            <a href="../novacoin/" class="nav__logo">
+                <div class="nav__logo-hex">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <path d="M20 4L34 12V28L20 36L6 28V12L20 4Z" stroke="url(#lg)" stroke-width="1.5" fill="none"/>
+                        <path d="M15 17L20 13L25 17V23L20 27L15 23Z" fill="url(#lg)"/>
+                        <defs><linearGradient id="lg" x1="6" y1="4" x2="34" y2="36"><stop stop-color="#7b2ff7"/><stop offset="1" stop-color="#ff2fed"/></linearGradient></defs>
+                    </svg>
+                </div>
+                <span>Nova<em>Pay</em></span>
+            </a>
+            <div class="nav__links" id="navLinks">
+                <a href="#problem" class="nav__link">El problema</a>
+                <a href="#how" class="nav__link">Cómo funciona</a>
+                <a href="#features" class="nav__link">Funciones</a>
+                <a href="#security" class="nav__link">Seguridad</a>
+                <a href="#contact" class="nav__link">Contacto</a>
+            </div>
+            <a href="#contact" class="nav__cta">Registrar negocio</a>
+            <button class="nav__toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero__bg">
+            <canvas id="heroCanvas"></canvas>
+            <div class="hero__orb hero__orb--1"></div>
+            <div class="hero__orb hero__orb--2"></div>
+        </div>
+        <div class="hero__inner">
+            <div class="hero__content hero__content--paired">
+                <div class="hero__badge anim">
+                    <span class="hero__badge-dot"></span>
+                    Pasarela de pagos crypto
+                </div>
+                <h1 class="hero__title anim">
+                    Tu negocio acepta crypto.<br>
+                    <span class="grad-text">Tú recibes pesos.</span>
+                </h1>
+                <p class="hero__sub anim">
+                    Tus clientes pagan con criptomonedas y tú recibes pesos mexicanos directamente en tu cuenta bancaria. Sin volatilidad. Sin complicaciones.
+                </p>
+                <div class="hero__actions anim">
+                    <a href="#contact" class="btn btn--primary">
+                        <span>Registrar mi negocio</span>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                    <a href="#how" class="btn btn--glass">Ver cómo funciona</a>
+                </div>
+            </div>
+            <div class="hero__illustration anim">
+                <svg viewBox="0 0 460 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="heroGrad" x1="0" y1="0" x2="460" y2="400" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#7b2ff7"/>
+                            <stop offset="1" stop-color="#ff2fed"/>
+                        </linearGradient>
+                        <linearGradient id="heroGrad2" x1="130" y1="30" x2="330" y2="370" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#7b2ff7" stop-opacity="0.3"/>
+                            <stop offset="1" stop-color="#ff2fed" stop-opacity="0.15"/>
+                        </linearGradient>
+                        <filter id="heroGlow">
+                            <feGaussianBlur stdDeviation="12" result="blur"/>
+                            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- Pulse rings around terminal -->
+                    <rect x="100" y="18" width="260" height="354" rx="32" stroke="url(#heroGrad)" stroke-width="0.5" fill="none" opacity="0.04" class="hero-pulse-ring"/>
+                    <rect x="80" y="4" width="300" height="382" rx="40" stroke="url(#heroGrad)" stroke-width="0.4" fill="none" opacity="0.03" class="hero-pulse-ring" style="animation-delay:-1.5s"/>
+                    <rect x="60" y="-10" width="340" height="410" rx="48" stroke="url(#heroGrad)" stroke-width="0.3" fill="none" opacity="0.02" class="hero-pulse-ring" style="animation-delay:-3s"/>
+
+                    <!-- POS Terminal / Tablet frame -->
+                    <rect x="120" y="32" width="220" height="326" rx="24" stroke="url(#heroGrad)" stroke-width="1.5" fill="rgba(255,255,255,0.015)" class="svg-draw" style="--len:1092"/>
+                    <!-- Screen bezel -->
+                    <rect x="134" y="56" width="192" height="272" rx="12" stroke="url(#heroGrad)" stroke-width="0.8" fill="rgba(123,47,247,0.03)" class="svg-draw" style="--len:928"/>
+                    <!-- Home button -->
+                    <circle cx="230" cy="345" r="6" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.3"/>
+
+                    <!-- Header bar inside screen -->
+                    <rect x="148" y="66" width="164" height="22" rx="4" fill="rgba(123,47,247,0.06)"/>
+                    <text x="230" y="81" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" fill="rgba(240,240,245,0.4)" letter-spacing="0.1em">NOVAPAY</text>
+
+                    <!-- QR Code Pattern — 7x7 grid -->
+                    <!-- Row 1 -->
+                    <rect x="172" y="100" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.4s"/>
+                    <rect x="187" y="100" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.45s"/>
+                    <rect x="202" y="100" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.5s"/>
+                    <rect x="217" y="100" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.55s"/>
+                    <rect x="232" y="100" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.6s"/>
+                    <rect x="247" y="100" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.65s"/>
+                    <rect x="262" y="100" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.7s"/>
+                    <!-- Row 2 -->
+                    <rect x="172" y="115" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.5s"/>
+                    <rect x="187" y="115" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.55s"/>
+                    <rect x="202" y="115" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.6s"/>
+                    <rect x="217" y="115" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.65s"/>
+                    <rect x="232" y="115" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.7s"/>
+                    <rect x="247" y="115" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.75s"/>
+                    <rect x="262" y="115" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.8s"/>
+                    <!-- Row 3 -->
+                    <rect x="172" y="130" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.6s"/>
+                    <rect x="187" y="130" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.65s"/>
+                    <rect x="202" y="130" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.7s"/>
+                    <rect x="217" y="130" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.75s"/>
+                    <rect x="232" y="130" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.8s"/>
+                    <rect x="247" y="130" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.85s"/>
+                    <rect x="262" y="130" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.9s"/>
+                    <!-- Row 4 -->
+                    <rect x="172" y="145" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.7s"/>
+                    <rect x="187" y="145" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.75s"/>
+                    <rect x="202" y="145" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.8s"/>
+                    <rect x="217" y="145" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.85s"/>
+                    <rect x="232" y="145" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.9s"/>
+                    <rect x="247" y="145" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.95s"/>
+                    <rect x="262" y="145" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:1s"/>
+                    <!-- Row 5 -->
+                    <rect x="172" y="160" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.8s"/>
+                    <rect x="187" y="160" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:0.85s"/>
+                    <rect x="202" y="160" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.9s"/>
+                    <rect x="217" y="160" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.95s"/>
+                    <rect x="232" y="160" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:1s"/>
+                    <rect x="247" y="160" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.35" class="svg-pop" style="animation-delay:1.05s"/>
+                    <rect x="262" y="160" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:1.1s"/>
+                    <!-- Row 6 -->
+                    <rect x="172" y="175" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.9s"/>
+                    <rect x="187" y="175" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.95s"/>
+                    <rect x="202" y="175" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:1s"/>
+                    <rect x="217" y="175" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.35" class="svg-pop" style="animation-delay:1.05s"/>
+                    <rect x="232" y="175" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:1.1s"/>
+                    <rect x="247" y="175" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:1.15s"/>
+                    <rect x="262" y="175" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.35" class="svg-pop" style="animation-delay:1.2s"/>
+                    <!-- Row 7 -->
+                    <rect x="172" y="190" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:1s"/>
+                    <rect x="187" y="190" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:1.05s"/>
+                    <rect x="202" y="190" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:1.1s"/>
+                    <rect x="217" y="190" width="12" height="12" rx="2" stroke="url(#heroGrad)" stroke-width="0.6" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:1.15s"/>
+                    <rect x="232" y="190" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:1.2s"/>
+                    <rect x="247" y="190" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:1.25s"/>
+                    <rect x="262" y="190" width="12" height="12" rx="2" fill="url(#heroGrad)" opacity="0.5" class="svg-pop" style="animation-delay:1.3s"/>
+
+                    <!-- QR corner markers (larger L-shaped brackets) -->
+                    <path d="M168 97 L168 92 L178 92" stroke="url(#heroGrad)" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M278 97 L278 92 L268 92" stroke="url(#heroGrad)" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M168 206 L168 211 L178 211" stroke="url(#heroGrad)" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M278 206 L278 211 L268 211" stroke="url(#heroGrad)" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+
+                    <!-- Scanning line across QR -->
+                    <line x1="165" y1="150" x2="281" y2="150" stroke="url(#heroGrad)" stroke-width="1" opacity="0.25">
+                        <animate attributeName="y1" values="95;210;95" dur="3s" repeatCount="indefinite"/>
+                        <animate attributeName="y2" values="95;210;95" dur="3s" repeatCount="indefinite"/>
+                    </line>
+
+                    <!-- Payment amount below QR -->
+                    <text x="230" y="238" text-anchor="middle" font-family="'Inter', sans-serif" font-size="18" font-weight="800" fill="rgba(240,240,245,0.8)" class="svg-pop" style="animation-delay:1.3s">$1,250.00 MXN</text>
+                    <text x="230" y="255" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7b2ff7" opacity="0.7" class="svg-pop" style="animation-delay:1.4s">&#8776; 68.49 USDT</text>
+
+                    <!-- Divider line -->
+                    <line x1="160" y1="268" x2="300" y2="268" stroke="url(#heroGrad)" stroke-width="0.5" opacity="0.15"/>
+
+                    <!-- "Pago confirmado" status -->
+                    <rect x="175" y="278" width="110" height="28" rx="14" fill="rgba(123,47,247,0.08)" stroke="url(#heroGrad)" stroke-width="0.6" class="svg-pop" style="animation-delay:1.5s"/>
+                    <text x="230" y="296" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="600" fill="#ff2fed" class="svg-pop" style="animation-delay:1.6s">Pago confirmado &#x2713;</text>
+
+                    <!-- Floating Bitcoin coin -->
+                    <g class="hero-float hero-float--1">
+                        <circle cx="62" cy="100" r="22" fill="rgba(123,47,247,0.06)" stroke="url(#heroGrad)" stroke-width="0.8"/>
+                        <text x="62" y="106" text-anchor="middle" font-family="'Inter', sans-serif" font-size="16" font-weight="700" fill="url(#heroGrad)">&#x20BF;</text>
+                    </g>
+
+                    <!-- Dashed line from BTC to terminal -->
+                    <line x1="84" y1="100" x2="120" y2="140" stroke="url(#heroGrad)" stroke-width="0.6" stroke-dasharray="3,4" opacity="0.2"/>
+
+                    <!-- Floating Peso sign -->
+                    <g class="hero-float hero-float--2">
+                        <circle cx="400" cy="140" r="20" fill="rgba(255,47,237,0.05)" stroke="url(#heroGrad)" stroke-width="0.8"/>
+                        <text x="400" y="146" text-anchor="middle" font-family="'Inter', sans-serif" font-size="16" font-weight="700" fill="url(#heroGrad)">$</text>
+                    </g>
+
+                    <!-- Dashed line from peso to terminal -->
+                    <line x1="380" y1="140" x2="340" y2="170" stroke="url(#heroGrad)" stroke-width="0.6" stroke-dasharray="3,4" opacity="0.2"/>
+
+                    <!-- Floating checkmark badge -->
+                    <g class="hero-float hero-float--3">
+                        <circle cx="392" cy="280" r="18" fill="rgba(123,47,247,0.06)" stroke="url(#heroGrad)" stroke-width="0.8"/>
+                        <path d="M383 280l5 5 10-10" stroke="url(#heroGrad)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
+
+                    <!-- Dashed line from checkmark to terminal -->
+                    <line x1="374" y1="275" x2="340" y2="260" stroke="url(#heroGrad)" stroke-width="0.6" stroke-dasharray="3,4" opacity="0.2"/>
+
+                    <!-- Small floating USDT label -->
+                    <g class="hero-float hero-float--1" style="animation-delay:-4s">
+                        <rect x="42" y="225" width="50" height="20" rx="10" fill="rgba(123,47,247,0.06)" stroke="url(#heroGrad)" stroke-width="0.5"/>
+                        <text x="67" y="239" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="600" fill="url(#heroGrad)">USDT</text>
+                    </g>
+
+                    <!-- Dashed line from USDT to terminal -->
+                    <line x1="92" y1="235" x2="120" y2="220" stroke="url(#heroGrad)" stroke-width="0.6" stroke-dasharray="3,4" opacity="0.15"/>
+
+                    <!-- Animated particle traveling to terminal -->
+                    <circle r="2" fill="url(#heroGrad)" opacity="0.5">
+                        <animateMotion dur="4s" repeatCount="indefinite" path="M62,100 Q100,120 135,155"/>
+                    </circle>
+                    <circle r="1.5" fill="#ff2fed" opacity="0.4">
+                        <animateMotion dur="3.5s" repeatCount="indefinite" path="M400,140 Q370,155 340,175"/>
+                    </circle>
+                    <circle r="1.5" fill="#7b2ff7" opacity="0.4">
+                        <animateMotion dur="5s" repeatCount="indefinite" path="M67,235 Q100,228 135,220"/>
+                    </circle>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROBLEM / SOLUTION -->
+    <section class="problem" id="problem">
+        <div class="container">
+            <div class="problem__grid">
+                <div class="problem__side anim">
+                    <span class="tag tag--muted">El problema</span>
+                    <h2 class="title-md">Tus clientes quieren pagar con crypto...</h2>
+                    <p>Cada vez más personas en México tienen criptomonedas. Quieren usarlas para pagar, pero los comercios no tienen forma fácil de aceptarlas.</p>
+                    <ul class="problem__list">
+                        <li>Manejar wallets es complicado</li>
+                        <li>La volatilidad asusta</li>
+                        <li>Convertir crypto a pesos es un proceso manual</li>
+                        <li>No hay punto de venta que lo soporte</li>
+                    </ul>
+                </div>
+                <div class="problem__side problem__side--solution anim">
+                    <span class="tag">La solución</span>
+                    <h2 class="title-md">NovaPay lo hace <span class="grad-text">automático</span></h2>
+                    <p>NovaPay se encarga de todo. Genera un cobro, tu cliente paga con crypto, y tú recibes pesos en tu banco. Así de simple.</p>
+                    <ul class="problem__list problem__list--check">
+                        <li>Sin necesidad de entender wallets</li>
+                        <li>Sin riesgo de volatilidad</li>
+                        <li>Conversión y depósito automático</li>
+                        <li>Punto de venta integrado con QR</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION ART: Flowing divider -->
+    <div class="section-art">
+        <svg viewBox="0 0 1200 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="divGrad1" x1="0" y1="50" x2="1200" y2="50" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#7b2ff7" stop-opacity="0"/>
+                    <stop offset="0.3" stop-color="#7b2ff7" stop-opacity="0.3"/>
+                    <stop offset="0.5" stop-color="#ff2fed" stop-opacity="0.4"/>
+                    <stop offset="0.7" stop-color="#7b2ff7" stop-opacity="0.3"/>
+                    <stop offset="1" stop-color="#ff2fed" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="divGrad2" x1="0" y1="50" x2="1200" y2="50" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#ff2fed" stop-opacity="0"/>
+                    <stop offset="0.25" stop-color="#ff2fed" stop-opacity="0.15"/>
+                    <stop offset="0.5" stop-color="#7b2ff7" stop-opacity="0.25"/>
+                    <stop offset="0.75" stop-color="#ff2fed" stop-opacity="0.15"/>
+                    <stop offset="1" stop-color="#7b2ff7" stop-opacity="0"/>
+                </linearGradient>
+            </defs>
+            <!-- Main flowing line -->
+            <path d="M0,60 C200,60 250,30 400,35 C550,40 600,70 750,65 C900,60 950,40 1200,45" stroke="url(#divGrad1)" stroke-width="1" fill="none"/>
+            <!-- Secondary line offset -->
+            <path d="M0,55 C180,50 280,75 430,68 C580,61 650,35 800,40 C950,45 1050,65 1200,58" stroke="url(#divGrad2)" stroke-width="0.6" fill="none"/>
+            <!-- Third subtle line -->
+            <path d="M0,65 C150,70 300,40 500,48 C700,56 850,72 1000,55 C1100,45 1150,50 1200,52" stroke="url(#divGrad1)" stroke-width="0.3" fill="none" opacity="0.4"/>
+
+            <!-- Payment flow dots traveling along the path -->
+            <circle r="3" fill="#7b2ff7" opacity="0.6">
+                <animateMotion dur="6s" repeatCount="indefinite" path="M0,60 C200,60 250,30 400,35 C550,40 600,70 750,65 C900,60 950,40 1200,45"/>
+            </circle>
+            <circle r="2.5" fill="#ff2fed" opacity="0.5">
+                <animateMotion dur="6s" repeatCount="indefinite" begin="-2s" path="M0,60 C200,60 250,30 400,35 C550,40 600,70 750,65 C900,60 950,40 1200,45"/>
+            </circle>
+            <circle r="2" fill="#7b2ff7" opacity="0.4">
+                <animateMotion dur="6s" repeatCount="indefinite" begin="-4s" path="M0,60 C200,60 250,30 400,35 C550,40 600,70 750,65 C900,60 950,40 1200,45"/>
+            </circle>
+            <!-- Dots on secondary path -->
+            <circle r="2" fill="#ff2fed" opacity="0.35">
+                <animateMotion dur="7s" repeatCount="indefinite" path="M0,55 C180,50 280,75 430,68 C580,61 650,35 800,40 C950,45 1050,65 1200,58"/>
+            </circle>
+            <circle r="1.5" fill="#7b2ff7" opacity="0.3">
+                <animateMotion dur="7s" repeatCount="indefinite" begin="-3.5s" path="M0,55 C180,50 280,75 430,68 C580,61 650,35 800,40 C950,45 1050,65 1200,58"/>
+            </circle>
+        </svg>
+    </div>
+
+    <!-- HOW -->
+    <section class="how" id="how">
+        <div class="container">
+            <div class="section-head anim">
+                <span class="tag">Cómo funciona</span>
+                <h2 class="title-lg">Cuatro pasos.<br><span class="grad-text">Cero fricción.</span></h2>
+            </div>
+
+            <div class="flow">
+                <div class="flow__step anim">
+                    <div class="flow__num">1</div>
+                    <div class="flow__icon">
+                        <svg viewBox="0 0 48 48" fill="none"><rect x="12" y="8" width="24" height="32" rx="4" stroke="currentColor" stroke-width="1.5" opacity="0.6" class="svg-draw" style="--len:112"/><circle cx="24" cy="22" r="6" stroke="currentColor" stroke-width="1.5" class="svg-draw" style="--len:38"/><path d="M16 34c0-4 3.5-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </div>
+                    <h3>Regístrate</h3>
+                    <p>Crea tu cuenta de negocio y recibe una wallet crypto asignada automáticamente.</p>
+                </div>
+                <div class="flow__line"></div>
+                <div class="flow__step anim">
+                    <div class="flow__num">2</div>
+                    <div class="flow__icon">
+                        <svg viewBox="0 0 48 48" fill="none"><rect x="10" y="10" width="28" height="28" rx="4" stroke="currentColor" stroke-width="1.5" opacity="0.6" class="svg-draw" style="--len:120"/><rect x="16" y="16" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5" class="svg-draw" style="--len:68"/><rect x="20" y="20" width="8" height="8" fill="currentColor" opacity="0.2" rx="1" class="svg-pop"/></svg>
+                    </div>
+                    <h3>Genera un cobro</h3>
+                    <p>Ingresa el monto en pesos, el sistema calcula el equivalente en crypto y genera un código QR.</p>
+                </div>
+                <div class="flow__line"></div>
+                <div class="flow__step anim">
+                    <div class="flow__num">3</div>
+                    <div class="flow__icon">
+                        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="1.5" opacity="0.6" class="svg-draw" style="--len:101"/><path d="M16 24l5 5 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-draw" style="--len:24"/></svg>
+                    </div>
+                    <h3>Tu cliente paga</h3>
+                    <p>Escanea el QR y paga con su wallet crypto. NovaPay detecta y confirma el pago al instante.</p>
+                </div>
+                <div class="flow__line"></div>
+                <div class="flow__step anim">
+                    <div class="flow__num">4</div>
+                    <div class="flow__icon">
+                        <svg viewBox="0 0 48 48" fill="none"><rect x="8" y="14" width="32" height="22" rx="4" stroke="currentColor" stroke-width="1.5" opacity="0.6" class="svg-draw" style="--len:116"/><path d="M8 22h32" stroke="currentColor" stroke-width="1.5" opacity="0.4"/><path d="M14 30h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>
+                    </div>
+                    <h3>Recibes pesos</h3>
+                    <p>Retira pesos mexicanos directo a tu cuenta bancaria cuando quieras, vía SPEI.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION ART: Payment Flow Illustration -->
+    <div class="section-art section-art--flow">
+        <svg viewBox="0 0 1000 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="flowGrad" x1="0" y1="100" x2="1000" y2="100" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#7b2ff7"/>
+                    <stop offset="1" stop-color="#ff2fed"/>
+                </linearGradient>
+                <linearGradient id="flowGrad2" x1="0" y1="0" x2="0" y2="1">
+                    <stop stop-color="#7b2ff7" stop-opacity="0.15"/>
+                    <stop offset="1" stop-color="#ff2fed" stop-opacity="0.05"/>
+                </linearGradient>
+            </defs>
+
+            <!-- Main connection line -->
+            <path d="M90,100 L270,100 L370,100 L500,100 L630,100 L730,100 L910,100" stroke="url(#flowGrad)" stroke-width="0.8" stroke-dasharray="6,4" opacity="0.25"/>
+
+            <!-- ===== STAGE 1: Customer with phone ===== -->
+            <g>
+                <!-- Person silhouette -->
+                <circle cx="70" cy="62" r="14" stroke="url(#flowGrad)" stroke-width="1" fill="rgba(123,47,247,0.05)"/>
+                <circle cx="70" cy="56" r="6" stroke="url(#flowGrad)" stroke-width="0.8" fill="none" opacity="0.5"/>
+                <path d="M60,72 Q70,80 80,72" stroke="url(#flowGrad)" stroke-width="0.8" fill="none" opacity="0.4"/>
+                <!-- Phone in hand -->
+                <rect x="80" y="70" width="20" height="34" rx="4" stroke="url(#flowGrad)" stroke-width="0.8" fill="rgba(123,47,247,0.04)"/>
+                <!-- Crypto wallet on phone screen -->
+                <text x="90" y="84" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="6" fill="#7b2ff7" opacity="0.7">&#x20BF;</text>
+                <rect x="84" y="88" width="12" height="2" rx="1" fill="url(#flowGrad)" opacity="0.2"/>
+                <rect x="84" y="92" width="8" height="2" rx="1" fill="url(#flowGrad)" opacity="0.15"/>
+                <!-- Label -->
+                <text x="80" y="125" text-anchor="middle" font-family="'Inter', sans-serif" font-size="9" fill="rgba(240,240,245,0.45)" font-weight="500">Cliente</text>
+                <text x="80" y="137" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="rgba(123,47,247,0.5)">Crypto Wallet</text>
+            </g>
+
+            <!-- Arrow from stage 1 to 2 -->
+            <path d="M110,85 L160,85" stroke="url(#flowGrad)" stroke-width="0.6" opacity="0.3" marker-end="none"/>
+            <polygon points="158,82 165,85 158,88" fill="url(#flowGrad)" opacity="0.3"/>
+
+            <!-- ===== STAGE 2: QR Scan Visualization ===== -->
+            <g>
+                <!-- Phone scanning -->
+                <rect x="180" y="55" width="28" height="46" rx="5" stroke="url(#flowGrad)" stroke-width="0.8" fill="rgba(123,47,247,0.03)" transform="rotate(-15,194,78)"/>
+                <!-- Scanning lines emanating from phone -->
+                <line x1="210" y1="70" x2="240" y2="65" stroke="#7b2ff7" stroke-width="0.4" opacity="0.3">
+                    <animate attributeName="opacity" values="0.1;0.4;0.1" dur="1.5s" repeatCount="indefinite"/>
+                </line>
+                <line x1="210" y1="78" x2="240" y2="78" stroke="#ff2fed" stroke-width="0.4" opacity="0.25">
+                    <animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.5s" repeatCount="indefinite" begin="0.3s"/>
+                </line>
+                <line x1="210" y1="86" x2="240" y2="90" stroke="#7b2ff7" stroke-width="0.4" opacity="0.3">
+                    <animate attributeName="opacity" values="0.1;0.4;0.1" dur="1.5s" repeatCount="indefinite" begin="0.6s"/>
+                </line>
+                <!-- QR code target -->
+                <rect x="245" y="60" width="36" height="36" rx="4" stroke="url(#flowGrad)" stroke-width="0.8" fill="rgba(123,47,247,0.04)"/>
+                <!-- Mini QR pattern -->
+                <rect x="250" y="65" width="5" height="5" rx="1" fill="url(#flowGrad)" opacity="0.4"/>
+                <rect x="257" y="65" width="5" height="5" rx="1" stroke="url(#flowGrad)" stroke-width="0.4" fill="none" opacity="0.2"/>
+                <rect x="264" y="65" width="5" height="5" rx="1" fill="url(#flowGrad)" opacity="0.35"/>
+                <rect x="250" y="72" width="5" height="5" rx="1" stroke="url(#flowGrad)" stroke-width="0.4" fill="none" opacity="0.2"/>
+                <rect x="257" y="72" width="5" height="5" rx="1" fill="url(#flowGrad)" opacity="0.4"/>
+                <rect x="264" y="72" width="5" height="5" rx="1" fill="url(#flowGrad)" opacity="0.3"/>
+                <rect x="250" y="79" width="5" height="5" rx="1" fill="url(#flowGrad)" opacity="0.35"/>
+                <rect x="257" y="79" width="5" height="5" rx="1" fill="url(#flowGrad)" opacity="0.4"/>
+                <rect x="264" y="79" width="5" height="5" rx="1" stroke="url(#flowGrad)" stroke-width="0.4" fill="none" opacity="0.2"/>
+                <!-- QR scan highlight -->
+                <rect x="245" y="74" width="36" height="2" fill="url(#flowGrad)" opacity="0.15">
+                    <animate attributeName="y" values="60;92;60" dur="2s" repeatCount="indefinite"/>
+                </rect>
+                <!-- Label -->
+                <text x="248" y="125" text-anchor="middle" font-family="'Inter', sans-serif" font-size="9" fill="rgba(240,240,245,0.45)" font-weight="500">Escanea QR</text>
+                <text x="248" y="137" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="rgba(123,47,247,0.5)">Paga con crypto</text>
+            </g>
+
+            <!-- Arrow from stage 2 to 3 -->
+            <path d="M295,78 L370,78" stroke="url(#flowGrad)" stroke-width="0.6" opacity="0.3"/>
+            <polygon points="368,75 375,78 368,81" fill="url(#flowGrad)" opacity="0.3"/>
+
+            <!-- ===== STAGE 3: NovaPay Hexagon Hub ===== -->
+            <g>
+                <!-- Outer glow ring -->
+                <circle cx="500" cy="78" r="52" stroke="url(#flowGrad)" stroke-width="0.4" fill="none" opacity="0.08" class="hero-pulse-ring"/>
+                <circle cx="500" cy="78" r="44" stroke="url(#flowGrad)" stroke-width="0.3" fill="none" opacity="0.06" class="hero-pulse-ring" style="animation-delay:-2s"/>
+                <!-- Hexagon -->
+                <path d="M500,36 L538,56 L538,98 L500,118 L462,98 L462,56 Z" stroke="url(#flowGrad)" stroke-width="1.2" fill="rgba(123,47,247,0.04)"/>
+                <!-- Inner hexagon -->
+                <path d="M500,50 L524,62 L524,92 L500,104 L476,92 L476,62 Z" stroke="url(#flowGrad)" stroke-width="0.6" fill="rgba(123,47,247,0.06)"/>
+                <!-- NP text -->
+                <text x="500" y="82" text-anchor="middle" font-family="'Inter', sans-serif" font-size="14" font-weight="800" fill="url(#flowGrad)">NP</text>
+                <!-- Processing sparkles -->
+                <circle cx="500" cy="40" r="1.5" fill="#ff2fed" opacity="0.4" class="svg-blink"/>
+                <circle cx="540" cy="55" r="1" fill="#7b2ff7" opacity="0.3" class="svg-blink" style="animation-delay:-0.7s"/>
+                <circle cx="540" cy="100" r="1" fill="#ff2fed" opacity="0.3" class="svg-blink" style="animation-delay:-1.4s"/>
+                <circle cx="460" cy="55" r="1" fill="#7b2ff7" opacity="0.3" class="svg-blink" style="animation-delay:-0.5s"/>
+                <circle cx="460" cy="100" r="1" fill="#ff2fed" opacity="0.3" class="svg-blink" style="animation-delay:-1.2s"/>
+                <!-- Label -->
+                <text x="500" y="140" text-anchor="middle" font-family="'Inter', sans-serif" font-size="9" fill="rgba(240,240,245,0.45)" font-weight="500">NovaPay</text>
+                <text x="500" y="152" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="rgba(123,47,247,0.5)">Procesa al instante</text>
+            </g>
+
+            <!-- Arrow from stage 3 to 4 -->
+            <path d="M545,78 L625,78" stroke="url(#flowGrad)" stroke-width="0.6" opacity="0.3"/>
+            <polygon points="623,75 630,78 623,81" fill="url(#flowGrad)" opacity="0.3"/>
+
+            <!-- ===== STAGE 4: Conversion ===== -->
+            <g>
+                <!-- Conversion box -->
+                <rect x="645" y="55" width="90" height="46" rx="12" stroke="url(#flowGrad)" stroke-width="0.8" fill="rgba(123,47,247,0.03)"/>
+                <!-- Crypto in -->
+                <text x="667" y="82" text-anchor="middle" font-family="'Inter', sans-serif" font-size="13" font-weight="700" fill="#7b2ff7" opacity="0.7">&#x20BF;</text>
+                <!-- Arrow -->
+                <path d="M680,78 L700,78" stroke="url(#flowGrad)" stroke-width="1" stroke-linecap="round"/>
+                <polygon points="698,75 705,78 698,81" fill="url(#flowGrad)" opacity="0.6"/>
+                <!-- Peso out -->
+                <text x="718" y="82" text-anchor="middle" font-family="'Inter', sans-serif" font-size="13" font-weight="700" fill="#ff2fed" opacity="0.7">$</text>
+                <!-- Label -->
+                <text x="690" y="125" text-anchor="middle" font-family="'Inter', sans-serif" font-size="9" fill="rgba(240,240,245,0.45)" font-weight="500">Convierte</text>
+                <text x="690" y="137" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="rgba(123,47,247,0.5)">Crypto &#x2192; Pesos</text>
+            </g>
+
+            <!-- Arrow from stage 4 to 5 -->
+            <path d="M745,78 L820,78" stroke="url(#flowGrad)" stroke-width="0.6" opacity="0.3"/>
+            <polygon points="818,75 825,78 818,81" fill="url(#flowGrad)" opacity="0.3"/>
+
+            <!-- ===== STAGE 5: Business receives money ===== -->
+            <g>
+                <!-- Bank/building icon -->
+                <rect x="845" y="55" width="50" height="40" rx="4" stroke="url(#flowGrad)" stroke-width="0.8" fill="rgba(123,47,247,0.04)"/>
+                <!-- Bank roof -->
+                <path d="M840,55 L870,40 L900,55" stroke="url(#flowGrad)" stroke-width="0.8" fill="none"/>
+                <!-- Columns -->
+                <line x1="855" y1="62" x2="855" y2="88" stroke="url(#flowGrad)" stroke-width="0.5" opacity="0.3"/>
+                <line x1="870" y1="62" x2="870" y2="88" stroke="url(#flowGrad)" stroke-width="0.5" opacity="0.3"/>
+                <line x1="885" y1="62" x2="885" y2="88" stroke="url(#flowGrad)" stroke-width="0.5" opacity="0.3"/>
+                <!-- MXN arriving text -->
+                <text x="870" y="78" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="600" fill="url(#flowGrad)" opacity="0.6">MXN</text>
+                <!-- Peso signs floating in -->
+                <text x="920" y="60" font-family="'Inter', sans-serif" font-size="10" fill="#ff2fed" opacity="0.3" class="hero-float hero-float--1">$</text>
+                <text x="930" y="80" font-family="'Inter', sans-serif" font-size="8" fill="#7b2ff7" opacity="0.25" class="hero-float hero-float--2">$</text>
+                <!-- Label -->
+                <text x="870" y="125" text-anchor="middle" font-family="'Inter', sans-serif" font-size="9" fill="rgba(240,240,245,0.45)" font-weight="500">Tu negocio</text>
+                <text x="870" y="137" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="rgba(123,47,247,0.5)">Recibe pesos &#x2713;</text>
+            </g>
+
+            <!-- Animated particles flowing through the entire path -->
+            <circle r="2.5" fill="#7b2ff7" opacity="0.5">
+                <animateMotion dur="8s" repeatCount="indefinite" path="M90,100 L200,85 L300,82 L400,80 L500,78 L600,78 L700,78 L800,78 L910,80"/>
+            </circle>
+            <circle r="2" fill="#ff2fed" opacity="0.4">
+                <animateMotion dur="8s" repeatCount="indefinite" begin="-2.7s" path="M90,100 L200,85 L300,82 L400,80 L500,78 L600,78 L700,78 L800,78 L910,80"/>
+            </circle>
+            <circle r="1.5" fill="#7b2ff7" opacity="0.35">
+                <animateMotion dur="8s" repeatCount="indefinite" begin="-5.3s" path="M90,100 L200,85 L300,82 L400,80 L500,78 L600,78 L700,78 L800,78 L910,80"/>
+            </circle>
+        </svg>
+    </div>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-head anim">
+                <span class="tag">Funciones</span>
+                <h2 class="title-lg">Todo lo que tu<br><span class="grad-text">negocio necesita</span></h2>
+            </div>
+
+            <div class="feat-grid">
+                <div class="feat-card feat-card--big anim">
+                    <div class="feat-card__icon"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="24" height="28" rx="4" class="svg-draw" style="--len:104"/><path d="M12 12h12M12 16h8" opacity="0.5"/><rect x="12" y="22" width="12" height="6" rx="2" opacity="0.4"/></svg></div>
+                    <div class="feat-card__badge">Punto de Venta</div>
+                    <h3>Cobrar es así de fácil</h3>
+                    <p>La pantalla de cobro funciona como una calculadora. Ingresa el monto en pesos, NovaPay calcula el equivalente en USDT al tipo de cambio del momento, genera un QR y espera el pago. Cuando tu cliente paga, la pantalla se actualiza con la confirmación. También soporta propinas.</p>
+                    <div class="feat-card__mock">
+                        <svg viewBox="0 0 280 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:280px;margin:0 auto;display:block;">
+                            <defs>
+                                <linearGradient id="posGrad" x1="0" y1="0" x2="280" y2="400" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#7b2ff7"/>
+                                    <stop offset="1" stop-color="#ff2fed"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- Tablet outer frame -->
+                            <rect x="8" y="4" width="264" height="392" rx="24" stroke="url(#posGrad)" stroke-width="1" fill="rgba(17,17,17,0.9)" class="svg-draw" style="--len:1312"/>
+                            <!-- Screen area -->
+                            <rect x="18" y="18" width="244" height="364" rx="16" stroke="url(#posGrad)" stroke-width="0.5" fill="rgba(123,47,247,0.02)"/>
+
+                            <!-- Header -->
+                            <rect x="28" y="28" width="224" height="26" rx="6" fill="rgba(123,47,247,0.06)"/>
+                            <text x="140" y="46" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="rgba(240,240,245,0.4)" letter-spacing="0.15em">COBRAR</text>
+
+                            <!-- Amount display -->
+                            <text x="140" y="82" text-anchor="middle" font-family="'Inter', sans-serif" font-size="26" font-weight="800" fill="rgba(240,240,245,0.85)">$1,250<tspan font-size="11" font-weight="400" fill="rgba(240,240,245,0.35)">.00 MXN</tspan></text>
+                            <text x="140" y="100" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7b2ff7" opacity="0.7">&#8776; 68.49 USDT</text>
+
+                            <!-- QR Code area -->
+                            <rect x="70" y="116" width="140" height="140" rx="12" stroke="url(#posGrad)" stroke-width="0.6" fill="rgba(123,47,247,0.03)"/>
+                            <!-- QR corner brackets -->
+                            <path d="M74,124 L74,120 L82,120" stroke="url(#posGrad)" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/>
+                            <path d="M206,124 L206,120 L198,120" stroke="url(#posGrad)" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/>
+                            <path d="M74,252 L74,256 L82,256" stroke="url(#posGrad)" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/>
+                            <path d="M206,252 L206,256 L198,256" stroke="url(#posGrad)" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/>
+
+                            <!-- QR Pattern 8x8 grid -->
+                            <!-- Row 1 -->
+                            <rect x="84" y="128" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.3s"/>
+                            <rect x="99" y="128" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.35s"/>
+                            <rect x="114" y="128" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.4s"/>
+                            <rect x="129" y="128" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.45s"/>
+                            <rect x="144" y="128" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.5s"/>
+                            <rect x="159" y="128" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.55s"/>
+                            <rect x="174" y="128" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.6s"/>
+                            <rect x="189" y="128" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.65s"/>
+                            <!-- Row 2 -->
+                            <rect x="84" y="143" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.4s"/>
+                            <rect x="99" y="143" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.45s"/>
+                            <rect x="114" y="143" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.5s"/>
+                            <rect x="129" y="143" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.55s"/>
+                            <rect x="144" y="143" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.6s"/>
+                            <rect x="159" y="143" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.65s"/>
+                            <rect x="174" y="143" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.7s"/>
+                            <rect x="189" y="143" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.75s"/>
+                            <!-- Row 3 -->
+                            <rect x="84" y="158" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.5s"/>
+                            <rect x="99" y="158" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.55s"/>
+                            <rect x="114" y="158" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.6s"/>
+                            <rect x="129" y="158" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.65s"/>
+                            <rect x="144" y="158" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.7s"/>
+                            <rect x="159" y="158" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.75s"/>
+                            <rect x="174" y="158" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.8s"/>
+                            <rect x="189" y="158" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.85s"/>
+                            <!-- Row 4 -->
+                            <rect x="84" y="173" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.6s"/>
+                            <rect x="99" y="173" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.65s"/>
+                            <rect x="114" y="173" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.7s"/>
+                            <rect x="129" y="173" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.75s"/>
+                            <rect x="144" y="173" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.8s"/>
+                            <rect x="159" y="173" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.85s"/>
+                            <rect x="174" y="173" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.9s"/>
+                            <rect x="189" y="173" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.95s"/>
+                            <!-- Row 5 -->
+                            <rect x="84" y="188" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.7s"/>
+                            <rect x="99" y="188" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.75s"/>
+                            <rect x="114" y="188" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.8s"/>
+                            <rect x="129" y="188" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.85s"/>
+                            <rect x="144" y="188" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.9s"/>
+                            <rect x="159" y="188" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.95s"/>
+                            <rect x="174" y="188" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:1s"/>
+                            <rect x="189" y="188" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:1.05s"/>
+                            <!-- Row 6 -->
+                            <rect x="84" y="203" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.8s"/>
+                            <rect x="99" y="203" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:0.85s"/>
+                            <rect x="114" y="203" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:0.9s"/>
+                            <rect x="129" y="203" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.95s"/>
+                            <rect x="144" y="203" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:1s"/>
+                            <rect x="159" y="203" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:1.05s"/>
+                            <rect x="174" y="203" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:1.1s"/>
+                            <rect x="189" y="203" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:1.15s"/>
+                            <!-- Row 7 -->
+                            <rect x="84" y="218" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.9s"/>
+                            <rect x="99" y="218" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:0.95s"/>
+                            <rect x="114" y="218" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:1s"/>
+                            <rect x="129" y="218" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:1.05s"/>
+                            <rect x="144" y="218" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:1.1s"/>
+                            <rect x="159" y="218" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:1.15s"/>
+                            <rect x="174" y="218" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:1.2s"/>
+                            <rect x="189" y="218" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:1.25s"/>
+                            <!-- Row 8 -->
+                            <rect x="84" y="233" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:1s"/>
+                            <rect x="99" y="233" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:1.05s"/>
+                            <rect x="114" y="233" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:1.1s"/>
+                            <rect x="129" y="233" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:1.15s"/>
+                            <rect x="144" y="233" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:1.2s"/>
+                            <rect x="159" y="233" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.35" class="svg-pop" style="animation-delay:1.25s"/>
+                            <rect x="174" y="233" width="12" height="12" rx="2" stroke="url(#posGrad)" stroke-width="0.5" fill="none" opacity="0.2" class="svg-pop" style="animation-delay:1.3s"/>
+                            <rect x="189" y="233" width="12" height="12" rx="2" fill="url(#posGrad)" opacity="0.45" class="svg-pop" style="animation-delay:1.35s"/>
+
+                            <!-- Scanning line on QR -->
+                            <line x1="74" y1="180" x2="206" y2="180" stroke="url(#posGrad)" stroke-width="0.8" opacity="0.2">
+                                <animate attributeName="y1" values="120;250;120" dur="3s" repeatCount="indefinite"/>
+                                <animate attributeName="y2" values="120;250;120" dur="3s" repeatCount="indefinite"/>
+                            </line>
+
+                            <!-- Divider -->
+                            <line x1="40" y1="268" x2="240" y2="268" stroke="url(#posGrad)" stroke-width="0.3" opacity="0.15"/>
+
+                            <!-- Propina (tip) section -->
+                            <text x="50" y="290" font-family="'Inter', sans-serif" font-size="8.5" fill="rgba(240,240,245,0.4)" font-weight="500">Propina</text>
+                            <!-- Tip slider track -->
+                            <rect x="50" y="298" width="180" height="4" rx="2" fill="rgba(123,47,247,0.08)"/>
+                            <!-- Tip slider fill -->
+                            <rect x="50" y="298" width="54" height="4" rx="2" fill="url(#posGrad)" opacity="0.5"/>
+                            <!-- Slider thumb -->
+                            <circle cx="104" cy="300" r="6" fill="rgba(17,17,17,1)" stroke="url(#posGrad)" stroke-width="1"/>
+                            <!-- Tip options -->
+                            <rect x="50" y="314" width="40" height="20" rx="6" stroke="url(#posGrad)" stroke-width="0.5" fill="rgba(123,47,247,0.04)"/>
+                            <text x="70" y="328" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="rgba(240,240,245,0.4)">10%</text>
+                            <rect x="95" y="314" width="40" height="20" rx="6" stroke="url(#posGrad)" stroke-width="0.8" fill="rgba(123,47,247,0.08)"/>
+                            <text x="115" y="328" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="url(#posGrad)">15%</text>
+                            <rect x="140" y="314" width="40" height="20" rx="6" stroke="url(#posGrad)" stroke-width="0.5" fill="rgba(123,47,247,0.04)"/>
+                            <text x="160" y="328" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="rgba(240,240,245,0.4)">20%</text>
+                            <rect x="185" y="314" width="45" height="20" rx="6" stroke="url(#posGrad)" stroke-width="0.5" fill="rgba(123,47,247,0.04)"/>
+                            <text x="208" y="328" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="rgba(240,240,245,0.4)">Otro</text>
+
+                            <!-- Status bar at bottom -->
+                            <rect x="40" y="350" width="200" height="24" rx="12" fill="rgba(123,47,247,0.06)" stroke="url(#posGrad)" stroke-width="0.5"/>
+                            <text x="140" y="366" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" fill="#ff2fed" class="svg-blink">Esperando pago...</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="feat-card anim">
+                    <div class="feat-card__icon"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="6" width="10" height="10" rx="2"/><rect x="20" y="6" width="10" height="10" rx="2"/><rect x="6" y="20" width="10" height="10" rx="2"/><rect x="22" y="22" width="6" height="6" rx="1" class="svg-pop"/></svg></div>
+                    <h3>Control de tu equipo</h3>
+                    <p>Crea empleados con acceso limitado al punto de venta mediante un PIN. Cada cobro queda vinculado a quien lo generó, así sabes exactamente quién cobró qué y cuándo.</p>
+                </div>
+                <div class="feat-card anim">
+                    <div class="feat-card__icon"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="18" cy="18" r="12" class="svg-draw" style="--len:75"/><path d="M18 12v12M14 16l4-4 4 4" opacity="0.5"/></svg></div>
+                    <h3>Dashboard completo</h3>
+                    <p>Ve tu balance en pesos mexicanos, historial de pagos recibidos, retiros realizados y wallets asignadas. Todo en tiempo real, desde cualquier dispositivo.</p>
+                </div>
+                <div class="feat-card anim">
+                    <div class="feat-card__icon"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="12" opacity="0.4"/><path d="M12 18l4 4 8-8" class="svg-draw" style="--len:20"/></svg></div>
+                    <h3>Detección automática</h3>
+                    <p>Un sistema vigila la blockchain 24/7 esperando los pagos de tus clientes. Cuando llega uno, se confirma y acredita automáticamente. No tienes que hacer nada.</p>
+                </div>
+                <div class="feat-card anim">
+                    <div class="feat-card__icon"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="12" opacity="0.4"/><path d="M12 18l4 4 8-8" class="svg-draw" style="--len:20"/></svg></div>
+                    <h3>Retiro a tu banco</h3>
+                    <p>Cuando quieras, solicita un retiro desde el dashboard. Los pesos llegan a tu cuenta bancaria por SPEI. Sin esperar días, sin comisiones sorpresa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECURITY -->
+    <section class="sec" id="security">
+        <div class="container">
+            <div class="sec__grid anim">
+                <div class="sec__content">
+                    <span class="tag">Seguridad</span>
+                    <h2 class="title-lg">Tu dinero está<br><span class="grad-text">protegido</span></h2>
+                    <p>NovaPay está construido con seguridad de nivel financiero. Cada transacción, cada wallet y cada peso están protegidos.</p>
+                </div>
+                <div class="sec__cards">
+                    <div class="sec-card">
+                        <div class="sec-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="8" width="20" height="16" rx="3"/><path d="M20 16a2 2 0 110 0" fill="currentColor" stroke="none" class="svg-pop"/><path d="M8 8V6a6 6 0 0112 0v2" opacity="0.4"/></svg></div>
+                        <h4>Wallets seguras</h4>
+                        <p>Cada negocio tiene su propia wallet generada con tecnología HD. Las llaves privadas nunca se almacenan en bases de datos.</p>
+                    </div>
+                    <div class="sec-card">
+                        <div class="sec-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="10" opacity="0.3"/><polyline points="6,18 11,13 15,16 22,9" class="svg-draw" style="--len:30"/><circle cx="22" cy="9" r="2" fill="currentColor" stroke="none" class="svg-pop"/></svg></div>
+                        <h4>Monitoreo blockchain</h4>
+                        <p>Sistema dedicado vigilando la red 24/7. Cada transacción se verifica directamente en la blockchain antes de acreditarse.</p>
+                    </div>
+                    <div class="sec-card">
+                        <div class="sec-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14 4L4 9v6c0 7 4.5 12 10 14 5.5-2 10-7 10-14V9L14 4z" class="svg-draw" style="--len:60"/><path d="M10 14l3 3 5-5"/></svg></div>
+                        <h4>Sin custodia de fondos</h4>
+                        <p>Los pesos se acreditan en tu balance y tú decides cuándo retirarlos. NovaPay no retiene tu dinero.</p>
+                    </div>
+                    <div class="sec-card">
+                        <div class="sec-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="3" width="18" height="22" rx="3" class="svg-draw" style="--len:80"/><path d="M10 10h8M10 14h6M10 18h4" opacity="0.5"/></svg></div>
+                        <h4>Autenticación segura</h4>
+                        <p>Acceso protegido con contraseñas robustas y roles de usuario diferenciados para cada nivel de tu equipo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="contact">
+        <div class="container">
+            <div class="cta__box anim">
+                <div class="cta__orb"></div>
+                <h2 class="title-lg">Acepta el futuro<br><span class="grad-text">de los pagos</span></h2>
+                <p class="subtitle">Registra tu negocio en NovaPay y empieza a recibir pagos crypto hoy mismo.</p>
+                <div class="cta__btns">
+                    <a href="https://wa.me/5215512345678" class="btn btn--primary btn--lg" target="_blank" rel="noopener">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        <span>Registrar mi negocio</span>
+                    </a>
+                    <a href="mailto:novapay@novacoin.mx" class="btn btn--glass btn--lg">novapay@novacoin.mx</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <a href="../novacoin/" class="nav__logo">
+                        <div class="nav__logo-hex"><svg viewBox="0 0 40 40" fill="none"><path d="M20 4L34 12V28L20 36L6 28V12L20 4Z" stroke="url(#lg2)" stroke-width="1.5" fill="none"/><path d="M15 17L20 13L25 17V23L20 27L15 23Z" fill="url(#lg2)"/><defs><linearGradient id="lg2" x1="6" y1="4" x2="34" y2="36"><stop stop-color="#7b2ff7"/><stop offset="1" stop-color="#ff2fed"/></linearGradient></defs></svg></div>
+                        <span>NovaCoin</span>
+                    </a>
+                    <p>NovaPay — Pasarela de pagos crypto para comercios en México.</p>
+                </div>
+                <div class="footer__col">
+                    <h4>NovaCoin</h4>
+                    <a href="../novacoin/">Inicio</a>
+                    <a href="../rfq/">Exchange</a>
+                    <a href="../novacore/">NOVACORE</a>
+                </div>
+                <div class="footer__col">
+                    <h4>NovaPay</h4>
+                    <a href="#how">Cómo funciona</a>
+                    <a href="#features">Funciones</a>
+                    <a href="#contact">Contacto</a>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 NovaCoin. Todos los derechos reservados.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

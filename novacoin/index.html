@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaCoin — El puente entre tu dinero y el futuro digital</title>
+    <meta name="description" content="Empresa mexicana de tecnología crypto. Compra-venta de criptomonedas, pagos para comercios, análisis de wallets y procesamiento bancario SPEI.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav class="nav" id="nav">
+        <div class="nav__container">
+            <a href="#" class="nav__logo">
+                <div class="nav__logo-hex">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <path d="M20 4L34 12V28L20 36L6 28V12L20 4Z" stroke="url(#lg)" stroke-width="1.5" fill="none"/>
+                        <path d="M20 10L28 15V25L20 30L12 25V15L20 10Z" fill="url(#lg)" opacity="0.15"/>
+                        <path d="M15 17L20 13L25 17V23L20 27L15 23Z" fill="url(#lg)"/>
+                        <defs><linearGradient id="lg" x1="6" y1="4" x2="34" y2="36"><stop stop-color="#00d4ff"/><stop offset="1" stop-color="#7b2ff7"/></linearGradient></defs>
+                    </svg>
+                </div>
+                <span>NovaCoin</span>
+            </a>
+            <div class="nav__links" id="navLinks">
+                <a href="#about" class="nav__link">Nosotros</a>
+                <a href="../rfq/" class="nav__link">RFQ</a>
+                <a href="../walletchecker/" class="nav__link">Wallet Checker</a>
+                <a href="../novapay/" class="nav__link">NovaPay</a>
+                <a href="../novacore/" class="nav__link">NOVACORE</a>
+                <a href="#contact" class="nav__link">Contacto</a>
+            </div>
+            <a href="https://rfq.novacoin.mx" class="nav__cta" target="_blank" rel="noopener">Comprar Crypto</a>
+            <button class="nav__toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero__bg">
+            <canvas id="heroCanvas"></canvas>
+            <div class="hero__orb hero__orb--1"></div>
+            <div class="hero__orb hero__orb--2"></div>
+            <div class="hero__grid-overlay"></div>
+        </div>
+        <div class="hero__inner">
+        <div class="hero__content">
+            <div class="hero__badge anim">
+                <span class="hero__badge-dot"></span>
+                Tecnología mexicana en producción
+            </div>
+            <h1 class="hero__title anim">
+                El puente entre tu dinero<br>
+                <span class="grad-text">y el futuro digital</span>
+            </h1>
+            <p class="hero__sub anim">
+                Somos una empresa mexicana construyendo las herramientas para que cualquier persona o negocio pueda usar criptomonedas de forma fácil, segura y sin complicaciones.
+            </p>
+            <div class="hero__actions anim">
+                <a href="https://rfq.novacoin.mx" class="btn btn--primary" target="_blank" rel="noopener">
+                    <span>Comprar Crypto</span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+                <a href="#tools" class="btn btn--glass">Conoce nuestras soluciones</a>
+            </div>
+        </div>
+
+        </div><!-- /hero__content -->
+
+        <!-- Hero Illustration -->
+        <div class="hero__illustration anim">
+            <svg viewBox="0 0 480 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Phone frame -->
+                <rect x="140" y="30" width="200" height="360" rx="24" stroke="url(#heroGrad)" stroke-width="1.5" class="svg-draw" style="--len:1100"/>
+                <rect x="152" y="50" width="176" height="320" rx="16" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+                <!-- Notch -->
+                <rect x="200" y="34" width="80" height="6" rx="3" fill="rgba(255,255,255,0.06)"/>
+
+                <!-- Screen content - Dashboard -->
+                <!-- Balance -->
+                <text x="172" y="88" font-family="Inter, sans-serif" font-size="10" fill="rgba(255,255,255,0.25)" font-weight="500">BALANCE TOTAL</text>
+                <text x="172" y="112" font-family="JetBrains Mono, monospace" font-size="22" fill="rgba(255,255,255,0.7)" font-weight="700" class="svg-pop" style="animation-delay:0.6s">$48,250<tspan fill="rgba(255,255,255,0.3)" font-size="14">.00</tspan></text>
+
+                <!-- Mini chart -->
+                <polyline points="172,145 195,140 210,148 230,132 255,138 280,125 305,128" stroke="url(#heroGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-draw" style="--len:160;animation-delay:0.8s"/>
+                <line x1="172" y1="155" x2="305" y2="155" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+
+                <!-- Crypto rows -->
+                <circle cx="186" cy="180" r="10" fill="rgba(247,147,26,0.15)" stroke="rgba(247,147,26,0.3)" stroke-width="0.8" class="svg-pop" style="animation-delay:1s"/>
+                <text x="186" y="184" font-family="JetBrains Mono" font-size="8" fill="#F7931A" text-anchor="middle" font-weight="700">B</text>
+                <text x="204" y="177" font-family="Inter" font-size="10" fill="rgba(255,255,255,0.6)" font-weight="500">Bitcoin</text>
+                <text x="204" y="189" font-family="Inter" font-size="8" fill="rgba(255,255,255,0.2)">0.025 BTC</text>
+                <text x="306" y="183" font-family="JetBrains Mono" font-size="9" fill="rgba(0,212,255,0.6)" text-anchor="end">+2.4%</text>
+
+                <circle cx="186" cy="216" r="10" fill="rgba(98,126,234,0.15)" stroke="rgba(98,126,234,0.3)" stroke-width="0.8" class="svg-pop" style="animation-delay:1.15s"/>
+                <text x="186" y="220" font-family="JetBrains Mono" font-size="8" fill="#627EEA" text-anchor="middle" font-weight="700">E</text>
+                <text x="204" y="213" font-family="Inter" font-size="10" fill="rgba(255,255,255,0.6)" font-weight="500">Ethereum</text>
+                <text x="204" y="225" font-family="Inter" font-size="8" fill="rgba(255,255,255,0.2)">0.8 ETH</text>
+                <text x="306" y="219" font-family="JetBrains Mono" font-size="9" fill="rgba(0,212,255,0.6)" text-anchor="end">+1.8%</text>
+
+                <circle cx="186" cy="252" r="10" fill="rgba(38,161,123,0.15)" stroke="rgba(38,161,123,0.3)" stroke-width="0.8" class="svg-pop" style="animation-delay:1.3s"/>
+                <text x="186" y="256" font-family="JetBrains Mono" font-size="8" fill="#26A17B" text-anchor="middle" font-weight="700">T</text>
+                <text x="204" y="249" font-family="Inter" font-size="10" fill="rgba(255,255,255,0.6)" font-weight="500">Tether</text>
+                <text x="204" y="261" font-family="Inter" font-size="8" fill="rgba(255,255,255,0.2)">2,500 USDT</text>
+                <text x="306" y="255" font-family="JetBrains Mono" font-size="9" fill="rgba(34,197,94,0.6)" text-anchor="end">Estable</text>
+
+                <!-- Action buttons on screen -->
+                <rect x="170" y="290" width="60" height="30" rx="8" fill="rgba(0,212,255,0.1)" stroke="rgba(0,212,255,0.2)" stroke-width="0.8" class="svg-pop" style="animation-delay:1.5s"/>
+                <text x="200" y="309" font-family="Inter" font-size="9" fill="rgba(0,212,255,0.8)" text-anchor="middle" font-weight="600">Comprar</text>
+                <rect x="240" y="290" width="60" height="30" rx="8" fill="rgba(123,47,247,0.1)" stroke="rgba(123,47,247,0.2)" stroke-width="0.8" class="svg-pop" style="animation-delay:1.6s"/>
+                <text x="270" y="309" font-family="Inter" font-size="9" fill="rgba(123,47,247,0.8)" text-anchor="middle" font-weight="600">Vender</text>
+
+                <!-- Home bar -->
+                <rect x="210" y="376" width="60" height="4" rx="2" fill="rgba(255,255,255,0.08)"/>
+
+                <!-- Floating elements around phone -->
+                <!-- BTC floating coin -->
+                <g class="hero-float hero-float--1">
+                    <circle cx="80" cy="100" r="28" fill="rgba(247,147,26,0.06)" stroke="rgba(247,147,26,0.15)" stroke-width="1"/>
+                    <circle cx="80" cy="100" r="18" fill="rgba(247,147,26,0.08)"/>
+                    <text x="80" y="105" font-family="JetBrains Mono" font-size="14" fill="rgba(247,147,26,0.5)" text-anchor="middle" font-weight="700">₿</text>
+                </g>
+                <!-- ETH floating coin -->
+                <g class="hero-float hero-float--2">
+                    <circle cx="400" cy="140" r="24" fill="rgba(98,126,234,0.06)" stroke="rgba(98,126,234,0.15)" stroke-width="1"/>
+                    <circle cx="400" cy="140" r="15" fill="rgba(98,126,234,0.08)"/>
+                    <text x="400" y="146" font-family="JetBrains Mono" font-size="16" fill="rgba(98,126,234,0.5)" text-anchor="middle" font-weight="700">Ξ</text>
+                </g>
+                <!-- MXN floating -->
+                <g class="hero-float hero-float--3">
+                    <circle cx="60" cy="280" r="22" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.15)" stroke-width="1"/>
+                    <text x="60" y="286" font-family="JetBrains Mono" font-size="14" fill="rgba(0,212,255,0.5)" text-anchor="middle" font-weight="700">$</text>
+                </g>
+                <!-- USDT floating -->
+                <g class="hero-float hero-float--4">
+                    <circle cx="420" cy="300" r="20" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.15)" stroke-width="1"/>
+                    <text x="420" y="306" font-family="JetBrains Mono" font-size="12" fill="rgba(34,197,94,0.5)" text-anchor="middle" font-weight="700">₮</text>
+                </g>
+
+                <!-- Connection lines from coins to phone -->
+                <line x1="108" y1="100" x2="140" y2="180" stroke="rgba(247,147,26,0.08)" stroke-width="0.8" stroke-dasharray="4 4" class="svg-flow"/>
+                <line x1="376" y1="140" x2="340" y2="216" stroke="rgba(98,126,234,0.08)" stroke-width="0.8" stroke-dasharray="4 4" class="svg-flow" style="animation-delay:0.5s"/>
+                <line x1="82" y1="280" x2="140" y2="300" stroke="rgba(0,212,255,0.08)" stroke-width="0.8" stroke-dasharray="4 4" class="svg-flow" style="animation-delay:1s"/>
+                <line x1="400" y1="300" x2="340" y2="290" stroke="rgba(34,197,94,0.08)" stroke-width="0.8" stroke-dasharray="4 4" class="svg-flow" style="animation-delay:1.5s"/>
+
+                <!-- Pulse rings around phone -->
+                <rect x="130" y="20" width="220" height="380" rx="30" stroke="url(#heroGrad)" stroke-width="0.5" opacity="0.06" class="hero-pulse-ring"/>
+                <rect x="118" y="8" width="244" height="404" rx="38" stroke="url(#heroGrad)" stroke-width="0.4" opacity="0.03" class="hero-pulse-ring" style="animation-delay:1s"/>
+
+                <defs>
+                    <linearGradient id="heroGrad" x1="0" y1="0" x2="480" y2="420">
+                        <stop stop-color="#00d4ff"/>
+                        <stop offset="1" stop-color="#7b2ff7"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        </div><!-- /hero__inner -->
+
+        <div class="hero__mouse"><div class="hero__mouse-dot"></div></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about__grid">
+                <div class="about__visual anim">
+                    <div class="about__hex-grid">
+                        <div class="hex hex--1"></div>
+                        <div class="hex hex--2"></div>
+                        <div class="hex hex--3"></div>
+                        <div class="hex hex--4"></div>
+                        <div class="hex hex--5"></div>
+                        <div class="hex hex--active">
+                            <svg viewBox="0 0 60 60" fill="none">
+                                <path d="M30 8L52 20V42L30 54L8 42V20L30 8Z" stroke="url(#abg)" stroke-width="1.5"/>
+                                <path d="M22 25L30 20L38 25V35L30 40L22 35Z" fill="url(#abg)" opacity="0.4"/>
+                                <defs><linearGradient id="abg" x1="8" y1="8" x2="52" y2="54"><stop stop-color="#00d4ff"/><stop offset="1" stop-color="#7b2ff7"/></linearGradient></defs>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="about__content anim">
+                    <span class="tag">Quiénes somos</span>
+                    <h2 class="title-lg">Tecnología crypto<br><span class="grad-text">hecha en México</span></h2>
+                    <p>En NovaCoin creemos que las criptomonedas no deberían ser complicadas. Por eso construimos herramientas que conectan el mundo digital con el sistema financiero que ya conoces — transferencias bancarias, pagos en tu negocio, y más.</p>
+                    <p>Nuestra misión es simple: <strong>normalizar el uso de crypto en México</strong>. Que comprar Bitcoin sea tan natural como hacer una transferencia SPEI. Que un comercio pueda aceptar pagos digitales sin tener que entender blockchains.</p>
+                    <div class="about__points">
+                        <div class="about__point">
+                            <div class="about__point-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                            <div><strong>Operamos 24/7</strong><span>El mercado crypto no duerme. Nosotros tampoco.</span></div>
+                        </div>
+                        <div class="about__point">
+                            <div class="about__point-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/></svg></div>
+                            <div><strong>100% mexicanos</strong><span>Diseñado para el ecosistema financiero de México.</span></div>
+                        </div>
+                        <div class="about__point">
+                            <div class="about__point-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+                            <div><strong>Tecnología propia</strong><span>Cada línea de código es nuestra. Sin dependencias externas.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROBLEMS -->
+    <section class="problems" id="problems">
+        <!-- Background decoration -->
+        <div class="problems__bg-art">
+            <svg viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                <!-- Abstract network of problem→solution connections -->
+                <!-- Large circles representing pain points -->
+                <circle cx="120" cy="100" r="60" stroke="rgba(0,212,255,0.04)" stroke-width="1" fill="none"/>
+                <circle cx="120" cy="100" r="40" stroke="rgba(0,212,255,0.03)" stroke-width="0.5" fill="none"/>
+                <circle cx="680" cy="150" r="50" stroke="rgba(123,47,247,0.04)" stroke-width="1" fill="none"/>
+                <circle cx="680" cy="150" r="30" stroke="rgba(123,47,247,0.03)" stroke-width="0.5" fill="none"/>
+                <circle cx="100" cy="450" r="45" stroke="rgba(34,197,94,0.04)" stroke-width="1" fill="none"/>
+                <circle cx="700" cy="480" r="55" stroke="rgba(59,130,246,0.04)" stroke-width="1" fill="none"/>
+
+                <!-- Flowing connection paths -->
+                <path d="M120 160C200 200 300 180 400 300C500 420 600 400 680 430" stroke="rgba(0,212,255,0.03)" stroke-width="1" stroke-dasharray="6 6" fill="none"/>
+                <path d="M680 200C600 250 500 230 400 300C300 370 200 350 100 405" stroke="rgba(123,47,247,0.03)" stroke-width="1" stroke-dasharray="6 6" fill="none"/>
+
+                <!-- Tiny glowing dots -->
+                <circle cx="250" cy="200" r="2" fill="rgba(0,212,255,0.12)">
+                    <animate attributeName="opacity" values="0.12;0.04;0.12" dur="3s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="550" cy="380" r="2" fill="rgba(123,47,247,0.12)">
+                    <animate attributeName="opacity" values="0.12;0.04;0.12" dur="3s" begin="1s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="400" cy="300" r="3" fill="rgba(34,197,94,0.15)">
+                    <animate attributeName="opacity" values="0.15;0.05;0.15" dur="4s" begin="0.5s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="350" cy="150" r="1.5" fill="rgba(59,130,246,0.1)">
+                    <animate attributeName="opacity" values="0.1;0.03;0.1" dur="3.5s" begin="2s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="600" cy="250" r="1.5" fill="rgba(0,212,255,0.1)">
+                    <animate attributeName="opacity" values="0.1;0.03;0.1" dur="2.5s" begin="1.5s" repeatCount="indefinite"/>
+                </circle>
+            </svg>
+        </div>
+        <div class="container">
+            <div class="section-head anim">
+                <span class="tag">Casos de uso</span>
+                <h2 class="title-lg">Problemas reales.<br><span class="grad-text">Soluciones reales.</span></h2>
+                <p class="subtitle">Estas son situaciones que nuestros clientes enfrentan todos los días — y cómo las resolvemos.</p>
+            </div>
+            <div class="prob-grid">
+                <div class="prob-card anim">
+                    <div class="prob-card__problem">
+                        <span class="prob-card__label">El problema</span>
+                        <h3>"Quiero comprar Bitcoin pero los exchanges son un lío"</h3>
+                        <p>Verificaciones eternas, interfaces confusas, wallets que no entiendes, comisiones escondidas.</p>
+                    </div>
+                    <div class="prob-card__solution">
+                        <span class="prob-card__label prob-card__label--sol">La solución</span>
+                        <p>Haces una transferencia SPEI, tu saldo se acredita automáticamente, eliges tu crypto y listo. También desde <strong>WhatsApp</strong>.</p>
+                        <a href="../rfq/" class="prob-card__link" data-accent="cyan">Exchange / RFQ <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
+                </div>
+                <div class="prob-card anim">
+                    <div class="prob-card__problem">
+                        <span class="prob-card__label">El problema</span>
+                        <h3>"Mis clientes quieren pagar con crypto, pero yo necesito pesos"</h3>
+                        <p>Tienes un negocio. Tus clientes tienen crypto, pero tú necesitas pesos en tu cuenta para operar.</p>
+                    </div>
+                    <div class="prob-card__solution">
+                        <span class="prob-card__label prob-card__label--sol">La solución</span>
+                        <p>Generas un <strong>QR</strong>, tu cliente paga con crypto, y tú recibes <strong>pesos mexicanos</strong> en tu banco. Automático, sin volatilidad.</p>
+                        <a href="../novapay/" class="prob-card__link" data-accent="purple">NovaPay <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
+                </div>
+                <div class="prob-card anim">
+                    <div class="prob-card__problem">
+                        <span class="prob-card__label">El problema</span>
+                        <h3>"Necesito enviar dinero al extranjero pero las comisiones son altísimas"</h3>
+                        <p>Transferencias internacionales tardan días, cobran 3-8%, y los horarios son limitados.</p>
+                    </div>
+                    <div class="prob-card__solution">
+                        <span class="prob-card__label prob-card__label--sol">La solución</span>
+                        <p>Conviertes pesos a crypto, envías a cualquier parte del mundo en <strong>minutos</strong>. Comisiones de centavos, sin fronteras.</p>
+                        <a href="../rfq/" class="prob-card__link" data-accent="cyan">Exchange / RFQ <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
+                </div>
+                <div class="prob-card anim">
+                    <div class="prob-card__problem">
+                        <span class="prob-card__label">El problema</span>
+                        <h3>"Mi empresa necesita dispersar pagos a cientos de personas"</h3>
+                        <p>Nómina, proveedores, comisiones. Transferencias una por una es lento y propenso a errores.</p>
+                    </div>
+                    <div class="prob-card__solution">
+                        <span class="prob-card__label prob-card__label--sol">La solución</span>
+                        <p>Cargas un archivo, apruebas con un clic, y <strong>cientos de SPEI</strong> salen en segundos. Nómina, dispersiones, conciliación.</p>
+                        <a href="../novacore/" class="prob-card__link" data-accent="blue">NOVACORE <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
+                </div>
+                <div class="prob-card anim">
+                    <div class="prob-card__problem">
+                        <span class="prob-card__label">El problema</span>
+                        <h3>"Quiero proteger mis ahorros de la devaluación del peso"</h3>
+                        <p>La inflación come tus ahorros y las opciones de inversión piden montos altos o plazos largos.</p>
+                    </div>
+                    <div class="prob-card__solution">
+                        <span class="prob-card__label prob-card__label--sol">La solución</span>
+                        <p>Convierte a <strong>stablecoins</strong> (respaldadas 1:1 por dólares). Tu dinero mantiene su valor, accesible 24/7, sin plazos.</p>
+                        <a href="../rfq/" class="prob-card__link" data-accent="cyan">Exchange / RFQ <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
+                </div>
+                <div class="prob-card anim">
+                    <div class="prob-card__problem">
+                        <span class="prob-card__label">El problema</span>
+                        <h3>"No sé si la wallet a la que envío o de la que recibo es segura"</h3>
+                        <p>Enviar o recibir fondos de wallets riesgosas puede traerte problemas legales sin que lo sepas.</p>
+                    </div>
+                    <div class="prob-card__solution">
+                        <span class="prob-card__label prob-card__label--sol">La solución</span>
+                        <p><strong>Wallet Checker</strong> analiza cualquier dirección antes de mover fondos. Score de riesgo, rastreo forense y monitoreo continuo.</p>
+                        <a href="../walletchecker/" class="prob-card__link" data-accent="green">Wallet Checker <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION DIVIDER — Flowing network -->
+    <div class="section-art">
+        <svg viewBox="0 0 1200 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 80C200 40 400 100 600 60C800 20 1000 80 1200 50" stroke="url(#divGrad1)" stroke-width="1" opacity="0.15" class="svg-draw" style="--len:1600"/>
+            <path d="M0 90C150 60 350 110 550 70C750 30 950 90 1200 65" stroke="url(#divGrad1)" stroke-width="0.5" opacity="0.08" class="svg-draw" style="--len:1600;animation-delay:0.3s"/>
+            <!-- Nodes along the path -->
+            <circle cx="200" cy="60" r="4" fill="rgba(0,212,255,0.2)" class="svg-pop"/>
+            <circle cx="200" cy="60" r="8" stroke="rgba(0,212,255,0.08)" stroke-width="0.5" fill="none"/>
+            <circle cx="450" cy="85" r="3" fill="rgba(123,47,247,0.2)" class="svg-pop" style="animation-delay:0.5s"/>
+            <circle cx="450" cy="85" r="6" stroke="rgba(123,47,247,0.08)" stroke-width="0.5" fill="none"/>
+            <circle cx="700" cy="45" r="5" fill="rgba(34,197,94,0.2)" class="svg-pop" style="animation-delay:0.8s"/>
+            <circle cx="700" cy="45" r="10" stroke="rgba(34,197,94,0.08)" stroke-width="0.5" fill="none"/>
+            <circle cx="950" cy="70" r="3.5" fill="rgba(59,130,246,0.2)" class="svg-pop" style="animation-delay:1.1s"/>
+            <circle cx="950" cy="70" r="7" stroke="rgba(59,130,246,0.08)" stroke-width="0.5" fill="none"/>
+            <defs><linearGradient id="divGrad1" x1="0" y1="0" x2="1200" y2="0"><stop stop-color="#00d4ff"/><stop offset="0.5" stop-color="#7b2ff7"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs>
+        </svg>
+    </div>
+
+    <!-- TOOLS OVERVIEW -->
+    <section class="tools" id="tools">
+        <div class="container">
+            <div class="section-head anim">
+                <span class="tag">Nuestras herramientas</span>
+                <h2 class="title-lg">Cuatro productos.<br><span class="grad-text">Una misión.</span></h2>
+                <p class="subtitle">Cada herramienta funciona de forma independiente. Úsalas por separado o combínalas según lo que necesites.</p>
+            </div>
+            <div class="tools__grid">
+                <a href="../rfq/" class="tool-preview anim" data-product="rfq">
+                    <div class="tool-preview__accent"></div>
+                    <div class="tool-preview__icon">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <rect x="6" y="6" width="36" height="36" rx="8" stroke="currentColor" stroke-width="1.2" opacity="0.15"/>
+                            <polyline points="10,36 18,28 24,31 32,18 38,14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-draw" style="--len:60"/>
+                            <circle cx="38" cy="14" r="3" fill="currentColor" class="svg-pop"/>
+                            <circle cx="18" cy="28" r="2" fill="currentColor" opacity="0.4" class="svg-pop" style="animation-delay:0.3s"/>
+                            <circle cx="32" cy="18" r="2" fill="currentColor" opacity="0.4" class="svg-pop" style="animation-delay:0.5s"/>
+                        </svg>
+                    </div>
+                    <span class="tool-preview__label">Exchange</span>
+                    <h3>Compra y Venta de Crypto</h3>
+                    <p>Compra criptomonedas con pesos mexicanos. Depositas por SPEI, eliges tu crypto y la recibes al instante.</p>
+                    <span class="tool-preview__more">Saber más <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 6h10M9 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </a>
+                <a href="../walletchecker/" class="tool-preview anim" data-product="wc">
+                    <div class="tool-preview__accent"></div>
+                    <div class="tool-preview__icon">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <path d="M24 4L8 12v12c0 11.1 6.84 20.37 16 23 9.16-2.63 16-11.9 16-23V12L24 4z" stroke="currentColor" stroke-width="1.2" opacity="0.15"/>
+                            <path d="M24 8L12 14v10c0 8.84 5.4 16.2 12 18.2 6.6-2 12-9.36 12-18.2V14L24 8z" stroke="currentColor" stroke-width="1.5" class="svg-draw" style="--len:90"/>
+                            <path d="M17 24l5 5 9-9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="svg-draw" style="--len:25;animation-delay:0.6s"/>
+                        </svg>
+                    </div>
+                    <span class="tool-preview__label">Seguridad</span>
+                    <h3>Wallet Checker</h3>
+                    <p>Analiza el riesgo de cualquier wallet antes de enviar o recibir fondos. Rastreo forense y monitoreo continuo.</p>
+                    <span class="tool-preview__more">Saber más <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 6h10M9 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </a>
+                <a href="../novapay/" class="tool-preview anim" data-product="np">
+                    <div class="tool-preview__accent"></div>
+                    <div class="tool-preview__icon">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="8" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5" class="svg-draw" style="--len:48"/>
+                            <rect x="28" y="8" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5" class="svg-draw" style="--len:48;animation-delay:0.15s"/>
+                            <rect x="8" y="28" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5" class="svg-draw" style="--len:48;animation-delay:0.3s"/>
+                            <rect x="11" y="11" width="6" height="6" rx="1" fill="currentColor" class="svg-pop"/>
+                            <rect x="31" y="11" width="6" height="6" rx="1" fill="currentColor" class="svg-pop" style="animation-delay:0.15s"/>
+                            <rect x="11" y="31" width="6" height="6" rx="1" fill="currentColor" class="svg-pop" style="animation-delay:0.3s"/>
+                            <rect x="28" y="28" width="5" height="5" rx="1" fill="currentColor" opacity="0.3" class="svg-pop" style="animation-delay:0.45s"/>
+                            <rect x="35" y="28" width="5" height="5" rx="1" fill="currentColor" opacity="0.3" class="svg-pop" style="animation-delay:0.55s"/>
+                            <rect x="28" y="35" width="5" height="5" rx="1" fill="currentColor" opacity="0.3" class="svg-pop" style="animation-delay:0.65s"/>
+                            <rect x="35" y="35" width="5" height="5" rx="1" fill="currentColor" opacity="0.5" class="svg-pop" style="animation-delay:0.75s"/>
+                        </svg>
+                    </div>
+                    <span class="tool-preview__label">Pagos</span>
+                    <h3>NovaPay</h3>
+                    <p>Tus clientes pagan con crypto, tú recibes pesos mexicanos. Punto de venta con QR y liquidación automática.</p>
+                    <span class="tool-preview__more">Saber más <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 6h10M9 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </a>
+                <a href="../novacore/" class="tool-preview anim" data-product="nc">
+                    <div class="tool-preview__accent"></div>
+                    <div class="tool-preview__icon">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <rect x="12" y="4" width="24" height="10" rx="3" stroke="currentColor" stroke-width="1.5" class="svg-draw" style="--len:68"/>
+                            <rect x="12" y="19" width="24" height="10" rx="3" stroke="currentColor" stroke-width="1.5" class="svg-draw" style="--len:68;animation-delay:0.2s"/>
+                            <rect x="12" y="34" width="24" height="10" rx="3" stroke="currentColor" stroke-width="1.5" class="svg-draw" style="--len:68;animation-delay:0.4s"/>
+                            <circle cx="17" cy="9" r="1.5" fill="currentColor" class="svg-blink"/>
+                            <circle cx="17" cy="24" r="1.5" fill="currentColor" class="svg-blink" style="animation-delay:0.7s"/>
+                            <circle cx="17" cy="39" r="1.5" fill="currentColor" class="svg-blink" style="animation-delay:1.4s"/>
+                            <line x1="24" y1="14" x2="24" y2="19" stroke="currentColor" stroke-width="1.5" opacity="0.3" stroke-dasharray="2 2" class="svg-flow"/>
+                            <line x1="24" y1="29" x2="24" y2="34" stroke="currentColor" stroke-width="1.5" opacity="0.3" stroke-dasharray="2 2" class="svg-flow" style="animation-delay:0.3s"/>
+                        </svg>
+                    </div>
+                    <span class="tool-preview__label">Infraestructura</span>
+                    <h3>NOVACORE</h3>
+                    <p>Core bancario SPEI para empresas. Transferencias, cuentas CLABE, dispersiones masivas y nómina automatizada.</p>
+                    <span class="tool-preview__more">Saber más <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 6h10M9 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION DIVIDER — Crypto bridge illustration -->
+    <div class="section-art section-art--bridge anim">
+        <svg viewBox="0 0 1000 200" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+            <!-- Left platform: Traditional finance -->
+            <rect x="40" y="80" width="180" height="60" rx="12" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <text x="130" y="105" font-family="Inter, sans-serif" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-weight="600">Pesos MXN</text>
+            <text x="130" y="122" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,0.15)" text-anchor="middle">SPEI • Bancos</text>
+            <!-- MXN icon -->
+            <circle cx="70" cy="65" r="14" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.12)" stroke-width="1"/>
+            <text x="70" y="70" font-family="JetBrains Mono" font-size="12" fill="rgba(0,212,255,0.4)" text-anchor="middle" font-weight="700">$</text>
+
+            <!-- Right platform: Crypto -->
+            <rect x="780" y="80" width="180" height="60" rx="12" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <text x="870" y="105" font-family="Inter, sans-serif" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-weight="600">Criptomonedas</text>
+            <text x="870" y="122" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,0.15)" text-anchor="middle">BTC • ETH • USDT</text>
+            <!-- Crypto icon -->
+            <circle cx="930" cy="65" r="14" fill="rgba(123,47,247,0.06)" stroke="rgba(123,47,247,0.12)" stroke-width="1"/>
+            <text x="930" y="70" font-family="JetBrains Mono" font-size="12" fill="rgba(123,47,247,0.4)" text-anchor="middle" font-weight="700">₿</text>
+
+            <!-- Bridge connection -->
+            <path d="M220 110C350 110 380 60 500 60C620 60 650 110 780 110" stroke="url(#bridgeGrad)" stroke-width="2" stroke-linecap="round" class="svg-draw" style="--len:700"/>
+            <!-- Flow particles along bridge -->
+            <circle r="3" fill="rgba(0,212,255,0.4)">
+                <animateMotion dur="3s" repeatCount="indefinite" path="M220 110C350 110 380 60 500 60C620 60 650 110 780 110"/>
+            </circle>
+            <circle r="2.5" fill="rgba(123,47,247,0.4)">
+                <animateMotion dur="3s" repeatCount="indefinite" begin="1s" path="M780 110C650 110 620 60 500 60C380 60 350 110 220 110"/>
+            </circle>
+            <circle r="2" fill="rgba(34,197,94,0.3)">
+                <animateMotion dur="4s" repeatCount="indefinite" begin="0.5s" path="M220 110C350 110 380 60 500 60C620 60 650 110 780 110"/>
+            </circle>
+
+            <!-- Center NovaCoin logo -->
+            <circle cx="500" cy="60" r="22" fill="rgba(0,212,255,0.04)" stroke="url(#bridgeGrad)" stroke-width="1.5"/>
+            <path d="M500 46L510 52V64L500 70L490 64V52L500 46Z" fill="url(#bridgeGrad)" opacity="0.6" class="svg-pop" style="animation-delay:1s"/>
+
+            <!-- Dotted support lines -->
+            <line x1="500" y1="82" x2="500" y2="160" stroke="rgba(255,255,255,0.04)" stroke-width="0.8" stroke-dasharray="3 3"/>
+            <text x="500" y="175" font-family="Inter, sans-serif" font-size="10" fill="rgba(255,255,255,0.15)" text-anchor="middle">NovaCoin conecta ambos mundos</text>
+
+            <defs><linearGradient id="bridgeGrad" x1="220" y1="60" x2="780" y2="60"><stop stop-color="#00d4ff"/><stop offset="1" stop-color="#7b2ff7"/></linearGradient></defs>
+        </svg>
+    </div>
+
+    <!-- WHY -->
+    <section class="why" id="why">
+        <div class="container">
+            <div class="section-head anim">
+                <span class="tag">Ventajas</span>
+                <h2 class="title-lg">¿Por qué <span class="grad-text">NovaCoin</span>?</h2>
+            </div>
+            <div class="why__grid">
+                <div class="why-card anim">
+                    <div class="why-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 18l-6-8-4 5-4-3" class="svg-draw" style="--len:25"/><circle cx="20" cy="18" r="2" fill="currentColor" stroke="none" class="svg-pop"/><rect x="2" y="3" width="24" height="22" rx="4" opacity="0.15"/></svg></div>
+                    <div class="why-card__num">01</div><h3>Los mejores precios</h3><p>Cotizaciones directas de proveedores de liquidez. Sin intermediarios — la mejor tasa del mercado.</p>
+                </div>
+                <div class="why-card anim">
+                    <div class="why-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2C8 2 3 7 3 13c0 7.5 11 13 11 13s11-5.5 11-13c0-6-5-11-11-11z" class="svg-draw" style="--len:70"/><circle cx="14" cy="13" r="3" opacity="0.4"/></svg></div>
+                    <div class="why-card__num">02</div><h3>Hecho para México</h3><p>SPEI, CLABEs, pesos mexicanos. Diseñado para el sistema financiero mexicano.</p>
+                </div>
+                <div class="why-card anim">
+                    <div class="why-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="18" height="14" rx="3" class="svg-draw" style="--len:64"/><path d="M9 11V8a5 5 0 0110 0v3" opacity="0.4"/><circle cx="14" cy="19" r="2" fill="currentColor" stroke="none" class="svg-pop"/></svg></div>
+                    <div class="why-card__num">03</div><h3>Seguridad real</h3><p>Autenticación en dos pasos, cifrado, monitoreo en tiempo real y cumplimiento regulatorio.</p>
+                </div>
+                <div class="why-card anim">
+                    <div class="why-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="10" r="5" opacity="0.3"/><path d="M4 26c0-5.52 4.48-10 10-10s10 4.48 10 10" class="svg-draw" style="--len:35"/><path d="M20 17l3-1 1 3" opacity="0.4"/></svg></div>
+                    <div class="why-card__num">04</div><h3>Soporte humano</h3><p>Nuestro equipo disponible por WhatsApp o teléfono. No te dejamos solo con un chatbot.</p>
+                </div>
+                <div class="why-card anim">
+                    <div class="why-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="11" opacity="0.15"/><circle cx="14" cy="14" r="11" class="svg-draw" style="--len:70" stroke-dasharray="17 52"/><path d="M14 6v8l5 3"/><circle cx="14" cy="14" r="1.5" fill="currentColor" stroke="none" class="svg-pop"/></svg></div>
+                    <div class="why-card__num">05</div><h3>Operación continua</h3><p>Sistemas operando 24/7. Sin interrupciones, sin mantenimiento sorpresa.</p>
+                </div>
+                <div class="why-card anim">
+                    <div class="why-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="20" height="24" rx="3" opacity="0.15"/><rect x="4" y="2" width="20" height="24" rx="3" class="svg-draw" style="--len:88"/><path d="M10 11l3 3 5-6" stroke-width="2" class="svg-draw" style="--len:14;animation-delay:0.5s"/><line x1="9" y1="18" x2="19" y2="18" opacity="0.2"/><line x1="9" y1="21" x2="16" y2="21" opacity="0.15"/></svg></div>
+                    <div class="why-card__num">06</div><h3>Sin letra chiquita</h3><p>Comisiones claras desde el inicio. Sin cargos ocultos, sin sorpresas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats">
+        <div class="stats__bg-art">
+            <svg viewBox="0 0 1200 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <!-- Animated data stream lines -->
+                <line x1="0" y1="20" x2="1200" y2="20" stroke="rgba(0,212,255,0.04)" stroke-width="0.5" stroke-dasharray="8 12" class="svg-flow"/>
+                <line x1="0" y1="40" x2="1200" y2="40" stroke="rgba(123,47,247,0.04)" stroke-width="0.5" stroke-dasharray="6 10" class="svg-flow" style="animation-delay:0.5s"/>
+                <line x1="0" y1="60" x2="1200" y2="60" stroke="rgba(34,197,94,0.04)" stroke-width="0.5" stroke-dasharray="4 8" class="svg-flow" style="animation-delay:1s"/>
+                <!-- Pulse dots on the lines -->
+                <circle r="2" fill="rgba(0,212,255,0.2)">
+                    <animateMotion dur="8s" repeatCount="indefinite" path="M0 20 L1200 20"/>
+                </circle>
+                <circle r="1.5" fill="rgba(123,47,247,0.2)">
+                    <animateMotion dur="10s" repeatCount="indefinite" path="M1200 40 L0 40"/>
+                </circle>
+                <circle r="2" fill="rgba(34,197,94,0.2)">
+                    <animateMotion dur="12s" repeatCount="indefinite" begin="2s" path="M0 60 L1200 60"/>
+                </circle>
+            </svg>
+        </div>
+        <div class="container">
+            <div class="stats__bar anim">
+                <div class="stats__item"><span class="stats__num">100+</span><span class="stats__label">Criptoactivos</span></div>
+                <div class="stats__sep"></div>
+                <div class="stats__item"><span class="stats__num">10+</span><span class="stats__label">Blockchains</span></div>
+                <div class="stats__sep"></div>
+                <div class="stats__item"><span class="stats__num">99.9%</span><span class="stats__label">Disponibilidad</span></div>
+                <div class="stats__sep"></div>
+                <div class="stats__item"><span class="stats__num">24/7</span><span class="stats__label">Operación</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="contact">
+        <div class="container">
+            <div class="cta__box anim">
+                <div class="cta__orb"></div>
+                <!-- Decorative SVG background art -->
+                <div class="cta__art">
+                    <svg viewBox="0 0 800 300" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                        <!-- Converging paths from all 4 products to center -->
+                        <path d="M50 50C150 80 250 150 400 150" stroke="rgba(0,212,255,0.08)" stroke-width="1" stroke-dasharray="4 6" fill="none"/>
+                        <path d="M750 50C650 80 550 150 400 150" stroke="rgba(34,197,94,0.08)" stroke-width="1" stroke-dasharray="4 6" fill="none"/>
+                        <path d="M50 250C150 220 250 150 400 150" stroke="rgba(123,47,247,0.08)" stroke-width="1" stroke-dasharray="4 6" fill="none"/>
+                        <path d="M750 250C650 220 550 150 400 150" stroke="rgba(59,130,246,0.08)" stroke-width="1" stroke-dasharray="4 6" fill="none"/>
+
+                        <!-- Traveling particles -->
+                        <circle r="2.5" fill="rgba(0,212,255,0.3)">
+                            <animateMotion dur="4s" repeatCount="indefinite" path="M50 50C150 80 250 150 400 150"/>
+                        </circle>
+                        <circle r="2" fill="rgba(34,197,94,0.3)">
+                            <animateMotion dur="4s" repeatCount="indefinite" begin="1s" path="M750 50C650 80 550 150 400 150"/>
+                        </circle>
+                        <circle r="2.5" fill="rgba(123,47,247,0.3)">
+                            <animateMotion dur="4s" repeatCount="indefinite" begin="2s" path="M50 250C150 220 250 150 400 150"/>
+                        </circle>
+                        <circle r="2" fill="rgba(59,130,246,0.3)">
+                            <animateMotion dur="4s" repeatCount="indefinite" begin="3s" path="M750 250C650 220 550 150 400 150"/>
+                        </circle>
+
+                        <!-- Center glow -->
+                        <circle cx="400" cy="150" r="20" fill="rgba(0,212,255,0.03)" stroke="rgba(0,212,255,0.08)" stroke-width="1">
+                            <animate attributeName="r" values="20;25;20" dur="3s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="1;0.5;1" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="400" cy="150" r="8" fill="url(#ctaGrad)" opacity="0.2"/>
+
+                        <!-- Corner product icons -->
+                        <text x="50" y="45" font-family="JetBrains Mono" font-size="8" fill="rgba(0,212,255,0.15)" text-anchor="middle">RFQ</text>
+                        <text x="750" y="45" font-family="JetBrains Mono" font-size="8" fill="rgba(34,197,94,0.15)" text-anchor="middle">WC</text>
+                        <text x="50" y="265" font-family="JetBrains Mono" font-size="8" fill="rgba(123,47,247,0.15)" text-anchor="middle">PAY</text>
+                        <text x="750" y="265" font-family="JetBrains Mono" font-size="8" fill="rgba(59,130,246,0.15)" text-anchor="middle">CORE</text>
+
+                        <defs><radialGradient id="ctaGrad"><stop stop-color="#00d4ff"/><stop offset="1" stop-color="#7b2ff7"/></radialGradient></defs>
+                    </svg>
+                </div>
+                <h2 class="title-lg">¿Listo para empezar?</h2>
+                <p class="subtitle">Ya sea que quieras comprar crypto, aceptar pagos, analizar wallets o procesar transferencias — estamos aquí para ayudarte.</p>
+                <div class="cta__btns">
+                    <a href="https://wa.me/5215512345678" class="btn btn--primary btn--lg" target="_blank" rel="noopener">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        <span>Escríbenos por WhatsApp</span>
+                    </a>
+                    <a href="mailto:contacto@novacoin.mx" class="btn btn--glass btn--lg">contacto@novacoin.mx</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <a href="#" class="nav__logo">
+                        <div class="nav__logo-hex">
+                            <svg viewBox="0 0 40 40" fill="none">
+                                <path d="M20 4L34 12V28L20 36L6 28V12L20 4Z" stroke="url(#lg2)" stroke-width="1.5" fill="none"/>
+                                <path d="M15 17L20 13L25 17V23L20 27L15 23Z" fill="url(#lg2)"/>
+                                <defs><linearGradient id="lg2" x1="6" y1="4" x2="34" y2="36"><stop stop-color="#00d4ff"/><stop offset="1" stop-color="#7b2ff7"/></linearGradient></defs>
+                            </svg>
+                        </div>
+                        <span>NovaCoin</span>
+                    </a>
+                    <p>El puente entre tu dinero y el futuro digital. Tecnología crypto hecha en México.</p>
+                </div>
+                <div class="footer__col">
+                    <h4>Herramientas</h4>
+                    <a href="../rfq/">Exchange / RFQ</a>
+                    <a href="../walletchecker/">Wallet Checker</a>
+                    <a href="../novapay/">NovaPay</a>
+                    <a href="../novacore/">NOVACORE</a>
+                </div>
+                <div class="footer__col">
+                    <h4>Empresa</h4>
+                    <a href="#about">Nosotros</a>
+                    <a href="#problems">Casos de uso</a>
+                    <a href="#contact">Contacto</a>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 NovaCoin. Todos los derechos reservados.</span>
+                <div class="footer__social">
+                    <a href="#" aria-label="X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                    <a href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

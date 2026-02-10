@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVACORE — Infraestructura bancaria SPEI para empresas</title>
+    <meta name="description" content="Core bancario para procesamiento SPEI en México. Envía y recibe transferencias, gestiona CLABEs, dispersiones masivas, nómina y más desde una sola plataforma.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav class="nav" id="nav">
+        <div class="nav__container">
+            <a href="../novacoin/" class="nav__logo">
+                <div class="nav__logo-hex">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <path d="M20 4L34 12V28L20 36L6 28V12L20 4Z" stroke="url(#lg)" stroke-width="1.5" fill="none"/>
+                        <path d="M15 17L20 13L25 17V23L20 27L15 23Z" fill="url(#lg)"/>
+                        <defs><linearGradient id="lg" x1="6" y1="4" x2="34" y2="36"><stop stop-color="#ff8800"/><stop offset="1" stop-color="#ff2f5f"/></linearGradient></defs>
+                    </svg>
+                </div>
+                <span>NOVA<em>CORE</em></span>
+            </a>
+            <div class="nav__links" id="navLinks">
+                <a href="#what" class="nav__link">Qué es</a>
+                <a href="#capabilities" class="nav__link">Capacidades</a>
+                <a href="#api" class="nav__link">API</a>
+                <a href="#security" class="nav__link">Seguridad</a>
+                <a href="#contact" class="nav__link">Contacto</a>
+            </div>
+            <a href="#contact" class="nav__cta">Solicitar acceso</a>
+            <button class="nav__toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero__bg">
+            <canvas id="heroCanvas"></canvas>
+            <div class="hero__orb hero__orb--1"></div>
+            <div class="hero__orb hero__orb--2"></div>
+        </div>
+        <div class="hero__inner">
+            <div class="hero__content">
+                <div class="hero__badge anim">
+                    <span class="hero__badge-dot"></span>
+                    Core bancario en producción
+                </div>
+                <h1 class="hero__title anim">
+                    La infraestructura bancaria<br>
+                    <span class="grad-text">que tu empresa necesita</span>
+                </h1>
+                <p class="hero__sub anim">
+                    Envía, recibe y gestiona transferencias bancarias SPEI desde una sola plataforma. Cuentas CLABE, dispersiones masivas, nómina y reconciliación — todo automatizado.
+                </p>
+                <div class="hero__actions anim">
+                    <a href="#contact" class="btn btn--primary">
+                        <span>Solicitar acceso</span>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                    <a href="#capabilities" class="btn btn--glass">Ver capacidades</a>
+                </div>
+            </div>
+            <div class="hero__illustration anim">
+                <svg viewBox="0 0 460 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="heroGrad" x1="0" y1="0" x2="460" y2="400">
+                            <stop stop-color="#ff8800"/>
+                            <stop offset="1" stop-color="#ff2f5f"/>
+                        </linearGradient>
+                        <linearGradient id="heroGrad2" x1="100" y1="0" x2="360" y2="400">
+                            <stop stop-color="#ff8800" stop-opacity="0.5"/>
+                            <stop offset="1" stop-color="#ff2f5f" stop-opacity="0.5"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Pulse rings behind everything -->
+                    <circle cx="230" cy="200" r="180" stroke="url(#heroGrad)" stroke-width="0.5" fill="none" class="hero-pulse-ring" opacity="0.06"/>
+                    <circle cx="230" cy="200" r="145" stroke="url(#heroGrad)" stroke-width="0.5" fill="none" class="hero-pulse-ring" style="animation-delay:-1.3s" opacity="0.04"/>
+                    <circle cx="230" cy="200" r="110" stroke="url(#heroGrad)" stroke-width="0.4" fill="none" class="hero-pulse-ring" style="animation-delay:-2.6s" opacity="0.03"/>
+
+                    <!-- SERVER RACK 1 (top) -->
+                    <g class="hero-float--1 hero-float">
+                        <rect x="140" y="60" width="180" height="54" rx="8" stroke="url(#heroGrad)" stroke-width="1.2" fill="rgba(255,136,0,0.03)" class="svg-draw" style="--len:468"/>
+                        <!-- Rack lines -->
+                        <line x1="155" y1="74" x2="290" y2="74" stroke="rgba(255,136,0,0.08)" stroke-width="0.5"/>
+                        <line x1="155" y1="84" x2="290" y2="84" stroke="rgba(255,136,0,0.08)" stroke-width="0.5"/>
+                        <line x1="155" y1="94" x2="290" y2="94" stroke="rgba(255,136,0,0.08)" stroke-width="0.5"/>
+                        <!-- Indicator lights -->
+                        <circle cx="300" cy="74" r="3" fill="#ff8800" class="svg-blink" opacity="0.8"/>
+                        <circle cx="310" cy="74" r="3" fill="#ff2f5f" class="svg-blink" style="animation-delay:-0.5s" opacity="0.6"/>
+                        <circle cx="300" cy="87" r="2.5" fill="#28ca42" class="svg-blink" style="animation-delay:-1s" opacity="0.7"/>
+                        <circle cx="310" cy="87" r="2.5" fill="#ff8800" class="svg-blink" style="animation-delay:-1.7s" opacity="0.5"/>
+                    </g>
+
+                    <!-- SERVER RACK 2 (middle) -->
+                    <g class="hero-float--2 hero-float">
+                        <rect x="140" y="130" width="180" height="54" rx="8" stroke="url(#heroGrad)" stroke-width="1.2" fill="rgba(255,136,0,0.03)" class="svg-draw" style="--len:468;animation-delay:0.2s"/>
+                        <line x1="155" y1="144" x2="290" y2="144" stroke="rgba(255,136,0,0.08)" stroke-width="0.5"/>
+                        <line x1="155" y1="154" x2="290" y2="154" stroke="rgba(255,136,0,0.08)" stroke-width="0.5"/>
+                        <line x1="155" y1="164" x2="290" y2="164" stroke="rgba(255,136,0,0.08)" stroke-width="0.5"/>
+                        <circle cx="300" cy="144" r="3" fill="#ff8800" class="svg-blink" style="animation-delay:-0.3s" opacity="0.8"/>
+                        <circle cx="310" cy="144" r="3" fill="#28ca42" class="svg-blink" style="animation-delay:-0.9s" opacity="0.6"/>
+                        <circle cx="300" cy="157" r="2.5" fill="#ff2f5f" class="svg-blink" style="animation-delay:-1.4s" opacity="0.7"/>
+                        <circle cx="310" cy="157" r="2.5" fill="#ff8800" class="svg-blink" style="animation-delay:-2.1s" opacity="0.5"/>
+                    </g>
+
+                    <!-- SERVER RACK 3 (bottom) -->
+                    <g class="hero-float--3 hero-float">
+                        <rect x="140" y="200" width="180" height="54" rx="8" stroke="url(#heroGrad)" stroke-width="1.2" fill="rgba(255,136,0,0.03)" class="svg-draw" style="--len:468;animation-delay:0.4s"/>
+                        <line x1="155" y1="214" x2="290" y2="214" stroke="rgba(255,136,0,0.08)" stroke-width="0.5"/>
+                        <line x1="155" y1="224" x2="290" y2="224" stroke="rgba(255,136,0,0.08)" stroke-width="0.5"/>
+                        <line x1="155" y1="234" x2="290" y2="234" stroke="rgba(255,136,0,0.08)" stroke-width="0.5"/>
+                        <circle cx="300" cy="214" r="3" fill="#28ca42" class="svg-blink" style="animation-delay:-0.6s" opacity="0.8"/>
+                        <circle cx="310" cy="214" r="3" fill="#ff8800" class="svg-blink" style="animation-delay:-1.2s" opacity="0.6"/>
+                        <circle cx="300" cy="227" r="2.5" fill="#ff8800" class="svg-blink" style="animation-delay:-1.8s" opacity="0.7"/>
+                        <circle cx="310" cy="227" r="2.5" fill="#ff2f5f" class="svg-blink" style="animation-delay:-2.4s" opacity="0.5"/>
+                    </g>
+
+                    <!-- Data flow lines between racks (dashed, animated) -->
+                    <path d="M230 114 L230 130" stroke="url(#heroGrad)" stroke-width="1" class="svg-flow" opacity="0.4"/>
+                    <path d="M200 114 L200 130" stroke="url(#heroGrad)" stroke-width="0.8" class="svg-flow" style="animation-delay:-0.5s" opacity="0.3"/>
+                    <path d="M260 114 L260 130" stroke="url(#heroGrad)" stroke-width="0.8" class="svg-flow" style="animation-delay:-1s" opacity="0.3"/>
+                    <text x="270" y="125" font-family="JetBrains Mono, monospace" font-size="5.5" fill="#ff8800" opacity="0.4">SPEI IN</text>
+
+                    <path d="M230 184 L230 200" stroke="url(#heroGrad)" stroke-width="1" class="svg-flow" opacity="0.4"/>
+                    <path d="M200 184 L200 200" stroke="url(#heroGrad)" stroke-width="0.8" class="svg-flow" style="animation-delay:-0.7s" opacity="0.3"/>
+                    <path d="M260 184 L260 200" stroke="url(#heroGrad)" stroke-width="0.8" class="svg-flow" style="animation-delay:-1.3s" opacity="0.3"/>
+                    <text x="270" y="195" font-family="JetBrains Mono, monospace" font-size="5.5" fill="#ff2f5f" opacity="0.4">SPEI OUT</text>
+
+                    <!-- Floating element: CLABE number (top-left) -->
+                    <g class="hero-float--1 hero-float" opacity="0.7">
+                        <rect x="16" y="80" width="105" height="28" rx="6" fill="rgba(255,136,0,0.04)" stroke="rgba(255,136,0,0.12)" stroke-width="0.7"/>
+                        <text x="24" y="98" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#ff8800" opacity="0.8">032180...</text>
+                        <text x="74" y="98" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,136,0,0.4)">CLABE</text>
+                        <!-- Connection line to server -->
+                        <line x1="121" y1="94" x2="140" y2="87" stroke="rgba(255,136,0,0.1)" stroke-width="0.6" stroke-dasharray="3 3"/>
+                    </g>
+
+                    <!-- Floating element: SPEI Arrow (top-right) -->
+                    <g class="hero-float--2 hero-float" opacity="0.7">
+                        <circle cx="380" cy="95" r="20" fill="rgba(255,47,95,0.04)" stroke="rgba(255,47,95,0.12)" stroke-width="0.7"/>
+                        <path d="M372 95 L388 95 M383 89 L389 95 L383 101" stroke="#ff2f5f" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+                        <text x="363" y="122" font-family="Inter, sans-serif" font-size="6" fill="rgba(255,47,95,0.5)" text-anchor="middle" x="380">SPEI</text>
+                        <!-- Connection line -->
+                        <line x1="360" y1="95" x2="320" y2="87" stroke="rgba(255,47,95,0.1)" stroke-width="0.6" stroke-dasharray="3 3"/>
+                    </g>
+
+                    <!-- Floating element: Dollar sign (bottom-left) -->
+                    <g class="hero-float--3 hero-float" opacity="0.7">
+                        <circle cx="60" cy="210" r="22" fill="rgba(255,136,0,0.04)" stroke="rgba(255,136,0,0.12)" stroke-width="0.7"/>
+                        <text x="60" y="217" font-family="Inter, sans-serif" font-size="18" fill="#ff8800" opacity="0.6" text-anchor="middle" font-weight="600">$</text>
+                        <!-- Connection line -->
+                        <line x1="82" y1="210" x2="140" y2="220" stroke="rgba(255,136,0,0.1)" stroke-width="0.6" stroke-dasharray="3 3"/>
+                    </g>
+
+                    <!-- Floating element: MXN badge (bottom-right) -->
+                    <g class="hero-float--1 hero-float" opacity="0.6">
+                        <rect x="350" y="200" width="60" height="24" rx="6" fill="rgba(255,47,95,0.04)" stroke="rgba(255,47,95,0.1)" stroke-width="0.6"/>
+                        <text x="380" y="216" font-family="JetBrains Mono, monospace" font-size="8" fill="#ff2f5f" opacity="0.6" text-anchor="middle">MXN</text>
+                        <line x1="350" y1="212" x2="320" y2="227" stroke="rgba(255,47,95,0.1)" stroke-width="0.6" stroke-dasharray="3 3"/>
+                    </g>
+
+                    <!-- Animated particles traveling between racks -->
+                    <circle r="2" fill="#ff8800" opacity="0.7">
+                        <animateMotion dur="2.5s" repeatCount="indefinite" path="M230 60 L230 254"/>
+                    </circle>
+                    <circle r="1.8" fill="#ff2f5f" opacity="0.6">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M210 254 L210 60" begin="0.8s"/>
+                    </circle>
+                    <circle r="1.5" fill="#ff8800" opacity="0.5">
+                        <animateMotion dur="2.8s" repeatCount="indefinite" path="M250 60 L250 254" begin="1.5s"/>
+                    </circle>
+
+                    <!-- Bottom status bar -->
+                    <g opacity="0.5">
+                        <rect x="140" y="270" width="180" height="20" rx="4" fill="rgba(255,136,0,0.02)" stroke="rgba(255,136,0,0.08)" stroke-width="0.5"/>
+                        <circle cx="152" cy="280" r="2.5" fill="#28ca42" class="svg-blink" style="animation-delay:-0.4s" opacity="0.8"/>
+                        <text x="160" y="283" font-family="JetBrains Mono, monospace" font-size="5.5" fill="rgba(255,136,0,0.4)">NOVACORE v2.1 &#8212; ALL SYSTEMS OPERATIONAL</text>
+                    </g>
+
+                    <!-- Large decorative hexagon outline -->
+                    <path d="M230 310 L290 340 L290 380 L230 400 L170 380 L170 340 Z" stroke="url(#heroGrad)" stroke-width="0.6" fill="rgba(255,136,0,0.015)" opacity="0.4"/>
+                    <path d="M230 325 L265 342 L265 368 L230 385 L195 368 L195 342 Z" stroke="url(#heroGrad)" stroke-width="0.4" fill="none" opacity="0.2"/>
+                    <!-- Center dot in hex -->
+                    <circle cx="230" cy="355" r="3" fill="url(#heroGrad)" opacity="0.3" class="svg-blink" style="animation-delay:-0.7s"/>
+                    <!-- Connection from servers to hex -->
+                    <path d="M230 290 L230 310" stroke="url(#heroGrad)" stroke-width="0.7" class="svg-flow" opacity="0.25"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT -->
+    <section class="what" id="what">
+        <div class="container">
+            <div class="what__grid">
+                <div class="what__content anim">
+                    <span class="tag">NOVACORE</span>
+                    <h2 class="title-lg">El motor detrás<br><span class="grad-text">de los pagos</span></h2>
+                    <p>NOVACORE es una plataforma de pagos empresarial. Piensa en ella como el sistema que conecta a tu empresa con la red bancaria de México.</p>
+                    <p>Con NOVACORE puedes recibir depósitos en cuentas CLABE propias, enviar transferencias SPEI a cualquier banco, dispersar pagos masivos, ejecutar nómina automatizada y más — todo desde un solo panel, con seguridad de nivel financiero.</p>
+                    <p>Cada empresa tiene su propio espacio aislado con sus cuentas, usuarios y configuración. Tú controlas quién ve qué y quién puede hacer qué.</p>
+                </div>
+                <div class="what__stats anim">
+                    <div class="stat-card">
+                        <div class="stat-card__icon"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4L6 12v12l12 8 12-8V12L18 4z" opacity="0.3"/><path d="M18 14v8" class="svg-draw" style="--len:8"/><circle cx="18" cy="26" r="1.5" fill="currentColor" stroke="none" class="svg-pop"/></svg></div>
+                        <span class="stat-card__num">&lt;5s</span>
+                        <span class="stat-card__label">Procesamiento SPEI</span>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,28 12,18 18,22 26,10 32,8" class="svg-draw" style="--len:50"/><circle cx="32" cy="8" r="2" fill="currentColor" stroke="none" class="svg-pop"/></svg></div>
+                        <span class="stat-card__num">2+</span>
+                        <span class="stat-card__label">Procesadores conectados</span>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="4" width="28" height="28" rx="4" opacity="0.3"/><path d="M10 13h16M10 18h12M10 23h8" class="svg-draw" style="--len:36"/></svg></div>
+                        <span class="stat-card__num">28</span>
+                        <span class="stat-card__label">Permisos granulares</span>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="18" cy="18" r="14" opacity="0.3"/><path d="M18 8v10l6 4" class="svg-draw" style="--len:18"/></svg></div>
+                        <span class="stat-card__num">24/7</span>
+                        <span class="stat-card__label">Monitoreo activo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION ART: Data Flow Divider -->
+    <div class="section-art">
+        <svg viewBox="0 0 1200 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="divGrad1" x1="0" y1="50" x2="1200" y2="50">
+                    <stop stop-color="#ff8800" stop-opacity="0"/>
+                    <stop offset="0.2" stop-color="#ff8800" stop-opacity="0.4"/>
+                    <stop offset="0.5" stop-color="#ff5533"/>
+                    <stop offset="0.8" stop-color="#ff2f5f" stop-opacity="0.4"/>
+                    <stop offset="1" stop-color="#ff2f5f" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="divGrad2" x1="0" y1="50" x2="1200" y2="50">
+                    <stop stop-color="#ff8800" stop-opacity="0"/>
+                    <stop offset="0.3" stop-color="#ff8800" stop-opacity="0.2"/>
+                    <stop offset="0.7" stop-color="#ff2f5f" stop-opacity="0.2"/>
+                    <stop offset="1" stop-color="#ff2f5f" stop-opacity="0"/>
+                </linearGradient>
+            </defs>
+            <!-- Multiple parallel data flow lines -->
+            <path d="M0 30 Q300 30 600 50 Q900 70 1200 50" stroke="url(#divGrad1)" stroke-width="0.8" fill="none" class="svg-flow" style="stroke-dasharray:12 8"/>
+            <path d="M0 45 Q300 55 600 50 Q900 45 1200 55" stroke="url(#divGrad2)" stroke-width="0.6" fill="none" class="svg-flow" style="stroke-dasharray:6 10;animation-delay:-0.5s"/>
+            <path d="M0 60 Q300 50 600 55 Q900 60 1200 45" stroke="url(#divGrad1)" stroke-width="0.7" fill="none" class="svg-flow" style="stroke-dasharray:10 6;animation-delay:-1s"/>
+            <path d="M0 75 Q300 70 600 60 Q900 50 1200 65" stroke="url(#divGrad2)" stroke-width="0.5" fill="none" class="svg-flow" style="stroke-dasharray:4 12;animation-delay:-1.5s"/>
+            <!-- Transaction nodes along the path -->
+            <circle cx="200" cy="38" r="4" fill="#ff8800" opacity="0.3">
+                <animate attributeName="opacity" values="0.1;0.5;0.1" dur="3s" repeatCount="indefinite"/>
+                <animate attributeName="r" values="3;5;3" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="400" cy="48" r="3.5" fill="#ff6633" opacity="0.3">
+                <animate attributeName="opacity" values="0.1;0.5;0.1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+                <animate attributeName="r" values="2.5;4.5;2.5" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+            </circle>
+            <circle cx="600" cy="52" r="5" fill="#ff4444" opacity="0.3">
+                <animate attributeName="opacity" values="0.15;0.6;0.15" dur="3s" repeatCount="indefinite" begin="1s"/>
+                <animate attributeName="r" values="3.5;6;3.5" dur="3s" repeatCount="indefinite" begin="1s"/>
+            </circle>
+            <circle cx="800" cy="58" r="3.5" fill="#ff3355" opacity="0.3">
+                <animate attributeName="opacity" values="0.1;0.5;0.1" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+                <animate attributeName="r" values="2.5;4.5;2.5" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+            </circle>
+            <circle cx="1000" cy="52" r="4" fill="#ff2f5f" opacity="0.3">
+                <animate attributeName="opacity" values="0.1;0.5;0.1" dur="3s" repeatCount="indefinite" begin="2s"/>
+                <animate attributeName="r" values="3;5;3" dur="3s" repeatCount="indefinite" begin="2s"/>
+            </circle>
+            <!-- Traveling particles -->
+            <circle r="2" fill="#ff8800" opacity="0.6">
+                <animateMotion dur="4s" repeatCount="indefinite" path="M0 30 Q300 30 600 50 Q900 70 1200 50"/>
+            </circle>
+            <circle r="1.5" fill="#ff2f5f" opacity="0.5">
+                <animateMotion dur="5s" repeatCount="indefinite" path="M0 60 Q300 50 600 55 Q900 60 1200 45" begin="1s"/>
+            </circle>
+            <circle r="1.8" fill="#ff6633" opacity="0.5">
+                <animateMotion dur="4.5s" repeatCount="indefinite" path="M1200 55 Q900 45 600 50 Q300 55 0 45" begin="2s"/>
+            </circle>
+        </svg>
+    </div>
+
+    <!-- CAPABILITIES -->
+    <section class="capabilities" id="capabilities">
+        <div class="container">
+            <div class="section-head anim">
+                <span class="tag">Capacidades</span>
+                <h2 class="title-lg">Todo lo que necesitas<br><span class="grad-text">en un solo lugar</span></h2>
+            </div>
+
+            <div class="cap-grid">
+                <div class="cap-card anim">
+                    <div class="cap-card__icon">
+                        <svg viewBox="0 0 32 32" fill="none"><path d="M8 22l8-14 8 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="svg-draw" style="--len:40"/><path d="M4 28h24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg>
+                    </div>
+                    <h3>Recibe pagos</h3>
+                    <p>Recibe transferencias SPEI en tus cuentas CLABE propias. Cada depósito se detecta en tiempo real y se notifica automáticamente a tu sistema.</p>
+                    <div class="cap-card__tags"><span>SPEI IN</span><span>Webhook</span><span>Tiempo real</span></div>
+                </div>
+                <div class="cap-card anim">
+                    <div class="cap-card__icon">
+                        <svg viewBox="0 0 32 32" fill="none"><path d="M24 10l-8 14-8-14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="svg-draw" style="--len:40"/><path d="M4 4h24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg>
+                    </div>
+                    <h3>Envía pagos</h3>
+                    <p>Envía transferencias SPEI a cualquier cuenta bancaria en México. Con un sistema de cancelación de 8 segundos antes del envío definitivo.</p>
+                    <div class="cap-card__tags"><span>SPEI OUT</span><span>Grace period</span><span>CEP</span></div>
+                </div>
+                <div class="cap-card anim">
+                    <div class="cap-card__icon">
+                        <svg viewBox="0 0 32 32" fill="none"><rect x="6" y="6" width="20" height="20" rx="3" stroke="currentColor" stroke-width="1.5" opacity="0.6"/><path d="M12 12h8M12 17h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" class="svg-draw" style="--len:25"/></svg>
+                    </div>
+                    <h3>Cuentas CLABE</h3>
+                    <p>Crea y administra cuentas CLABE. Cuentas concentradoras, sub-cuentas, redirección automática de depósitos y acceso granular por usuario.</p>
+                    <div class="cap-card__tags"><span>18 dígitos</span><span>Sub-cuentas</span><span>Redirección</span></div>
+                </div>
+                <div class="cap-card anim">
+                    <div class="cap-card__icon">
+                        <svg viewBox="0 0 32 32" fill="none"><path d="M6 8h20v4H6zM6 14h20v4H6zM6 20h20v4H6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6" class="svg-draw" style="--len:80"/></svg>
+                    </div>
+                    <h3>Dispersiones masivas</h3>
+                    <p>Envía cientos de transferencias en un solo lote. Transferencias fraccionadas, multi-fuente y movimientos internos sin SPEI.</p>
+                    <div class="cap-card__tags"><span>Batch</span><span>Multi-fuente</span><span>Book transfer</span></div>
+                </div>
+                <div class="cap-card anim">
+                    <div class="cap-card__icon">
+                        <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="14" r="6" stroke="currentColor" stroke-width="1.5" opacity="0.6"/><path d="M8 26c0-4 3.5-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.5" class="svg-draw" style="--len:35"/></svg>
+                    </div>
+                    <h3>Nómina</h3>
+                    <p>Gestiona empleados, genera pagos por periodo y ejecuta la nómina como dispersiones SPEI automáticas. Con ejecución programada.</p>
+                    <div class="cap-card__tags"><span>Payroll</span><span>Automatizado</span><span>Por periodo</span></div>
+                </div>
+                <div class="cap-card anim">
+                    <div class="cap-card__icon">
+                        <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="10" stroke="currentColor" stroke-width="1.5" opacity="0.6"/><path d="M12 16h8M16 12v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" class="svg-draw" style="--len:20"/></svg>
+                    </div>
+                    <h3>Comisiones</h3>
+                    <p>Sistema de comisiones en cascada con cobro automático sobre depósitos. Liquidación real como SPEI, con verificación 2FA y reportes.</p>
+                    <div class="cap-card__tags"><span>Cascada</span><span>Auto-cobro</span><span>Liquidación</span></div>
+                </div>
+            </div>
+
+            <!-- Extra capabilities -->
+            <div class="cap-extras anim">
+                <div class="cap-extra">
+                    <h4>Multi-empresa</h4>
+                    <p>Cada empresa con sus propias cuentas, usuarios y configuración aislada.</p>
+                </div>
+                <div class="cap-extra">
+                    <h4>Reconciliación</h4>
+                    <p>Reportes de conciliación automáticos con detección de discrepancias.</p>
+                </div>
+                <div class="cap-extra">
+                    <h4>Historial completo</h4>
+                    <p>Filtrado avanzado, exportación a PDF y estados de cuenta.</p>
+                </div>
+                <div class="cap-extra">
+                    <h4>Roles y permisos</h4>
+                    <p>28 permisos granulares en 10 categorías. Control total de acceso.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION ART: Transaction Flow Diagram -->
+    <div class="section-art section-art--txflow">
+        <svg viewBox="0 0 1000 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="txGrad" x1="0" y1="100" x2="1000" y2="100">
+                    <stop stop-color="#ff8800"/>
+                    <stop offset="1" stop-color="#ff2f5f"/>
+                </linearGradient>
+                <linearGradient id="txGrad2" x1="0" y1="0" x2="0" y2="1">
+                    <stop stop-color="#ff8800" stop-opacity="0.15"/>
+                    <stop offset="1" stop-color="#ff8800" stop-opacity="0"/>
+                </linearGradient>
+                <!-- Animated motion paths -->
+                <path id="txFlowPath1" d="M100 90 L290 90"/>
+                <path id="txFlowPath2" d="M390 90 L540 90"/>
+                <path id="txFlowPath3" d="M640 90 Q700 90 740 55"/>
+                <path id="txFlowPath4" d="M640 90 L740 90"/>
+                <path id="txFlowPath5" d="M640 90 Q700 90 740 125"/>
+            </defs>
+
+            <!-- ── Stage 1: Bank / SPEI IN ── -->
+            <g>
+                <!-- Bank building icon -->
+                <rect x="40" y="55" width="100" height="70" rx="6" fill="rgba(255,136,0,0.03)" stroke="rgba(255,136,0,0.15)" stroke-width="0.8"/>
+                <path d="M90 55 L90 45 L60 55 M90 45 L120 55" stroke="#ff8800" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+                <!-- Bank columns -->
+                <line x1="60" y1="70" x2="60" y2="110" stroke="rgba(255,136,0,0.2)" stroke-width="2"/>
+                <line x1="75" y1="70" x2="75" y2="110" stroke="rgba(255,136,0,0.2)" stroke-width="2"/>
+                <line x1="90" y1="70" x2="90" y2="110" stroke="rgba(255,136,0,0.2)" stroke-width="2"/>
+                <line x1="105" y1="70" x2="105" y2="110" stroke="rgba(255,136,0,0.2)" stroke-width="2"/>
+                <line x1="120" y1="70" x2="120" y2="110" stroke="rgba(255,136,0,0.2)" stroke-width="2"/>
+                <!-- SPEI IN badge -->
+                <rect x="55" y="30" width="70" height="18" rx="4" fill="rgba(255,136,0,0.06)" stroke="rgba(255,136,0,0.15)" stroke-width="0.6"/>
+                <text x="90" y="42.5" font-family="JetBrains Mono, monospace" font-size="8" fill="#ff8800" text-anchor="middle" opacity="0.8">SPEI IN</text>
+                <!-- Incoming arrow -->
+                <path d="M140 90 L175 90" stroke="#ff8800" stroke-width="1.2" stroke-linecap="round" opacity="0.4" class="svg-flow"/>
+                <polygon points="175,86 183,90 175,94" fill="#ff8800" opacity="0.4"/>
+                <!-- Label -->
+                <text x="90" y="145" font-family="Inter, sans-serif" font-size="8" fill="rgba(255,136,0,0.4)" text-anchor="middle">Recepcion</text>
+            </g>
+
+            <!-- Flow line: Bank → NOVACORE -->
+            <line x1="183" y1="90" x2="280" y2="90" stroke="url(#txGrad)" stroke-width="0.8" class="svg-flow" opacity="0.35"/>
+            <!-- Traveling particles -->
+            <circle r="2.5" fill="#ff8800" opacity="0.7">
+                <animateMotion dur="2s" repeatCount="indefinite" path="M183 90 L280 90"/>
+            </circle>
+
+            <!-- ── Stage 2: NOVACORE Processing ── -->
+            <g>
+                <rect x="280" y="50" width="120" height="80" rx="10" fill="rgba(255,136,0,0.04)" stroke="url(#txGrad)" stroke-width="1" opacity="0.8"/>
+                <!-- Inner glow -->
+                <rect x="290" y="60" width="100" height="60" rx="6" fill="rgba(255,136,0,0.02)" stroke="rgba(255,136,0,0.06)" stroke-width="0.5"/>
+                <!-- Spinning indicator -->
+                <circle cx="340" cy="80" r="10" stroke="url(#txGrad)" stroke-width="1" fill="none" stroke-dasharray="20 43" opacity="0.6">
+                    <animateTransform attributeName="transform" type="rotate" values="0 340 80;360 340 80" dur="3s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="340" cy="80" r="4" fill="url(#txGrad)" opacity="0.3">
+                    <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <!-- NOVACORE label -->
+                <text x="340" y="108" font-family="JetBrains Mono, monospace" font-size="7" fill="#ff8800" text-anchor="middle" opacity="0.7" font-weight="600">NOVACORE</text>
+                <!-- Label below -->
+                <text x="340" y="150" font-family="Inter, sans-serif" font-size="8" fill="rgba(255,136,0,0.4)" text-anchor="middle">Procesamiento</text>
+            </g>
+
+            <!-- Flow line: NOVACORE → Ledger -->
+            <line x1="400" y1="90" x2="490" y2="90" stroke="url(#txGrad)" stroke-width="0.8" class="svg-flow" opacity="0.35"/>
+            <circle r="2" fill="#ff5533" opacity="0.6">
+                <animateMotion dur="1.8s" repeatCount="indefinite" path="M400 90 L490 90" begin="0.3s"/>
+            </circle>
+
+            <!-- ── Stage 3: Database / Ledger ── -->
+            <g>
+                <ellipse cx="540" cy="62" rx="40" ry="12" fill="rgba(255,136,0,0.03)" stroke="url(#txGrad)" stroke-width="0.8" opacity="0.6"/>
+                <path d="M500 62 L500 115 Q500 127 540 127 Q580 127 580 115 L580 62" stroke="url(#txGrad)" stroke-width="0.8" fill="rgba(255,136,0,0.02)" opacity="0.6"/>
+                <ellipse cx="540" cy="115" rx="40" ry="12" stroke="url(#txGrad)" stroke-width="0.5" fill="none" opacity="0.3"/>
+                <ellipse cx="540" cy="88" rx="40" ry="12" stroke="url(#txGrad)" stroke-width="0.3" fill="none" opacity="0.2"/>
+                <!-- Data rows -->
+                <line x1="515" y1="75" x2="565" y2="75" stroke="rgba(255,136,0,0.1)" stroke-width="0.4"/>
+                <line x1="515" y1="82" x2="560" y2="82" stroke="rgba(255,136,0,0.08)" stroke-width="0.4"/>
+                <line x1="515" y1="100" x2="565" y2="100" stroke="rgba(255,136,0,0.08)" stroke-width="0.4"/>
+                <line x1="515" y1="107" x2="555" y2="107" stroke="rgba(255,136,0,0.06)" stroke-width="0.4"/>
+                <!-- Label -->
+                <text x="540" y="155" font-family="Inter, sans-serif" font-size="8" fill="rgba(255,136,0,0.4)" text-anchor="middle">Registro</text>
+            </g>
+
+            <!-- Flow lines: Ledger → Multiple recipients (dispersions) -->
+            <line x1="580" y1="90" x2="660" y2="90" stroke="url(#txGrad)" stroke-width="0.8" class="svg-flow" opacity="0.3"/>
+            <!-- Branching arrows -->
+            <path d="M660 90 Q690 90 720 55" stroke="url(#txGrad)" stroke-width="0.7" fill="none" class="svg-flow" opacity="0.3"/>
+            <path d="M660 90 L720 90" stroke="url(#txGrad)" stroke-width="0.7" fill="none" class="svg-flow" style="animation-delay:-0.3s" opacity="0.3"/>
+            <path d="M660 90 Q690 90 720 125" stroke="url(#txGrad)" stroke-width="0.7" fill="none" class="svg-flow" style="animation-delay:-0.6s" opacity="0.3"/>
+            <!-- Label between -->
+            <text x="660" y="155" font-family="Inter, sans-serif" font-size="8" fill="rgba(255,47,95,0.4)" text-anchor="middle">Dispersion</text>
+
+            <!-- Particles on branching paths -->
+            <circle r="2" fill="#ff2f5f" opacity="0.6">
+                <animateMotion dur="1.5s" repeatCount="indefinite" path="M660 90 Q690 90 720 55"/>
+            </circle>
+            <circle r="2" fill="#ff4444" opacity="0.5">
+                <animateMotion dur="1.5s" repeatCount="indefinite" path="M660 90 L720 90" begin="0.4s"/>
+            </circle>
+            <circle r="2" fill="#ff2f5f" opacity="0.5">
+                <animateMotion dur="1.5s" repeatCount="indefinite" path="M660 90 Q690 90 720 125" begin="0.8s"/>
+            </circle>
+
+            <!-- ── Stage 5: Recipient icons ── -->
+            <!-- Recipient 1 (top) -->
+            <g>
+                <rect x="740" y="30" width="80" height="50" rx="6" fill="rgba(255,47,95,0.03)" stroke="rgba(255,47,95,0.12)" stroke-width="0.7"/>
+                <circle cx="770" cy="48" r="8" stroke="rgba(255,47,95,0.2)" stroke-width="0.7" fill="none"/>
+                <path d="M766 48 L770 52 L777 44" stroke="#ff2f5f" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                <text x="770" y="20" font-family="JetBrains Mono, monospace" font-size="6.5" fill="#ff2f5f" opacity="0.5" text-anchor="middle">SPEI OUT</text>
+                <text x="800" y="51" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,47,95,0.4)">Emp.</text>
+            </g>
+            <!-- Recipient 2 (middle) -->
+            <g>
+                <rect x="740" y="65" width="80" height="50" rx="6" fill="rgba(255,47,95,0.03)" stroke="rgba(255,47,95,0.12)" stroke-width="0.7"/>
+                <circle cx="770" cy="83" r="8" stroke="rgba(255,47,95,0.2)" stroke-width="0.7" fill="none"/>
+                <path d="M766 83 L770 87 L777 79" stroke="#ff2f5f" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                <text x="800" y="86" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,47,95,0.4)">Prov.</text>
+            </g>
+            <!-- Recipient 3 (bottom) -->
+            <g>
+                <rect x="740" y="100" width="80" height="50" rx="6" fill="rgba(255,47,95,0.03)" stroke="rgba(255,47,95,0.12)" stroke-width="0.7"/>
+                <circle cx="770" cy="118" r="8" stroke="rgba(255,47,95,0.2)" stroke-width="0.7" fill="none"/>
+                <path d="M766 118 L770 122 L777 114" stroke="#ff2f5f" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                <text x="770" y="163" font-family="JetBrains Mono, monospace" font-size="6.5" fill="#ff2f5f" opacity="0.5" text-anchor="middle">SPEI OUT</text>
+                <text x="800" y="121" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,47,95,0.4)">Nom.</text>
+            </g>
+
+            <!-- Final summary labels -->
+            <text x="780" y="178" font-family="Inter, sans-serif" font-size="8" fill="rgba(255,47,95,0.4)" text-anchor="middle">Beneficiarios</text>
+
+            <!-- Decorative brackets -->
+            <path d="M835 35 Q845 35 845 55 L845 140 Q845 155 835 155" stroke="rgba(255,47,95,0.1)" stroke-width="0.6" fill="none"/>
+            <text x="860" y="100" font-family="JetBrains Mono, monospace" font-size="6" fill="rgba(255,47,95,0.25)" transform="rotate(90 860 100)">n pagos</text>
+        </svg>
+    </div>
+
+    <!-- API -->
+    <section class="api" id="api">
+        <div class="container">
+            <div class="api__grid anim">
+                <div class="api__content">
+                    <span class="tag">Para desarrolladores</span>
+                    <h2 class="title-lg">API de <span class="grad-text">Payouts</span></h2>
+                    <p>Integra dispersiones SPEI directamente desde tu sistema. Envía instrucciones de pago, consulta el estado y recibe callbacks cuando se completen.</p>
+                    <div class="api__endpoints">
+                        <div class="api__endpoint">
+                            <span class="api__method">POST</span>
+                            <code>/api/v1/payouts</code>
+                        </div>
+                        <div class="api__endpoint">
+                            <span class="api__method api__method--get">GET</span>
+                            <code>/api/v1/payouts/{id}</code>
+                        </div>
+                    </div>
+                    <ul class="api__features">
+                        <li>Autenticación por Bearer token</li>
+                        <li>Idempotencia por externalId</li>
+                        <li>Callbacks con reintentos automáticos</li>
+                        <li>Procesamiento inmediato</li>
+                    </ul>
+                </div>
+                <div class="api__code">
+                    <!-- API Request/Response Flow Illustration -->
+                    <div class="api__illustration">
+                        <svg viewBox="0 0 520 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="apiGrad" x1="0" y1="80" x2="520" y2="80">
+                                    <stop stop-color="#ff8800"/>
+                                    <stop offset="1" stop-color="#ff2f5f"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Terminal mockup (left side) -->
+                            <g>
+                                <rect x="10" y="15" width="180" height="120" rx="8" fill="rgba(0,0,0,0.5)" stroke="rgba(255,136,0,0.12)" stroke-width="0.8"/>
+                                <!-- Terminal header bar -->
+                                <rect x="10" y="15" width="180" height="22" rx="8" fill="rgba(255,255,255,0.02)"/>
+                                <rect x="10" y="30" width="180" height="7" fill="rgba(255,255,255,0.02)"/>
+                                <circle cx="24" cy="26" r="3" fill="#ff5f57" opacity="0.5"/>
+                                <circle cx="34" cy="26" r="3" fill="#ffbd2e" opacity="0.5"/>
+                                <circle cx="44" cy="26" r="3" fill="#28ca42" opacity="0.5"/>
+                                <text x="100" y="28" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,255,255,0.2)" text-anchor="middle">terminal</text>
+                                <!-- Terminal content: curl command -->
+                                <text x="18" y="50" font-family="JetBrains Mono, monospace" font-size="5.5" fill="#28ca42" opacity="0.7">$</text>
+                                <text x="26" y="50" font-family="JetBrains Mono, monospace" font-size="5.5" fill="rgba(255,255,255,0.5)">curl -X POST</text>
+                                <text x="22" y="60" font-family="JetBrains Mono, monospace" font-size="5" fill="#ff8800" opacity="0.5">/api/v1/payouts</text>
+                                <text x="22" y="70" font-family="JetBrains Mono, monospace" font-size="4.5" fill="rgba(255,255,255,0.25)">-H "Authorization:"</text>
+                                <text x="22" y="80" font-family="JetBrains Mono, monospace" font-size="4.5" fill="rgba(255,255,255,0.25)">-d '{"amount":15000}'</text>
+                                <!-- Sending indicator -->
+                                <text x="22" y="98" font-family="JetBrains Mono, monospace" font-size="5" fill="#ff8800" opacity="0.6">Sending...</text>
+                                <rect x="22" y="103" width="40" height="2" rx="1" fill="rgba(255,136,0,0.1)"/>
+                                <rect x="22" y="103" width="25" height="2" rx="1" fill="url(#apiGrad)" opacity="0.5">
+                                    <animate attributeName="width" values="5;40;5" dur="2s" repeatCount="indefinite"/>
+                                </rect>
+                            </g>
+
+                            <!-- Arrow: Request flowing -->
+                            <g>
+                                <path d="M200 75 L310 75" stroke="url(#apiGrad)" stroke-width="1" class="svg-flow" opacity="0.4"/>
+                                <polygon points="310,72 316,75 310,78" fill="#ff8800" opacity="0.4"/>
+                                <text x="255" y="68" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,136,0,0.4)" text-anchor="middle">POST</text>
+                                <!-- Traveling particle -->
+                                <circle r="2.5" fill="#ff8800" opacity="0.6">
+                                    <animateMotion dur="1.5s" repeatCount="indefinite" path="M200 75 L310 75"/>
+                                </circle>
+                            </g>
+
+                            <!-- Response card (right side) -->
+                            <g>
+                                <rect x="320" y="15" width="190" height="120" rx="8" fill="rgba(0,0,0,0.4)" stroke="rgba(40,202,66,0.15)" stroke-width="0.8"/>
+                                <!-- Header -->
+                                <rect x="320" y="15" width="190" height="22" rx="8" fill="rgba(40,202,66,0.03)"/>
+                                <rect x="320" y="30" width="190" height="7" fill="rgba(40,202,66,0.03)"/>
+                                <!-- Green checkmark -->
+                                <circle cx="336" cy="26" r="5" fill="rgba(40,202,66,0.15)" stroke="rgba(40,202,66,0.3)" stroke-width="0.5"/>
+                                <path d="M333 26 L335 28.5 L340 23.5" stroke="#28ca42" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+                                <text x="350" y="28" font-family="JetBrains Mono, monospace" font-size="5.5" fill="rgba(40,202,66,0.6)">200 OK</text>
+                                <text x="490" y="28" font-family="JetBrains Mono, monospace" font-size="4.5" fill="rgba(255,255,255,0.15)">0.23s</text>
+                                <!-- JSON response body -->
+                                <text x="330" y="50" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,255,255,0.2)">{</text>
+                                <text x="338" y="60" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,136,0,0.4)">"id"</text>
+                                <text x="355" y="60" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,255,255,0.15)">:</text>
+                                <text x="362" y="60" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(40,202,66,0.5)">"NP-a1b2c3d4"</text>
+                                <text x="338" y="71" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,136,0,0.4)">"status"</text>
+                                <text x="375" y="71" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,255,255,0.15)">:</text>
+                                <text x="382" y="71" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(40,202,66,0.5)">"processing"</text>
+                                <text x="338" y="82" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,136,0,0.4)">"tracking"</text>
+                                <text x="381" y="82" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,255,255,0.15)">:</text>
+                                <text x="388" y="82" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(40,202,66,0.5)">"NC2026..."</text>
+                                <text x="338" y="93" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,136,0,0.4)">"amount"</text>
+                                <text x="375" y="93" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,255,255,0.15)">:</text>
+                                <text x="382" y="93" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,255,255,0.35)">15000.00</text>
+                                <text x="330" y="103" font-family="JetBrains Mono, monospace" font-size="5" fill="rgba(255,255,255,0.2)">}</text>
+
+                                <!-- Callback arrow (below response) -->
+                                <path d="M415 120 L415 140 L250 140 L250 130" stroke="rgba(255,47,95,0.2)" stroke-width="0.7" fill="none" stroke-dasharray="4 4"/>
+                                <polygon points="247,130 250,124 253,130" fill="rgba(255,47,95,0.2)"/>
+                                <text x="340" y="148" font-family="JetBrains Mono, monospace" font-size="4.5" fill="rgba(255,47,95,0.3)" text-anchor="middle">webhook callback</text>
+                            </g>
+
+                            <!-- Response arrow back -->
+                            <g>
+                                <path d="M310 90 L200 90" stroke="rgba(40,202,66,0.2)" stroke-width="0.7" stroke-dasharray="4 4"/>
+                                <polygon points="200,87 194,90 200,93" fill="rgba(40,202,66,0.25)"/>
+                                <circle r="2" fill="#28ca42" opacity="0.4">
+                                    <animateMotion dur="1.8s" repeatCount="indefinite" path="M310 90 L200 90" begin="0.5s"/>
+                                </circle>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-block__header">
+                            <span class="code-block__dot"></span>
+                            <span class="code-block__dot"></span>
+                            <span class="code-block__dot"></span>
+                            <span class="code-block__title">payout.sh</span>
+                        </div>
+                        <pre class="code-block__body"><code>curl -X POST /api/v1/payouts \
+  -H "Authorization: Bearer tk_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "externalId": "PAY-20260209-001",
+    "clabe": "012180001234567890",
+    "amount": 15000.00,
+    "beneficiary": "Juan Pérez",
+    "concept": "Pago de servicio",
+    "callback": "https://tu-sistema.com/webhook"
+  }'
+
+# Response:
+{
+  "id": "NP-a1b2c3d4",
+  "status": "processing",
+  "trackingKey": "NC20260209..."
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECURITY -->
+    <section class="sec" id="security">
+        <div class="container">
+            <div class="section-head anim">
+                <span class="tag">Seguridad</span>
+                <h2 class="title-lg">Protección de<br><span class="grad-text">grado financiero</span></h2>
+                <p class="subtitle">Construido con los mismos estándares que usan los bancos. Cada operación está protegida, verificada y auditada.</p>
+            </div>
+            <div class="sec-grid">
+                <div class="sec-card anim">
+                    <div class="sec-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="10" width="20" height="14" rx="3"/><circle cx="14" cy="17" r="2" fill="currentColor" stroke="none" class="svg-pop"/><path d="M8 10V7a6 6 0 0112 0v3" opacity="0.4"/></svg></div>
+                    <h4>Autenticación 2FA</h4>
+                    <p>Código TOTP requerido para todas las operaciones sensibles: transferencias, liquidación de comisiones y cambios de configuración.</p>
+                </div>
+                <div class="sec-card anim">
+                    <div class="sec-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 22c4-2 6-8 8-8s2 4 4 4 4-6 8-8" class="svg-draw" style="--len:40"/><path d="M4 24h20" opacity="0.4"/></svg></div>
+                    <h4>Firmas digitales</h4>
+                    <p>Validación RSA-SHA256 en cada webhook y transacción. IP whitelist para endpoints críticos.</p>
+                </div>
+                <div class="sec-card anim">
+                    <div class="sec-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h12l4 4v16a2 2 0 01-2 2H6a2 2 0 01-2-2V8l4-4z" class="svg-draw" style="--len:70"/><path d="M10 14l3 3 5-5"/></svg></div>
+                    <h4>Operaciones atómicas</h4>
+                    <p>Validación de saldo y creación de transacción en una sola operación de base de datos. Sin doble-gasto, sin duplicados.</p>
+                </div>
+                <div class="sec-card anim">
+                    <div class="sec-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="14" cy="12" r="8" opacity="0.3"/><circle cx="14" cy="12" r="3" class="svg-draw" style="--len:19"/><path d="M14 20v6" opacity="0.4"/><path d="M10 26h8"/></svg></div>
+                    <h4>Auditoría completa</h4>
+                    <p>Log de todas las operaciones con geolocalización, dispositivo e IP. Historial inmutable de cada acción.</p>
+                </div>
+                <div class="sec-card anim">
+                    <div class="sec-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14 4L4 9v6c0 7 4.5 12 10 14 5.5-2 10-7 10-14V9L14 4z" class="svg-draw" style="--len:60"/><path d="M14 12v4M14 18v1" opacity="0.5"/></svg></div>
+                    <h4>Cifrado y protección</h4>
+                    <p>Cookies httpOnly, tokens CSRF, bcrypt con 12 rounds, queries parametrizadas y comparaciones timing-safe.</p>
+                </div>
+                <div class="sec-card anim">
+                    <div class="sec-card__icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="4" width="20" height="20" rx="3" opacity="0.3"/><path d="M8 10h12M8 14h10M8 18h6" class="svg-draw" style="--len:30"/></svg></div>
+                    <h4>Política de acceso</h4>
+                    <p>Bloqueo automático tras 5 intentos fallidos. Contraseñas de 12+ caracteres. Invalidación de sesiones al cambiar password.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="contact">
+        <div class="container">
+            <div class="cta__box anim">
+                <div class="cta__orb"></div>
+                <h2 class="title-lg">¿Tu empresa necesita<br><span class="grad-text">procesar pagos SPEI?</span></h2>
+                <p class="subtitle">Cuéntanos tu caso de uso y te mostramos cómo NOVACORE puede integrarse a tu operación.</p>
+                <div class="cta__btns">
+                    <a href="https://wa.me/5215512345678" class="btn btn--primary btn--lg" target="_blank" rel="noopener">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        <span>Solicitar acceso</span>
+                    </a>
+                    <a href="mailto:novacore@novacoin.mx" class="btn btn--glass btn--lg">novacore@novacoin.mx</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <a href="../novacoin/" class="nav__logo">
+                        <div class="nav__logo-hex"><svg viewBox="0 0 40 40" fill="none"><path d="M20 4L34 12V28L20 36L6 28V12L20 4Z" stroke="url(#lg2)" stroke-width="1.5" fill="none"/><path d="M15 17L20 13L25 17V23L20 27L15 23Z" fill="url(#lg2)"/><defs><linearGradient id="lg2" x1="6" y1="4" x2="34" y2="36"><stop stop-color="#ff8800"/><stop offset="1" stop-color="#ff2f5f"/></linearGradient></defs></svg></div>
+                        <span>NovaCoin</span>
+                    </a>
+                    <p>NOVACORE — Infraestructura bancaria SPEI para empresas en México.</p>
+                </div>
+                <div class="footer__col">
+                    <h4>NovaCoin</h4>
+                    <a href="../novacoin/">Inicio</a>
+                    <a href="../rfq/">Exchange</a>
+                    <a href="../novapay/">NovaPay</a>
+                </div>
+                <div class="footer__col">
+                    <h4>NOVACORE</h4>
+                    <a href="#capabilities">Capacidades</a>
+                    <a href="#api">API</a>
+                    <a href="#contact">Contacto</a>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 NovaCoin. Todos los derechos reservados.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
