@@ -441,7 +441,7 @@ button { background: none; border: none; cursor: pointer; font-family: inherit; 
     .hero__inner { flex-direction: column; text-align: center; }
     .hero__content { text-align: center; }
     .hero__sub { margin-left: auto; margin-right: auto; }
-    .hero__illustration { flex: 0 0 auto; max-width: 340px; }
+    .hero__illustration { flex: 0 0 auto; max-width: 340px; width: 100%; margin: 0 auto; }
     .hero__actions { justify-content: center; }
     .section-art--bridge svg { max-height: 140px; }
     .about__grid { grid-template-columns: 1fr; }
@@ -499,7 +499,7 @@ button { background: none; border: none; cursor: pointer; font-family: inherit; 
     .hero__title { font-size: clamp(1.8rem,7vw,2.8rem); margin-bottom: 16px; }
     .hero__title br { display: none; }
     .hero__sub { font-size: 0.9rem; margin-bottom: 28px; line-height: 1.7; }
-    .hero__illustration { max-width: 250px; margin: 0 auto; }
+    .hero__illustration { flex: 0 0 auto; max-width: 260px; width: 100%; margin: 0 auto; }
     .hero__mouse { display: none; }
     .hero__orb--1 { width: 280px; height: 280px; }
     .hero__orb--2 { width: 220px; height: 220px; }
