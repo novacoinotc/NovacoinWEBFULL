@@ -19,6 +19,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
     document.querySelectorAll('.anim').forEach(el => obs.observe(el));
 
+    // --- Web3 Animation Enhancements ---
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+        // Staggered card reveal
+        document.querySelectorAll('.steps, .adv-grid, .pro-grid, .crypto-grid').forEach(grid => {
+            const gridObs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        const cards = e.target.children;
+                        Array.from(cards).forEach((card, i) => {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(30px)';
+                            setTimeout(() => {
+                                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, i * 120);
+                        });
+                        gridObs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            gridObs.observe(grid);
+        });
+
+        // Parallax on hero orbs (desktop only)
+        if (window.innerWidth > 768) {
+            const orbs = document.querySelectorAll('.hero__orb--1, .hero__orb--2');
+            if (orbs.length) {
+                document.addEventListener('mousemove', e => {
+                    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+                    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+                    orbs.forEach((orb, i) => {
+                        const factor = i === 0 ? 1 : -0.7;
+                        orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+                    });
+                }, { passive: true });
+            }
+        }
+    }
+
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(a => {
         a.addEventListener('click', e => {

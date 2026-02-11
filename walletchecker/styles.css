@@ -24,8 +24,8 @@
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-body { font-family: var(--font); background: var(--bg); color: var(--t2); line-height: 1.7; overflow-x: hidden; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body { font-family: var(--font); background: var(--bg); color: var(--t2); line-height: 1.7; overflow-x: hidden; -webkit-text-size-adjust: 100%; }
 ::selection { background: rgba(34,197,94,0.15); color: var(--t1); }
 a { color: inherit; text-decoration: none; }
 img, svg { display: block; max-width: 100%; }
@@ -238,6 +238,73 @@ button { background: none; border: none; cursor: pointer; font-family: inherit; 
 .step__icon { width: 40px; height: 40px; color: var(--green, #22c55e); margin-bottom: 8px; animation: iconFloat 4s ease-in-out infinite; }
 .step__icon svg { width: 100%; height: 100%; }
 
+/* ═══════════════════════════════════════════════ */
+/* WEB3 / FUTURISTIC ENHANCEMENTS                 */
+/* ═══════════════════════════════════════════════ */
+
+/* ── Animated gradient text ── */
+.grad-text {
+    background-size: 200% 100%;
+    animation: gradientFlow 4s linear infinite;
+}
+@keyframes gradientFlow {
+    0% { background-position: 0% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* ── Card hover glow effects ── */
+.cap-card:hover,
+.who-card:hover {
+    border-color: rgba(34,197,94,0.3);
+    box-shadow: 0 0 30px rgba(34,197,94,0.08), 0 8px 32px rgba(0,0,0,0.3);
+}
+
+/* ── Button shimmer effect ── */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s ease;
+}
+.btn:hover::before {
+    left: 100%;
+}
+
+/* ── Smooth card transitions ── */
+.cap-card,
+.who-card,
+[class*="-card"] {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* ── GPU acceleration for animated elements ── */
+.hero__illustration,
+.section-art svg,
+.hero__orb--1,
+.hero__orb--2 {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* ── Accessibility: reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
 /* ── RESPONSIVE ── */
 
 /* --- Tablet landscape / small desktop (<=1024px) --- */
@@ -289,10 +356,14 @@ button { background: none; border: none; cursor: pointer; font-family: inherit; 
 
     /* Hero */
     .hero { padding: 100px 16px 60px; min-height: auto; }
-    .hero__illustration { max-width: 250px; margin: 0 auto; }
+    .hero__inner { gap: 32px; padding: 0 4px; }
+    .hero__illustration { max-width: 260px; margin: 0 auto; }
     .hero__title { font-size: clamp(1.8rem,6vw,2.6rem); }
     .hero__sub { font-size: 0.95rem; }
+    .hero__badge { font-size: 0.68rem; padding: 6px 14px; margin-bottom: 20px; }
     .hero__mouse { display: none; }
+    .hero__orb--1 { width: 280px; height: 280px; }
+    .hero__orb--2 { width: 220px; height: 220px; }
 
     /* Section art & dividers */
     .section-art--analysis { display: none; }
@@ -333,6 +404,14 @@ button { background: none; border: none; cursor: pointer; font-family: inherit; 
     .footer__top { grid-template-columns: 1fr; gap: 28px; }
     .footer__bottom { flex-direction: column; gap: 12px; text-align: center; }
     .footer__brand p { max-width: 100%; }
+    .footer__col a { padding: 5px 0; min-height: 44px; display: flex; align-items: center; }
+    .footer__social a {
+        min-width: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
 
     /* Typography adjustments */
     .title-lg { font-size: clamp(1.7rem,5vw,2.4rem); }
@@ -350,8 +429,9 @@ button { background: none; border: none; cursor: pointer; font-family: inherit; 
 /* --- Small phone (<=480px) --- */
 @media (max-width: 480px) {
     /* Hero – hide illustration, full-width buttons */
-    .hero__illustration { display: none; }
+    .hero__illustration { max-width: 200px; opacity: 0.85; }
     .hero { padding: 90px 14px 48px; }
+    .hero__inner { padding: 0; }
     .hero__title { font-size: clamp(1.6rem,7vw,2.2rem); }
     .hero__badge { font-size: 0.65rem; padding: 6px 14px; margin-bottom: 20px; }
     .hero__sub { font-size: 0.9rem; margin-bottom: 28px; }

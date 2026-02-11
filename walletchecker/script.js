@@ -18,6 +18,78 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
     document.querySelectorAll('.anim').forEach(el => obs.observe(el));
 
+    // --- Web3 Animation Enhancements ---
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+        // Staggered card reveal
+        document.querySelectorAll('.steps, .cap-grid, .who-grid').forEach(grid => {
+            const gridObs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        const cards = e.target.children;
+                        Array.from(cards).forEach((card, i) => {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(30px)';
+                            setTimeout(() => {
+                                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, i * 120);
+                        });
+                        gridObs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            gridObs.observe(grid);
+        });
+
+        // Animated counters for stats
+        document.querySelectorAll('.stats__num').forEach(el => {
+            const countObs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        const text = e.target.textContent;
+                        const match = text.match(/([\d,]+)/);
+                        if (match) {
+                            const target = parseInt(match[1].replace(/,/g, ''));
+                            const suffix = text.substring(text.indexOf(match[1]) + match[1].length);
+                            const prefix = text.substring(0, text.indexOf(match[1]));
+                            let current = 0;
+                            const duration = 2000;
+                            const step = target / (duration / 16);
+                            const timer = setInterval(() => {
+                                current += step;
+                                if (current >= target) {
+                                    current = target;
+                                    clearInterval(timer);
+                                }
+                                e.target.textContent = prefix + Math.floor(current).toLocaleString() + suffix;
+                            }, 16);
+                        }
+                        countObs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            countObs.observe(el);
+        });
+
+        // Parallax on hero orbs (desktop only)
+        if (window.innerWidth > 768) {
+            const orbs = document.querySelectorAll('.hero__orb--1, .hero__orb--2');
+            if (orbs.length) {
+                document.addEventListener('mousemove', e => {
+                    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+                    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+                    orbs.forEach((orb, i) => {
+                        const factor = i === 0 ? 1 : -0.7;
+                        orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+                    });
+                }, { passive: true });
+            }
+        }
+    }
+
     document.querySelectorAll('a[href^="#"]').forEach(a => {
         a.addEventListener('click', e => {
             const t = document.querySelector(a.getAttribute('href'));
