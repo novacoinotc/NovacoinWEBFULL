@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding — NovaCoin</title>
+    <meta name="description" content="Realiza tu onboarding en NovaCoin. Abre tu cuenta en Novacore, RFQ o NovaPay: verificación de identidad rápida y segura.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav class="nav" id="nav">
+        <div class="nav__container">
+            <a href="../novacoin/" class="nav__logo">
+                <div class="nav__logo-hex">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <path d="M20 4L34 12V28L20 36L6 28V12L20 4Z" stroke="url(#lg)" stroke-width="1.5" fill="none"/>
+                        <path d="M15 17L20 13L25 17V23L20 27L15 23Z" fill="url(#lg)"/>
+                        <defs><linearGradient id="lg" x1="6" y1="4" x2="34" y2="36"><stop stop-color="#00d4ff"/><stop offset="1" stop-color="#7b2ff7"/></linearGradient></defs>
+                    </svg>
+                </div>
+                <span>NovaCoin <span class="nav__logo-sub">| Onboarding</span></span>
+            </a>
+            <div class="nav__links" id="navLinks">
+                <a href="../novacoin/" class="nav__link">Inicio</a>
+                <a href="../rfq/" class="nav__link">RFQ</a>
+                <a href="../walletchecker/" class="nav__link">Wallet Checker</a>
+                <a href="../novapay/" class="nav__link">NovaPay</a>
+                <a href="../novacore/" class="nav__link">Novacore</a>
+                <a href="#contact" class="nav__link">Contacto</a>
+            </div>
+            <a href="#wizard" class="nav__cta">Comenzar</a>
+            <button class="nav__toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero hero--compact" id="hero">
+        <div class="hero__bg">
+            <div class="hero__orb hero__orb--1"></div>
+            <div class="hero__orb hero__orb--2"></div>
+        </div>
+        <div class="container">
+            <div class="hero__content">
+                <div class="hero__badge anim">
+                    <span class="hero__badge-dot"></span>
+                    Verificación de identidad segura
+                </div>
+                <h1 class="hero__title anim">Realiza tu onboarding<br><span class="grad-text">en minutos</span></h1>
+                <p class="hero__sub anim">Elige la plataforma que necesitas, completa tus datos y sube tus documentos. Nuestro motor de verificación valida tu información en tiempo real.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- WIZARD -->
+    <section class="onb" id="wizard">
+        <div class="container container--narrow">
+
+            <!-- Progress -->
+            <div class="onb__progress anim" id="onbProgress" aria-hidden="false">
+                <div class="onb__progress-bar"><div class="onb__progress-fill" id="progressFill"></div></div>
+                <div class="onb__progress-steps" id="progressSteps"></div>
+            </div>
+
+            <form class="onb__card anim" id="onbForm" novalidate>
+
+                <!-- PASO 0: Plataforma -->
+                <fieldset class="onb-step" data-step="0" data-title="Plataforma">
+                    <legend class="onb-step__title">¿Para qué plataforma quieres abrir tu cuenta?</legend>
+                    <p class="onb-step__sub">Puedes elegir una — si necesitas más de una, contáctanos al terminar.</p>
+                    <div class="platform-grid" role="radiogroup" aria-label="Plataforma">
+                        <label class="platform-card" data-testid="platform-novacore">
+                            <input type="radio" name="platform" value="novacore" required>
+                            <div class="platform-card__inner platform-card__inner--core">
+                                <span class="platform-card__label">Infraestructura</span>
+                                <h3>Novacore</h3>
+                                <p>Core bancario SPEI: cuentas CLABE, dispersiones masivas y nómina para empresas.</p>
+                            </div>
+                        </label>
+                        <label class="platform-card" data-testid="platform-rfq">
+                            <input type="radio" name="platform" value="rfq" required>
+                            <div class="platform-card__inner platform-card__inner--rfq">
+                                <span class="platform-card__label">Exchange</span>
+                                <h3>RFQ</h3>
+                                <p>Compra y venta de criptomonedas en pesos mexicanos vía SPEI.</p>
+                            </div>
+                        </label>
+                        <label class="platform-card" data-testid="platform-novapay">
+                            <input type="radio" name="platform" value="novapay" required>
+                            <div class="platform-card__inner platform-card__inner--pay">
+                                <span class="platform-card__label">Pagos</span>
+                                <h3>NovaPay</h3>
+                                <p>Acepta pagos con crypto en tu negocio y recibe pesos mexicanos.</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="field-error" data-error-for="platform"></div>
+                </fieldset>
+
+                <!-- PASO 1: Datos generales -->
+                <fieldset class="onb-step" data-step="1" data-title="Datos generales" hidden>
+                    <legend class="onb-step__title">Datos generales</legend>
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="personType">Tipo de persona</label>
+                            <select id="personType" name="personType" required data-testid="person-type">
+                                <option value="fisica" selected>Persona física</option>
+                                <option value="moral">Persona moral (empresa)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="moralFields" hidden>
+                        <div class="field-row">
+                            <div class="field">
+                                <label for="razonSocial">Razón social</label>
+                                <input type="text" id="razonSocial" name="razonSocial" placeholder="Mi Empresa S.A. de C.V." data-testid="razon-social">
+                                <div class="field-error" data-error-for="razonSocial"></div>
+                            </div>
+                        </div>
+                        <p class="field-note">Los siguientes datos corresponden al <strong>representante legal</strong>.</p>
+                    </div>
+                    <div class="field-row field-row--2">
+                        <div class="field">
+                            <label for="nombre">Nombre(s)</label>
+                            <input type="text" id="nombre" name="nombre" required autocomplete="given-name" placeholder="Juan Carlos" data-testid="nombre">
+                            <div class="field-error" data-error-for="nombre"></div>
+                        </div>
+                        <div class="field">
+                            <label for="apellidoPaterno">Apellido paterno</label>
+                            <input type="text" id="apellidoPaterno" name="apellidoPaterno" required autocomplete="family-name" placeholder="Pérez" data-testid="apellido-paterno">
+                            <div class="field-error" data-error-for="apellidoPaterno"></div>
+                        </div>
+                    </div>
+                    <div class="field-row field-row--2">
+                        <div class="field">
+                            <label for="apellidoMaterno">Apellido materno</label>
+                            <input type="text" id="apellidoMaterno" name="apellidoMaterno" autocomplete="additional-name" placeholder="García" data-testid="apellido-materno">
+                            <div class="field-error" data-error-for="apellidoMaterno"></div>
+                        </div>
+                        <div class="field">
+                            <label for="fechaNacimiento">Fecha de nacimiento</label>
+                            <input type="date" id="fechaNacimiento" name="fechaNacimiento" required data-testid="fecha-nacimiento">
+                            <div class="field-error" data-error-for="fechaNacimiento"></div>
+                        </div>
+                    </div>
+                    <div class="field-row field-row--2">
+                        <div class="field">
+                            <label for="nacionalidad">Nacionalidad</label>
+                            <select id="nacionalidad" name="nacionalidad" required>
+                                <option value="MX" selected>Mexicana</option>
+                                <option value="OTRA">Otra</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="ocupacion">Ocupación / actividad económica</label>
+                            <input type="text" id="ocupacion" name="ocupacion" required placeholder="Comerciante, empleado, empresario…" data-testid="ocupacion">
+                            <div class="field-error" data-error-for="ocupacion"></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- PASO 2: Contacto -->
+                <fieldset class="onb-step" data-step="2" data-title="Contacto" hidden>
+                    <legend class="onb-step__title">Datos de contacto</legend>
+                    <div class="field-row field-row--2">
+                        <div class="field">
+                            <label for="telefono">Teléfono celular (10 dígitos)</label>
+                            <input type="tel" id="telefono" name="telefono" required inputmode="numeric" autocomplete="tel" placeholder="33 1234 5678" data-testid="telefono">
+                            <div class="field-error" data-error-for="telefono"></div>
+                        </div>
+                        <div class="field">
+                            <label for="correo">Correo electrónico</label>
+                            <input type="email" id="correo" name="correo" required autocomplete="email" placeholder="tucorreo@ejemplo.com" data-testid="correo">
+                            <div class="field-error" data-error-for="correo"></div>
+                            <div class="field-hint" id="emailSuggestion" hidden></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- PASO 3: Domicilio -->
+                <fieldset class="onb-step" data-step="3" data-title="Domicilio" hidden>
+                    <legend class="onb-step__title">Domicilio</legend>
+                    <div class="field-row field-row--2">
+                        <div class="field field--grow">
+                            <label for="calle">Calle</label>
+                            <input type="text" id="calle" name="calle" required autocomplete="address-line1" placeholder="Av. Revolución" data-testid="calle">
+                            <div class="field-error" data-error-for="calle"></div>
+                        </div>
+                        <div class="field field--sm">
+                            <label for="numExt">Núm. ext. / int.</label>
+                            <input type="text" id="numExt" name="numExt" required placeholder="123-A" data-testid="num-ext">
+                            <div class="field-error" data-error-for="numExt"></div>
+                        </div>
+                    </div>
+                    <div class="field-row field-row--2">
+                        <div class="field">
+                            <label for="colonia">Colonia</label>
+                            <input type="text" id="colonia" name="colonia" required placeholder="Centro" data-testid="colonia">
+                            <div class="field-error" data-error-for="colonia"></div>
+                        </div>
+                        <div class="field field--sm">
+                            <label for="cp">Código postal</label>
+                            <input type="text" id="cp" name="cp" required inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="44100" data-testid="cp">
+                            <div class="field-error" data-error-for="cp"></div>
+                        </div>
+                    </div>
+                    <div class="field-row field-row--2">
+                        <div class="field">
+                            <label for="ciudad">Ciudad / municipio</label>
+                            <input type="text" id="ciudad" name="ciudad" required placeholder="Guadalajara" data-testid="ciudad">
+                            <div class="field-error" data-error-for="ciudad"></div>
+                        </div>
+                        <div class="field">
+                            <label for="estado">Estado</label>
+                            <select id="estado" name="estado" required data-testid="estado">
+                                <option value="">Selecciona…</option>
+                            </select>
+                            <div class="field-error" data-error-for="estado"></div>
+                        </div>
+                    </div>
+                    <div class="upload-block" data-upload="comprobante">
+                        <label class="upload-block__label">Comprobante de domicilio <span>(CFE, agua, teléfono o estado de cuenta — no mayor a 3 meses. JPG, PNG o PDF)</span></label>
+                        <div class="upload-drop" tabindex="0" data-testid="upload-comprobante">
+                            <input type="file" id="fileComprobante" name="fileComprobante" accept="image/jpeg,image/png,image/webp,application/pdf" hidden>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+                            <span class="upload-drop__text">Arrastra tu archivo o <strong>haz clic para subirlo</strong></span>
+                        </div>
+                        <div class="upload-preview" hidden>
+                            <img alt="Vista previa del comprobante" hidden>
+                            <div class="upload-preview__info">
+                                <span class="upload-preview__name"></span>
+                                <span class="upload-preview__scan" data-testid="scan-comprobante"></span>
+                            </div>
+                            <button type="button" class="upload-preview__remove" aria-label="Quitar archivo">&times;</button>
+                        </div>
+                        <div class="field-error" data-error-for="fileComprobante"></div>
+                    </div>
+                </fieldset>
+
+                <!-- PASO 4: Datos fiscales -->
+                <fieldset class="onb-step" data-step="4" data-title="Datos fiscales" hidden>
+                    <legend class="onb-step__title">Datos fiscales</legend>
+                    <div class="field-row field-row--2">
+                        <div class="field">
+                            <label for="rfc">RFC <span class="label-note">(con homoclave)</span></label>
+                            <input type="text" id="rfc" name="rfc" required maxlength="13" style="text-transform:uppercase" placeholder="PEGJ850315AB1" data-testid="rfc">
+                            <div class="field-check" id="rfcCheck" hidden></div>
+                            <div class="field-error" data-error-for="rfc"></div>
+                        </div>
+                        <div class="field" id="curpField">
+                            <label for="curp">CURP</label>
+                            <input type="text" id="curp" name="curp" maxlength="18" style="text-transform:uppercase" placeholder="PEGJ850315HJCRRN09" data-testid="curp">
+                            <div class="field-check" id="curpCheck" hidden></div>
+                            <div class="field-error" data-error-for="curp"></div>
+                        </div>
+                    </div>
+                    <div class="field-row field-row--2">
+                        <div class="field">
+                            <label for="regimenFiscal">Régimen fiscal</label>
+                            <select id="regimenFiscal" name="regimenFiscal" required data-testid="regimen">
+                                <option value="">Selecciona…</option>
+                                <option value="605">605 — Sueldos y salarios</option>
+                                <option value="612">612 — Actividades empresariales y profesionales</option>
+                                <option value="626">626 — Régimen Simplificado de Confianza (RESICO)</option>
+                                <option value="621">621 — Incorporación fiscal</option>
+                                <option value="601">601 — General de Ley Personas Morales</option>
+                                <option value="603">603 — Personas Morales con fines no lucrativos</option>
+                                <option value="616">616 — Sin obligaciones fiscales</option>
+                            </select>
+                            <div class="field-error" data-error-for="regimenFiscal"></div>
+                        </div>
+                        <div class="field" id="clabeField" hidden>
+                            <label for="clabe">CLABE interbancaria <span class="label-note">(para dispersiones Novacore)</span></label>
+                            <input type="text" id="clabe" name="clabe" maxlength="18" inputmode="numeric" placeholder="032180000118359719" data-testid="clabe">
+                            <div class="field-error" data-error-for="clabe"></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- PASO 5: Referencias -->
+                <fieldset class="onb-step" data-step="5" data-title="Referencias" hidden>
+                    <legend class="onb-step__title">Referencias personales</legend>
+                    <p class="onb-step__sub">Dos personas que puedan confirmar tu identidad. No deben vivir contigo.</p>
+                    <div class="ref-block">
+                        <h4>Referencia 1</h4>
+                        <div class="field-row field-row--3">
+                            <div class="field">
+                                <label for="ref1Nombre">Nombre completo</label>
+                                <input type="text" id="ref1Nombre" name="ref1Nombre" required data-testid="ref1-nombre" placeholder="María López">
+                                <div class="field-error" data-error-for="ref1Nombre"></div>
+                            </div>
+                            <div class="field">
+                                <label for="ref1Telefono">Teléfono</label>
+                                <input type="tel" id="ref1Telefono" name="ref1Telefono" required inputmode="numeric" data-testid="ref1-telefono" placeholder="33 9876 5432">
+                                <div class="field-error" data-error-for="ref1Telefono"></div>
+                            </div>
+                            <div class="field">
+                                <label for="ref1Relacion">Parentesco / relación</label>
+                                <select id="ref1Relacion" name="ref1Relacion" required data-testid="ref1-relacion">
+                                    <option value="">Selecciona…</option>
+                                    <option>Familiar</option><option>Amistad</option><option>Compañero de trabajo</option><option>Socio</option><option>Otro</option>
+                                </select>
+                                <div class="field-error" data-error-for="ref1Relacion"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ref-block">
+                        <h4>Referencia 2</h4>
+                        <div class="field-row field-row--3">
+                            <div class="field">
+                                <label for="ref2Nombre">Nombre completo</label>
+                                <input type="text" id="ref2Nombre" name="ref2Nombre" required data-testid="ref2-nombre" placeholder="Pedro Ramírez">
+                                <div class="field-error" data-error-for="ref2Nombre"></div>
+                            </div>
+                            <div class="field">
+                                <label for="ref2Telefono">Teléfono</label>
+                                <input type="tel" id="ref2Telefono" name="ref2Telefono" required inputmode="numeric" data-testid="ref2-telefono" placeholder="55 1234 5678">
+                                <div class="field-error" data-error-for="ref2Telefono"></div>
+                            </div>
+                            <div class="field">
+                                <label for="ref2Relacion">Parentesco / relación</label>
+                                <select id="ref2Relacion" name="ref2Relacion" required data-testid="ref2-relacion">
+                                    <option value="">Selecciona…</option>
+                                    <option>Familiar</option><option>Amistad</option><option>Compañero de trabajo</option><option>Socio</option><option>Otro</option>
+                                </select>
+                                <div class="field-error" data-error-for="ref2Relacion"></div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- PASO 6: Identificación -->
+                <fieldset class="onb-step" data-step="6" data-title="Identificación" hidden>
+                    <legend class="onb-step__title">Identificación oficial</legend>
+                    <p class="onb-step__sub">INE/IFE vigente (frente y reverso) o pasaporte. Nuestro motor OCR verifica que el documento sea legible y coincida con tus datos.</p>
+                    <div class="upload-block" data-upload="ineFrente">
+                        <label class="upload-block__label">Frente de tu identificación</label>
+                        <div class="upload-drop" tabindex="0" data-testid="upload-ine-frente">
+                            <input type="file" id="fileIneFrente" name="fileIneFrente" accept="image/jpeg,image/png,image/webp" hidden>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M13 9h6M13 13h6M5 17h6"/></svg>
+                            <span class="upload-drop__text">Sube la foto del <strong>frente</strong> de tu INE</span>
+                        </div>
+                        <div class="upload-preview" hidden>
+                            <img alt="Vista previa INE frente" hidden>
+                            <div class="upload-preview__info">
+                                <span class="upload-preview__name"></span>
+                                <span class="upload-preview__scan" data-testid="scan-ine-frente"></span>
+                            </div>
+                            <button type="button" class="upload-preview__remove" aria-label="Quitar archivo">&times;</button>
+                        </div>
+                        <div class="field-error" data-error-for="fileIneFrente"></div>
+                    </div>
+                    <div class="upload-block" data-upload="ineReverso">
+                        <label class="upload-block__label">Reverso de tu identificación</label>
+                        <div class="upload-drop" tabindex="0" data-testid="upload-ine-reverso">
+                            <input type="file" id="fileIneReverso" name="fileIneReverso" accept="image/jpeg,image/png,image/webp" hidden>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M5 9h14M5 12h10M5 15h7"/></svg>
+                            <span class="upload-drop__text">Sube la foto del <strong>reverso</strong> de tu INE</span>
+                        </div>
+                        <div class="upload-preview" hidden>
+                            <img alt="Vista previa INE reverso" hidden>
+                            <div class="upload-preview__info">
+                                <span class="upload-preview__name"></span>
+                                <span class="upload-preview__scan" data-testid="scan-ine-reverso"></span>
+                            </div>
+                            <button type="button" class="upload-preview__remove" aria-label="Quitar archivo">&times;</button>
+                        </div>
+                        <div class="field-error" data-error-for="fileIneReverso"></div>
+                    </div>
+                </fieldset>
+
+                <!-- PASO 7: Selfie -->
+                <fieldset class="onb-step" data-step="7" data-title="Selfie" hidden>
+                    <legend class="onb-step__title">Selfie sosteniendo tu identificación</legend>
+                    <p class="onb-step__sub">Tómate una foto sosteniendo tu INE junto a tu rostro. Ambos deben verse claramente, con buena luz y sin lentes oscuros.</p>
+                    <div class="selfie-area">
+                        <div class="selfie-camera" id="selfieCamera" hidden>
+                            <video id="selfieVideo" autoplay playsinline muted></video>
+                            <div class="selfie-guide"></div>
+                            <button type="button" class="btn btn--primary" id="captureBtn" data-testid="capture-selfie">
+                                <span>Capturar</span>
+                            </button>
+                        </div>
+                        <div class="selfie-actions" id="selfieActions">
+                            <button type="button" class="btn btn--primary" id="openCameraBtn" data-testid="open-camera">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                <span>Usar cámara</span>
+                            </button>
+                            <div class="upload-block upload-block--inline" data-upload="selfie">
+                                <div class="upload-drop upload-drop--sm" tabindex="0" data-testid="upload-selfie">
+                                    <input type="file" id="fileSelfie" name="fileSelfie" accept="image/jpeg,image/png,image/webp" capture="user" hidden>
+                                    <span class="upload-drop__text">o <strong>sube una foto</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="upload-preview" data-upload-preview="selfie" hidden>
+                            <img alt="Vista previa de selfie" hidden>
+                            <div class="upload-preview__info">
+                                <span class="upload-preview__name"></span>
+                                <span class="upload-preview__scan" data-testid="scan-selfie"></span>
+                            </div>
+                            <button type="button" class="upload-preview__remove" aria-label="Quitar selfie">&times;</button>
+                        </div>
+                        <div class="field-error" data-error-for="fileSelfie"></div>
+                    </div>
+                </fieldset>
+
+                <!-- PASO 8: Revisión -->
+                <fieldset class="onb-step" data-step="8" data-title="Revisión" hidden>
+                    <legend class="onb-step__title">Revisa tu información</legend>
+                    <div class="review" id="reviewSummary" data-testid="review-summary"></div>
+                    <div class="consent">
+                        <label class="consent__check">
+                            <input type="checkbox" id="consentPrivacy" name="consentPrivacy" required data-testid="consent-privacy">
+                            <span>Acepto el <a href="#" target="_blank">aviso de privacidad</a> y autorizo a NovaCoin a verificar mi identidad y consultar mis datos para fines de cumplimiento normativo (KYC/PLD).</span>
+                        </label>
+                        <label class="consent__check">
+                            <input type="checkbox" id="consentTruth" name="consentTruth" required data-testid="consent-truth">
+                            <span>Declaro bajo protesta de decir verdad que la información y documentos proporcionados son auténticos y actúo por cuenta propia.</span>
+                        </label>
+                        <div class="field-error" data-error-for="consent"></div>
+                    </div>
+                </fieldset>
+
+                <!-- ÉXITO -->
+                <div class="onb-success" id="onbSuccess" hidden data-testid="success-screen">
+                    <div class="onb-success__icon">
+                        <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" stroke="url(#okGrad)" stroke-width="2"/><path d="M20 33l8 8 16-16" stroke="url(#okGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="okGrad" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#00d4ff"/><stop offset="1" stop-color="#7b2ff7"/></linearGradient></defs></svg>
+                    </div>
+                    <h2>¡Solicitud enviada!</h2>
+                    <p>Tu folio de seguimiento es <strong class="mono" id="folioNumber" data-testid="folio"></strong></p>
+                    <p class="onb-success__note" id="successNote">Nuestro equipo de cumplimiento revisará tu información y te contactará por WhatsApp o correo en un máximo de 24 horas hábiles.</p>
+                    <div class="cta__btns">
+                        <a href="https://wa.me/5213332272003" class="btn btn--primary" target="_blank" rel="noopener"><span>Contactar por WhatsApp</span></a>
+                        <a href="../novacoin/" class="btn btn--glass">Volver al inicio</a>
+                    </div>
+                </div>
+
+                <!-- Controles -->
+                <div class="onb__controls" id="onbControls">
+                    <button type="button" class="btn btn--glass" id="backBtn" data-testid="back-btn" disabled>Atrás</button>
+                    <span class="onb__step-count mono" id="stepCount"></span>
+                    <button type="button" class="btn btn--primary" id="nextBtn" data-testid="next-btn">
+                        <span>Continuar</span>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                </div>
+                <div class="onb__submit-error field-error" id="submitError" data-testid="submit-error"></div>
+            </form>
+
+            <div class="onb__secure anim">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
+                Tus datos viajan cifrados y solo se usan para tu verificación de identidad.
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="contact">
+        <div class="container">
+            <div class="cta__box anim">
+                <div class="cta__orb"></div>
+                <h2 class="title-lg">¿Dudas con tu <span class="grad-text">onboarding</span>?</h2>
+                <p class="subtitle">Nuestro equipo te acompaña en el proceso por WhatsApp o correo.</p>
+                <div class="cta__btns">
+                    <a href="https://wa.me/5213332272003" class="btn btn--primary btn--lg" target="_blank" rel="noopener">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        <span>Escríbenos por WhatsApp</span>
+                    </a>
+                    <a href="mailto:direccion@novacoin.mx" class="btn btn--glass btn--lg">direccion@novacoin.mx</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <a href="../novacoin/" class="nav__logo">
+                        <div class="nav__logo-hex">
+                            <svg viewBox="0 0 40 40" fill="none">
+                                <path d="M20 4L34 12V28L20 36L6 28V12L20 4Z" stroke="url(#lg2)" stroke-width="1.5" fill="none"/>
+                                <path d="M15 17L20 13L25 17V23L20 27L15 23Z" fill="url(#lg2)"/>
+                                <defs><linearGradient id="lg2" x1="6" y1="4" x2="34" y2="36"><stop stop-color="#00d4ff"/><stop offset="1" stop-color="#7b2ff7"/></linearGradient></defs>
+                            </svg>
+                        </div>
+                        <span>NovaCoin</span>
+                    </a>
+                    <p>El puente entre tu dinero y el futuro digital. Tecnología crypto hecha en México.</p>
+                </div>
+                <div class="footer__col">
+                    <h4>Herramientas</h4>
+                    <a href="../rfq/">Exchange / RFQ</a>
+                    <a href="../walletchecker/">Wallet Checker</a>
+                    <a href="../novapay/">NovaPay</a>
+                    <a href="../novacore/">Novacore</a>
+                </div>
+                <div class="footer__col">
+                    <h4>Onboarding</h4>
+                    <a href="#wizard">Iniciar proceso</a>
+                    <a href="#contact">Contacto</a>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 NovaCoin. Todos los derechos reservados.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="validators.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

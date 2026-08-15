@@ -1,0 +1,9 @@
+tests/
+playwright.config.js
+Dockerfile
+docker-compose.yml
+server.js
+Blueprints_skills 2/
+node_modules/
+test-results/
+playwright-report/

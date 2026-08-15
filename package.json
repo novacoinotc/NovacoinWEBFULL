@@ -1,0 +1,18 @@
+{
+  "name": "novacoin-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NovaCoin — sitio web con onboarding KYC",
+  "scripts": {
+    "start": "node server.js",
+    "test:validators": "node tests/validators.test.js",
+    "test:e2e": "playwright test",
+    "test": "npm run test:validators && npm run test:e2e"
+  },
+  "dependencies": {
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}
