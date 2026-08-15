@@ -24,6 +24,8 @@ module.exports = defineConfig({
         command: 'node server.js',
         url: BASE_URL + '/onboarding/',
         reuseExistingServer: true,
-        timeout: 30000
+        timeout: 30000,
+        // Las pruebas corren sin DB (no ensucian Neon) y con clave admin propia
+        env: { DATABASE_URL: '', ADMIN_KEY: 'test-admin-key', SANCTIONS_SCREENING: 'off' }
     }
 });

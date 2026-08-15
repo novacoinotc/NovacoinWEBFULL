@@ -105,6 +105,7 @@ button { background: none; border: none; cursor: pointer; font-family: inherit; 
 .platform-card input:checked + .platform-card__inner { border-color: var(--accent); background: rgba(0,212,255,0.05); box-shadow: 0 0 30px rgba(0,212,255,0.1); }
 .platform-card input:focus-visible + .platform-card__inner { outline: 2px solid var(--accent); outline-offset: 2px; }
 .platform-card__label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t3); }
+.platform-card__req { display: block; margin-top: 12px; font-family: var(--mono); font-size: 0.64rem; color: var(--t3); border-top: 1px dashed var(--border); padding-top: 10px; }
 .platform-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--t1); margin: 6px 0 8px; }
 .platform-card p { font-size: 0.8rem; line-height: 1.6; color: var(--t2); }
 .platform-card__inner--core h3 { color: #ff8800; }
@@ -143,6 +144,16 @@ button { background: none; border: none; cursor: pointer; font-family: inherit; 
 .field-check { font-family: var(--mono); font-size: 0.72rem; margin-top: 6px; }
 .field-check.ok { color: var(--ok); }
 .field-check.warn { color: var(--warn); }
+
+/* Preguntas AML */
+.aml-question { background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; }
+.aml-question > p { font-size: 0.87rem; color: var(--t1); margin-bottom: 10px; line-height: 1.5; }
+.aml-question .label-note { display: block; font-size: 0.76rem; color: var(--t3); font-weight: 400; }
+.radio-row { display: flex; gap: 22px; flex-wrap: wrap; }
+.radio-row label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.86rem; color: var(--t2); cursor: pointer; padding: 6px 0; }
+.radio-row input { width: 15px; height: 15px; accent-color: var(--accent); }
+.radio-row label:hover { color: var(--t1); }
+.aml-detail { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
 
 /* Reference blocks */
 .ref-block { background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 16px; padding: 22px 20px 8px; margin-bottom: 18px; }

@@ -280,6 +280,45 @@
         };
     }
 
+    /* ---------- Detección de comprobante de ingresos en OCR ---------- */
+    function analyzeIncomeProofText(text) {
+        var t = String(text || '').toUpperCase();
+        var markers = ['NOMINA', 'NÓMINA', 'RECIBO DE PAGO', 'PERCEPCIONES', 'DEDUCCIONES', 'ESTADO DE CUENTA',
+            'SALDO PROMEDIO', 'DEPOSITOS', 'DEPÓSITOS', 'DECLARACION ANUAL', 'DECLARACIÓN ANUAL', 'SAT',
+            'BBVA', 'SANTANDER', 'BANORTE', 'HSBC', 'BANAMEX', 'CITIBANAMEX', 'SCOTIABANK', 'BANREGIO',
+            'HONORARIOS', 'INGRESOS', 'SUELDO', 'SALARIO'];
+        var found = markers.filter(function (m) { return t.indexOf(m) !== -1; });
+        return {
+            markersFound: found,
+            isLikelyIncomeProof: found.length >= 2
+        };
+    }
+
+    /* ---------- Scoring de riesgo AML (3 niveles, RCG 2026) ---------- */
+    // Heurística de clasificación inicial; la calificación final la hace el
+    // oficial de cumplimiento. Sectores tomados de las actividades vulnerables
+    // de la LFPIORPI y prácticas de mercado.
+    var HIGH_RISK_SECTORS = ['juegos_apuestas', 'joyeria_metales', 'arte_antiguedades', 'inmobiliario',
+        'blindaje_valores', 'prestamos_empeño', 'comercio_exterior', 'construccion', 'activos_virtuales',
+        'efectivo_intensivo', 'donativos_osc'];
+
+    function computeRiskScore(profile) {
+        profile = profile || {};
+        var score = 0;
+        var reasons = [];
+        if (profile.pepSelf) { score += 40; reasons.push('PEP directa'); }
+        if (profile.pepFamily) { score += 25; reasons.push('Familiar o asociado de PEP'); }
+        if (profile.foreignTaxResidency) { score += 15; reasons.push('Residencia fiscal extranjera'); }
+        if (HIGH_RISK_SECTORS.indexOf(profile.sector) !== -1) { score += 20; reasons.push('Sector de alto riesgo'); }
+        if (profile.monthlyVolume === 'mas_500k') { score += 20; reasons.push('Volumen mensual alto'); }
+        else if (profile.monthlyVolume === '100k_500k') { score += 10; reasons.push('Volumen mensual medio-alto'); }
+        if (profile.sourceOfFunds === 'efectivo' || profile.sourceOfFunds === 'otro') { score += 15; reasons.push('Origen de recursos a verificar'); }
+        if (profile.thirdParty) { score += 25; reasons.push('Opera por cuenta de un tercero'); }
+        if (profile.personType === 'moral') { score += 5; reasons.push('Persona moral'); }
+        var level = score >= 50 ? 'alto' : score >= 25 ? 'medio' : 'bajo';
+        return { score: score, level: level, reasons: reasons };
+    }
+
     /* ---------- Similitud de nombres (OCR vs formulario) ---------- */
     function normalizeForCompare(s) {
         return String(s || '').toUpperCase()
@@ -311,6 +350,9 @@
         validateFile: validateFile,
         analyzeIneText: analyzeIneText,
         analyzeProofOfAddressText: analyzeProofOfAddressText,
+        analyzeIncomeProofText: analyzeIncomeProofText,
+        computeRiskScore: computeRiskScore,
+        HIGH_RISK_SECTORS: HIGH_RISK_SECTORS,
         nameMatchScore: nameMatchScore
     };
 });

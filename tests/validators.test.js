@@ -67,5 +67,33 @@ t('no marca texto ajeno como INE', () => assert.ok(!V.analyzeIneText('factura de
 t('reconoce comprobante CFE', () => assert.ok(V.analyzeProofOfAddressText('CFE Comisión Federal de Electricidad CP 44100').isLikelyProof));
 t('coincidencia de nombre en OCR', () => assert.ok(V.nameMatchScore('Juan Pérez García', 'NOMBRE: PEREZ GARCIA JUAN') === 1));
 
+console.log('Comprobante de ingresos');
+t('reconoce recibo de nómina', () => assert.ok(V.analyzeIncomeProofText('RECIBO DE PAGO PERCEPCIONES DEDUCCIONES SUELDO').isLikelyIncomeProof));
+t('reconoce estado de cuenta bancario', () => assert.ok(V.analyzeIncomeProofText('BBVA ESTADO DE CUENTA SALDO PROMEDIO').isLikelyIncomeProof));
+t('no marca texto ajeno como ingreso', () => assert.ok(!V.analyzeIncomeProofText('lista del supermercado').isLikelyIncomeProof));
+
+console.log('Scoring de riesgo AML');
+t('perfil simple es riesgo bajo', () => {
+    const r = V.computeRiskScore({ sourceOfFunds: 'sueldo', sector: 'tecnologia', monthlyVolume: 'menos_20k', personType: 'fisica' });
+    assert.strictEqual(r.level, 'bajo');
+});
+t('PEP directa es riesgo alto', () => {
+    const r = V.computeRiskScore({ pepSelf: true, monthlyVolume: '100k_500k' });
+    assert.strictEqual(r.level, 'alto');
+    assert.ok(r.reasons.includes('PEP directa'));
+});
+t('sector de alto riesgo + volumen alto = medio o alto', () => {
+    const r = V.computeRiskScore({ sector: 'juegos_apuestas', monthlyVolume: 'mas_500k' });
+    assert.ok(r.level !== 'bajo');
+});
+t('operar por cuenta de tercero sube el riesgo', () => {
+    const r = V.computeRiskScore({ thirdParty: true, sourceOfFunds: 'efectivo' });
+    assert.ok(r.score >= 40);
+});
+t('residencia extranjera suma puntos', () => {
+    const r = V.computeRiskScore({ foreignTaxResidency: true });
+    assert.strictEqual(r.score, 15);
+});
+
 console.log('\n' + passed + ' pruebas pasaron, ' + failed + ' fallaron');
 process.exit(failed ? 1 : 0);

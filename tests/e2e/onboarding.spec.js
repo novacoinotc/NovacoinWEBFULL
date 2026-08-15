@@ -71,12 +71,16 @@ test.describe('Wizard de onboarding', () => {
         await page.evaluate(() => localStorage.clear());
     });
 
-    test('flujo completo feliz: Novacore, persona física, hasta el folio', async ({ page }) => {
-        // Paso 0 — plataforma
+    test('flujo completo feliz: Novacore + NovaPay simultáneos, persona física, hasta el folio', async ({ page }) => {
+        // Paso 0 — plataformas (selección múltiple)
         await page.getByTestId('platform-novacore').click();
+        await page.getByTestId('platform-novapay').click();
         await next(page);
 
-        // Paso 1 — datos generales
+        // Paso 1 — datos generales (+ negocio por NovaPay)
+        await expect(page.locator('#novapayFields')).toBeVisible();
+        await page.fill('#nombreComercial', 'Taquería La Nova');
+        await page.fill('#giroNegocio', 'Restaurante');
         await page.fill('#nombre', DATA.nombre);
         await page.fill('#apellidoPaterno', DATA.apellidoPaterno);
         await page.fill('#apellidoMaterno', DATA.apellidoMaterno);
@@ -108,7 +112,21 @@ test.describe('Wizard de onboarding', () => {
         await page.fill('#clabe', DATA.clabe);
         await next(page);
 
-        // Paso 5 — referencias
+        // Paso 5 — perfil transaccional AML + comprobante de ingresos
+        await page.selectOption('#origenRecursos', 'negocio_propio');
+        await page.selectOption('#sectorEconomico', 'comercio');
+        await page.selectOption('#usoCuenta', 'dispersiones_nomina');
+        await page.selectOption('#montoMensual', '20k_100k');
+        await page.selectOption('#opsMensuales', '6_20');
+        await page.check('input[name="pepSelf"][value="no"]');
+        await page.check('input[name="pepFamily"][value="no"]');
+        await page.check('input[name="cuentaPropia"][value="si"]');
+        await page.check('input[name="residenciaExtranjera"][value="no"]');
+        await page.setInputFiles('#fileIngresos', await makeJpeg(page, 'Recibo Nomina'));
+        await expect(page.locator('[data-upload="ingresos"] .upload-preview')).toBeVisible();
+        await next(page);
+
+        // Paso 6 — referencias
         await page.fill('#ref1Nombre', 'María López');
         await page.fill('#ref1Telefono', '3398765432');
         await page.selectOption('#ref1Relacion', 'Familiar');
@@ -117,23 +135,27 @@ test.describe('Wizard de onboarding', () => {
         await page.selectOption('#ref2Relacion', 'Amistad');
         await next(page);
 
-        // Paso 6 — INE
+        // Paso 7 — INE
         await page.setInputFiles('#fileIneFrente', await makeJpeg(page, 'INE Frente'));
         await expect(page.locator('[data-upload="ineFrente"] .upload-preview')).toBeVisible();
         await page.setInputFiles('#fileIneReverso', await makeJpeg(page, 'INE Reverso'));
         await expect(page.locator('[data-upload="ineReverso"] .upload-preview')).toBeVisible();
         await next(page);
 
-        // Paso 7 — selfie (subida de archivo)
+        // Paso 8 — selfie (subida de archivo)
         await page.setInputFiles('#fileSelfie', await makeJpeg(page, 'Selfie con INE'));
         await expect(page.locator('[data-upload-preview="selfie"]')).toBeVisible();
         await next(page);
 
-        // Paso 8 — revisión
+        // Paso 9 — revisión
         const review = page.getByTestId('review-summary');
-        await expect(review).toContainText('Novacore');
+        await expect(review).toContainText('Novacore, NovaPay');
+        await expect(review).toContainText('Taquería La Nova');
         await expect(review).toContainText('Juan Carlos Pérez García');
         await expect(review).toContainText(DATA.rfc);
+        await expect(review).toContainText('Perfil transaccional');
+        await expect(review).toContainText('Negocio propio');
+        await expect(review).toContainText('✓ Comprobante de ingresos');
         await expect(review).toContainText('✓ Selfie con INE');
         await page.getByTestId('consent-privacy').check();
         await page.getByTestId('consent-truth').check();
@@ -146,8 +168,26 @@ test.describe('Wizard de onboarding', () => {
 
     test('no avanza sin plataforma seleccionada', async ({ page }) => {
         await next(page);
-        await expect(page.locator('[data-error-for="platform"]')).toContainText('Selecciona una plataforma');
+        await expect(page.locator('[data-error-for="platform"]')).toContainText('al menos una plataforma');
         await expect(page.locator('.onb-step[data-step="0"]')).toBeVisible();
+    });
+
+    test('los campos por producto aparecen según la selección', async ({ page }) => {
+        // NovaPay solo → campos de negocio sí, CLABE no
+        await page.getByTestId('platform-novapay').click();
+        await next(page);
+        await expect(page.locator('#novapayFields')).toBeVisible();
+        await page.evaluate(() => {
+            document.querySelectorAll('.onb-step').forEach((s) => { s.hidden = s.dataset.step !== '4'; });
+        });
+        await expect(page.locator('#clabeField')).toBeHidden();
+        // agregar Novacore → aparece CLABE
+        await page.evaluate(() => {
+            const c = document.querySelector('input[name="platforms"][value="novacore"]');
+            c.checked = true;
+            c.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+        await expect(page.locator('#clabeField')).toBeVisible();
     });
 
     test('rechaza RFC con dígito verificador inválido y acepta el correcto', async ({ page }) => {
@@ -186,10 +226,50 @@ test.describe('Wizard de onboarding', () => {
         await expect(page.locator('#rfcCheck')).toContainText('RFC válido');
         await next(page);
         await expect(page.locator('.onb-step[data-step="5"]')).toBeVisible();
+
+        // el paso AML no avanza sin responder el perfil transaccional
+        await next(page);
+        await expect(page.locator('[data-error-for="origenRecursos"]')).toContainText('origen');
+        await expect(page.locator('[data-error-for="pepSelf"]')).toContainText('cargos públicos');
+    });
+
+    test('preguntas AML muestran campos condicionales (PEP, beneficiario, FATCA)', async ({ page }) => {
+        await page.getByTestId('platform-rfq').click();
+        await next(page);
+        await page.evaluate(() => {
+            document.querySelectorAll('.onb-step').forEach((s) => { s.hidden = s.dataset.step !== '5'; });
+        });
+        await page.check('input[name="pepSelf"][value="si"]');
+        await expect(page.locator('#pepDetail')).toBeVisible();
+        await page.check('input[name="pepSelf"][value="no"]');
+        await expect(page.locator('#pepDetail')).toBeHidden();
+        await page.check('input[name="cuentaPropia"][value="no"]');
+        await expect(page.locator('#beneficiaryDetail')).toBeVisible();
+        await page.check('input[name="residenciaExtranjera"][value="si"]');
+        await expect(page.locator('#foreignDetail')).toBeVisible();
+    });
+
+    test('persona moral exige documentos corporativos en el paso de identificación', async ({ page }) => {
+        await page.getByTestId('platform-novacore').click();
+        await next(page);
+        await page.selectOption('#personType', 'moral');
+        await page.evaluate(() => {
+            document.querySelectorAll('.onb-step').forEach((s) => { s.hidden = s.dataset.step !== '7'; });
+        });
+        await expect(page.locator('#moralDocs')).toBeVisible();
+        await expect(page.getByTestId('upload-acta')).toBeVisible();
+        await expect(page.getByTestId('upload-csf')).toBeVisible();
+        // persona física no los ve (el campo vive en un paso oculto: cambio por JS)
+        await page.evaluate(() => {
+            const s = document.getElementById('personType');
+            s.value = 'fisica';
+            s.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+        await expect(page.locator('#moralDocs')).toBeHidden();
     });
 
     test('rechaza CURP incongruente con el RFC', async ({ page }) => {
-        await page.getByTestId('platform-novapay').click();
+        await page.getByTestId('platform-rfq').click();
         await next(page);
         await page.fill('#nombre', DATA.nombre);
         await page.fill('#apellidoPaterno', DATA.apellidoPaterno);
@@ -300,10 +380,66 @@ test.describe('API de onboarding', () => {
         const body = await res.json();
         expect(body.error).toBe('Datos inválidos');
         expect(body.details.length).toBeGreaterThan(3);
+        expect(body.details.join(' ')).toContain('Perfil transaccional');
+        expect(body.details.join(' ')).toContain('ingresos');
     });
 
     test('rechaza métodos distintos de POST', async ({ request }) => {
         const res = await request.get('/api/onboarding');
         expect(res.status()).toBe(405);
+    });
+});
+
+test.describe('API de tracking de prospectos', () => {
+    test('acepta eventos válidos', async ({ request }) => {
+        const res = await request.post('/api/track', {
+            data: { sessionId: 'test-session-12345', event: 'session_start', step: 0, platforms: ['rfq'], docs: [] }
+        });
+        expect(res.status()).toBe(200);
+        const body = await res.json();
+        expect(body.ok).toBe(true);
+    });
+
+    test('rechaza eventos inválidos', async ({ request }) => {
+        const res = await request.post('/api/track', { data: { sessionId: 'x', event: 'hackeo' } });
+        expect(res.status()).toBe(422);
+    });
+
+    test('el wizard emite eventos de telemetría', async ({ page }) => {
+        const tracked = [];
+        await page.route('**/api/track', async (route) => {
+            tracked.push(JSON.parse(route.request().postData() || '{}'));
+            await route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true,"stored":false}' });
+        });
+        await page.route('https://cdn.jsdelivr.net/**', (r) => r.abort());
+        await page.goto('/onboarding/');
+        await page.getByTestId('platform-rfq').click();
+        await page.getByTestId('next-btn').click();
+        await expect(page.locator('.onb-step[data-step="1"]')).toBeVisible();
+        await expect.poll(() => tracked.map((t) => t.event)).toContain('session_start');
+        await expect.poll(() => tracked.map((t) => t.event)).toContain('step_complete');
+        expect(tracked[0].sessionId).toBeTruthy();
+    });
+});
+
+test.describe('Dashboard de administración', () => {
+    test('exige clave y rechaza claves inválidas', async ({ page }) => {
+        await page.goto('/admin/');
+        await page.getByTestId('admin-key').fill('clave-incorrecta');
+        await page.getByTestId('admin-login').click();
+        await expect(page.getByTestId('admin-status')).toContainText('Clave inválida');
+    });
+
+    test('con la clave correcta muestra el panel', async ({ page }) => {
+        await page.goto('/admin/');
+        await page.getByTestId('admin-key').fill('test-admin-key');
+        await page.getByTestId('admin-login').click();
+        // sin DB configurada en pruebas: el panel avisa pero autentica
+        await expect(page.getByTestId('admin-status')).toContainText('base de datos no está configurada');
+    });
+
+    test('la API admin rechaza sin clave', async ({ request }) => {
+        const res = await request.get('/api/admin');
+        expect(res.status()).toBe(401);
     });
 });

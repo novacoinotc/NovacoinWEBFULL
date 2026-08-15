@@ -66,7 +66,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var current = 0;
     var files = {};    // { comprobante, ineFrente, ineReverso, selfie } → { file, dataUrl, name, isPdf }
     var checks = {     // resultados de los motores de detección
-        comprobante: null, ineFrente: null, ineReverso: null, selfie: null
+        comprobante: null, ineFrente: null, ineReverso: null, selfie: null,
+        ingresos: null, actaConstitutiva: null, csf: null, poder: null
     };
 
     var backBtn = document.getElementById('backBtn');
@@ -84,6 +85,44 @@ document.addEventListener('DOMContentLoaded', function () {
         el.dataset.step = i;
         progressSteps.appendChild(el);
     });
+
+    /* ══ Telemetría de sesión (seguimiento de prospectos) ══ */
+    var SESSION_KEY = 'novacoin_onboarding_session';
+    var sessionId;
+    try {
+        sessionId = localStorage.getItem(SESSION_KEY);
+        if (!sessionId) {
+            sessionId = (window.crypto && crypto.randomUUID)
+                ? crypto.randomUUID()
+                : 'sess-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+            localStorage.setItem(SESSION_KEY, sessionId);
+        }
+    } catch (e) {
+        sessionId = 'sess-' + Math.random().toString(36).slice(2, 12);
+    }
+
+    function track(event, extra) {
+        // La telemetría nunca debe romper ni frenar el flujo del usuario.
+        try {
+            var fe = form.elements;
+            var body = JSON.stringify(Object.assign({
+                sessionId: sessionId,
+                event: event,
+                step: current,
+                platforms: selectedPlatforms(),
+                personType: fe.personType.value,
+                nombre: (fe.nombre.value + ' ' + fe.apellidoPaterno.value).trim() || null,
+                correo: fe.correo.value.trim() || null,
+                telefono: fe.telefono.value.trim() || null,
+                docs: Object.keys(files)
+            }, extra || {}));
+            if (navigator.sendBeacon) {
+                navigator.sendBeacon('/api/track', new Blob([body], { type: 'application/json' }));
+            } else {
+                fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true }).catch(function () {});
+            }
+        } catch (e) { /* sin telemetría */ }
+    }
 
     function renderStep() {
         steps.forEach(function (s, i) { s.hidden = i !== current; });
@@ -133,15 +172,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var stepValidators = {
         0: function () {
-            var ok = !!form.querySelector('input[name="platform"]:checked');
+            var ok = selectedPlatforms().length > 0;
             var errEl = form.querySelector('[data-error-for="platform"]');
-            errEl.textContent = ok ? '' : 'Selecciona una plataforma para continuar';
+            errEl.textContent = ok ? '' : 'Selecciona al menos una plataforma para continuar';
             return ok;
         },
         1: function () {
             var ok = true;
             var isMoral = form.elements.personType.value === 'moral';
             if (isMoral) ok = filled('razonSocial', 'Ingresa la razón social') && ok;
+            if (selectedPlatforms().indexOf('novapay') !== -1) {
+                ok = filled('nombreComercial', 'Ingresa el nombre comercial de tu negocio') && ok;
+                ok = filled('giroNegocio', 'Indica el giro de tu negocio') && ok;
+            }
             ok = nameLike('nombre', true) && ok;
             ok = nameLike('apellidoPaterno', true) && ok;
             ok = nameLike('apellidoMaterno', false) && ok;
@@ -204,6 +247,38 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         5: function () {
             var ok = true;
+            ok = filled('origenRecursos', 'Indica el origen de tus recursos') && ok;
+            ok = filled('sectorEconomico', 'Selecciona tu sector') && ok;
+            ok = filled('usoCuenta', 'Indica el uso previsto') && ok;
+            ok = filled('montoMensual', 'Selecciona un rango') && ok;
+            ok = filled('opsMensuales', 'Selecciona un rango') && ok;
+            // radios obligatorios
+            [['pepSelf', 'Responde la pregunta sobre cargos públicos'],
+             ['pepFamily', 'Responde la pregunta sobre familiares PEP'],
+             ['cuentaPropia', 'Indica si operas por cuenta propia'],
+             ['residenciaExtranjera', 'Responde la pregunta de residencia fiscal']].forEach(function (q) {
+                var answered = !!form.querySelector('input[name="' + q[0] + '"]:checked');
+                var el = form.querySelector('[data-error-for="' + q[0] + '"]');
+                if (el) el.textContent = answered ? '' : q[1];
+                ok = answered && ok;
+            });
+            // detalles condicionales
+            if (radioVal('pepSelf') === 'si') ok = filled('pepCargo', 'Describe el cargo público') && ok;
+            if (radioVal('pepFamily') === 'si') ok = filled('pepFamiliarDetalle', 'Describe el parentesco y cargo') && ok;
+            if (radioVal('cuentaPropia') === 'no') {
+                ok = nameLike('beneficiarioNombre', true) && ok;
+                ok = filled('beneficiarioRelacion', 'Indica la relación') && ok;
+            }
+            if (radioVal('residenciaExtranjera') === 'si') {
+                ok = filled('paisResidencia', 'Indica el país') && ok;
+                ok = filled('tinExtranjero', 'Indica tu TIN') && ok;
+            }
+            var hasIncome = !!files.ingresos;
+            setError('fileIngresos', hasIncome ? '' : 'Sube tu comprobante de ingresos');
+            return ok && hasIncome;
+        },
+        6: function () {
+            var ok = true;
             ok = nameLike('ref1Nombre', true) && ok;
             ok = phoneLike('ref1Telefono') && ok;
             ok = filled('ref1Relacion', 'Selecciona la relación') && ok;
@@ -219,18 +294,25 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             return ok;
         },
-        6: function () {
+        7: function () {
             var okF = !!files.ineFrente, okR = !!files.ineReverso;
             setError('fileIneFrente', okF ? '' : 'Sube el frente de tu identificación');
             setError('fileIneReverso', okR ? '' : 'Sube el reverso de tu identificación');
-            return okF && okR;
+            var ok = okF && okR;
+            if (form.elements.personType.value === 'moral') {
+                var okA = !!files.actaConstitutiva, okC = !!files.csf;
+                setError('fileActa', okA ? '' : 'Sube el acta constitutiva');
+                setError('fileCsf', okC ? '' : 'Sube la constancia de situación fiscal');
+                ok = ok && okA && okC;
+            }
+            return ok;
         },
-        7: function () {
+        8: function () {
             var ok = !!files.selfie;
             setError('fileSelfie', ok ? '' : 'Necesitamos tu selfie sosteniendo tu identificación');
             return ok;
         },
-        8: function () {
+        9: function () {
             var p = form.elements.consentPrivacy.checked;
             var t = form.elements.consentTruth.checked;
             var el = form.querySelector('[data-error-for="consent"]');
@@ -239,17 +321,49 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    function radioVal(name) {
+        var r = form.querySelector('input[name="' + name + '"]:checked');
+        return r ? r.value : null;
+    }
+
+    function selectedPlatforms() {
+        return Array.prototype.map.call(
+            form.querySelectorAll('input[name="platforms"]:checked'),
+            function (c) { return c.value; }
+        );
+    }
+
+    function applyPlatforms() {
+        var sel = selectedPlatforms();
+        document.getElementById('clabeField').hidden = sel.indexOf('novacore') === -1;
+        document.getElementById('novapayFields').hidden = sel.indexOf('novapay') === -1;
+    }
+
     /* ══ Condicionales ══ */
-    form.elements.personType.addEventListener('change', function () {
-        var isMoral = this.value === 'moral';
+    function applyPersonType() {
+        var isMoral = form.elements.personType.value === 'moral';
         document.getElementById('moralFields').hidden = !isMoral;
+        document.getElementById('moralDocs').hidden = !isMoral;
         document.getElementById('curpField').style.display = isMoral ? 'none' : '';
         form.elements.razonSocial.required = isMoral;
         form.elements.curp.required = !isMoral;
+    }
+    form.elements.personType.addEventListener('change', applyPersonType);
+
+    // preguntas AML con detalle condicional
+    [['pepSelf', 'pepDetail', 'si'], ['pepFamily', 'pepFamilyDetail', 'si'],
+     ['cuentaPropia', 'beneficiaryDetail', 'no'], ['residenciaExtranjera', 'foreignDetail', 'si']].forEach(function (cfg) {
+        form.querySelectorAll('input[name="' + cfg[0] + '"]').forEach(function (r) {
+            r.addEventListener('change', function () {
+                document.getElementById(cfg[1]).hidden = radioVal(cfg[0]) !== cfg[2];
+                var el = form.querySelector('[data-error-for="' + cfg[0] + '"]');
+                if (el) el.textContent = '';
+            });
+        });
     });
-    form.querySelectorAll('input[name="platform"]').forEach(function (r) {
+    form.querySelectorAll('input[name="platforms"]').forEach(function (r) {
         r.addEventListener('change', function () {
-            document.getElementById('clabeField').hidden = this.value !== 'novacore';
+            applyPlatforms();
             form.querySelector('[data-error-for="platform"]').textContent = '';
         });
     });
@@ -315,9 +429,11 @@ document.addEventListener('DOMContentLoaded', function () {
     nextBtn.addEventListener('click', function () {
         if (!stepValidators[current]()) return;
         if (current === steps.length - 1) { submit(); return; }
+        track('step_complete', { step: current });
         current++;
         renderStep();
         saveDraft();
+        track('step_view', { step: current });
     });
     backBtn.addEventListener('click', function () {
         if (current > 0) { current--; renderStep(); }
@@ -452,6 +568,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 setScanStatus(key, a.isLikelyProof ? 'ok' : 'warn',
                     a.isLikelyProof ? '✓ Comprobante legible' + (a.providersFound.length ? ' (' + a.providersFound[0] + ')' : '')
                                     : 'No pudimos confirmar el tipo de comprobante — se revisará manualmente');
+            } else if (key === 'ingresos') {
+                var inc = V.analyzeIncomeProofText(text);
+                checks.ingresos = { engine: 'tesseract', status: inc.isLikelyIncomeProof ? 'ok' : 'unclear', detail: inc };
+                setScanStatus(key, inc.isLikelyIncomeProof ? 'ok' : 'warn',
+                    inc.isLikelyIncomeProof ? '✓ Comprobante de ingresos legible'
+                                            : 'No pudimos confirmar el tipo de documento — se revisará manualmente');
+            } else if (key === 'actaConstitutiva' || key === 'csf' || key === 'poder') {
+                var legible = (text || '').replace(/\s/g, '').length > 120;
+                checks[key] = { engine: 'tesseract', status: legible ? 'ok' : 'unclear', textLength: (text || '').length };
+                setScanStatus(key, legible ? 'ok' : 'warn',
+                    legible ? '✓ Documento legible' : 'Documento poco legible — se revisará manualmente');
             } else {
                 var ine = V.analyzeIneText(text);
                 var match = V.nameMatchScore(fullName(), text);
@@ -475,6 +602,10 @@ document.addEventListener('DOMContentLoaded', function () {
     /* ══ Uploads ══ */
     var UPLOADS = {
         comprobante: { input: 'fileComprobante', imagesOnly: false },
+        ingresos: { input: 'fileIngresos', imagesOnly: false },
+        actaConstitutiva: { input: 'fileActa', imagesOnly: false },
+        csf: { input: 'fileCsf', imagesOnly: false },
+        poder: { input: 'filePoder', imagesOnly: false },
         ineFrente: { input: 'fileIneFrente', imagesOnly: true },
         ineReverso: { input: 'fileIneReverso', imagesOnly: true },
         selfie: { input: 'fileSelfie', imagesOnly: true }
@@ -519,6 +650,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 preview.querySelector('.upload-preview__name').textContent = file.name;
                 drop.parentElement.querySelector('.upload-drop').style.display = 'none';
                 if (key === 'selfie') document.getElementById('selfieActions').hidden = true;
+                track('doc_upload', { meta: { doc: key } });
                 analyzeDocument(key);
             }).catch(function () {
                 setError(cfg.input, 'No pudimos procesar el archivo, intenta con otro');
@@ -594,6 +726,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (el.type === 'radio') { if (el.checked) data[el.name] = el.value; return; }
                 data[el.name] = el.value;
             });
+            data.platforms = selectedPlatforms();
             localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
         } catch (e) { /* almacenamiento no disponible */ }
     }
@@ -603,6 +736,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!raw) return;
             var data = JSON.parse(raw);
             Object.keys(data).forEach(function (name) {
+                if (name === 'platforms') return; // se restaura aparte
                 var el = form.elements[name];
                 if (!el) return;
                 if (el instanceof RadioNodeList || (el.length && el[0] && el[0].type === 'radio')) {
@@ -610,11 +744,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     radios.forEach(function (r) { r.checked = r.value === data[name]; });
                 } else { el.value = data[name]; }
             });
-            if (data.platform === 'novacore') document.getElementById('clabeField').hidden = false;
-            if (data.personType === 'moral') {
-                document.getElementById('moralFields').hidden = false;
-                document.getElementById('curpField').style.display = 'none';
+            if (Array.isArray(data.platforms)) {
+                form.querySelectorAll('input[name="platforms"]').forEach(function (c) {
+                    c.checked = data.platforms.indexOf(c.value) !== -1;
+                });
             }
+            applyPlatforms();
+            applyPersonType();
+            // re-aplica los bloques condicionales de las preguntas AML
+            document.getElementById('pepDetail').hidden = data.pepSelf !== 'si';
+            document.getElementById('pepFamilyDetail').hidden = data.pepFamily !== 'si';
+            document.getElementById('beneficiaryDetail').hidden = data.cuentaPropia !== 'no';
+            document.getElementById('foreignDetail').hidden = data.residenciaExtranjera !== 'si';
         } catch (e) { /* borrador corrupto, se ignora */ }
     })();
     form.addEventListener('change', saveDraft);
@@ -624,8 +765,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var el = document.getElementById('reviewSummary');
         var fe = form.elements;
         var isMoral = fe.personType.value === 'moral';
-        var platform = (form.querySelector('input[name="platform"]:checked') || {}).value || '—';
         var PLATFORM_NAMES = { novacore: 'Novacore', rfq: 'RFQ / Exchange', novapay: 'NovaPay' };
+        var platformList = selectedPlatforms().map(function (p) { return PLATFORM_NAMES[p] || p; }).join(', ') || '—';
+        var hasNovapay = selectedPlatforms().indexOf('novapay') !== -1;
 
         function group(title, stepIdx, rows) {
             var h = '<div class="review__group"><h4>' + title + '<span class="review__edit" data-goto="' + stepIdx + '">Editar</span></h4><dl>';
@@ -640,12 +782,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         el.innerHTML =
-            group('Plataforma', 0, [['Cuenta para', PLATFORM_NAMES[platform] || platform]]) +
+            group('Plataformas', 0, [['Cuenta para', platformList]]) +
             group('Datos generales', 1, [
                 isMoral ? ['Razón social', fe.razonSocial.value] : null,
                 [isMoral ? 'Representante legal' : 'Nombre completo', fullName()],
                 ['Fecha de nacimiento', fe.fechaNacimiento.value],
-                ['Ocupación', fe.ocupacion.value]
+                ['Ocupación', fe.ocupacion.value],
+                hasNovapay ? ['Negocio (NovaPay)', fe.nombreComercial.value + ' — ' + fe.giroNegocio.value] : null
             ].filter(Boolean)) +
             group('Contacto', 2, [['Teléfono', fe.telefono.value], ['Correo', fe.correo.value]]) +
             group('Domicilio', 3, [
@@ -658,15 +801,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 ['Régimen', (fe.regimenFiscal.selectedOptions[0] || {}).textContent],
                 fe.clabe.value ? ['CLABE', fe.clabe.value] : null
             ].filter(Boolean)) +
-            group('Referencias', 5, [
+            group('Perfil transaccional', 5, [
+                ['Origen de recursos', (fe.origenRecursos.selectedOptions[0] || {}).textContent],
+                ['Sector', (fe.sectorEconomico.selectedOptions[0] || {}).textContent],
+                ['Uso de la cuenta', (fe.usoCuenta.selectedOptions[0] || {}).textContent],
+                ['Monto mensual', (fe.montoMensual.selectedOptions[0] || {}).textContent],
+                ['Operaciones/mes', (fe.opsMensuales.selectedOptions[0] || {}).textContent],
+                ['PEP', radioVal('pepSelf') === 'si' ? 'Sí — ' + fe.pepCargo.value : 'No'],
+                ['Familiar PEP', radioVal('pepFamily') === 'si' ? 'Sí — ' + fe.pepFamiliarDetalle.value : 'No'],
+                ['Cuenta propia', radioVal('cuentaPropia') === 'no' ? 'No — ' + fe.beneficiarioNombre.value : 'Sí'],
+                ['Residencia fiscal extranjera', radioVal('residenciaExtranjera') === 'si' ? 'Sí — ' + fe.paisResidencia.value : 'No']
+            ]) +
+            group('Referencias', 6, [
                 ['Referencia 1', fe.ref1Nombre.value + ' · ' + fe.ref1Telefono.value + ' (' + fe.ref1Relacion.value + ')'],
                 ['Referencia 2', fe.ref2Nombre.value + ' · ' + fe.ref2Telefono.value + ' (' + fe.ref2Relacion.value + ')']
             ]) +
-            '<div class="review__group"><h4>Documentos<span class="review__edit" data-goto="6">Editar</span></h4><div class="review__docs">' +
+            '<div class="review__group"><h4>Documentos<span class="review__edit" data-goto="7">Editar</span></h4><div class="review__docs">' +
             docBadge('Comprobante de domicilio', 'comprobante') +
+            docBadge('Comprobante de ingresos', 'ingresos') +
             docBadge('INE frente', 'ineFrente') +
             docBadge('INE reverso', 'ineReverso') +
             docBadge('Selfie con INE', 'selfie') +
+            (isMoral ? docBadge('Acta constitutiva', 'actaConstitutiva') + docBadge('Constancia fiscal', 'csf') : '') +
             '</div></div>';
 
         el.querySelectorAll('.review__edit').forEach(function (b) {
@@ -692,11 +848,14 @@ document.addEventListener('DOMContentLoaded', function () {
         nextBtn.disabled = true;
 
         var payload = {
-            version: 1,
-            platform: (form.querySelector('input[name="platform"]:checked') || {}).value,
+            version: 2,
+            sessionId: sessionId,
+            platforms: selectedPlatforms(),
             personType: fe.personType.value,
             general: {
                 razonSocial: isMoral ? fe.razonSocial.value.trim() : null,
+                negocio: selectedPlatforms().indexOf('novapay') !== -1
+                    ? { nombreComercial: fe.nombreComercial.value.trim(), giro: fe.giroNegocio.value.trim() } : null,
                 nombre: fe.nombre.value.trim(),
                 apellidoPaterno: fe.apellidoPaterno.value.trim(),
                 apellidoMaterno: fe.apellidoMaterno.value.trim(),
@@ -719,31 +878,77 @@ document.addEventListener('DOMContentLoaded', function () {
                 regimenFiscal: fe.regimenFiscal.value,
                 clabe: fe.clabe.value.trim() || null
             },
+            amlProfile: {
+                origenRecursos: fe.origenRecursos.value,
+                sectorEconomico: fe.sectorEconomico.value,
+                usoCuenta: fe.usoCuenta.value,
+                montoMensual: fe.montoMensual.value,
+                opsMensuales: fe.opsMensuales.value,
+                pepSelf: radioVal('pepSelf') === 'si',
+                pepCargo: radioVal('pepSelf') === 'si' ? fe.pepCargo.value.trim() : null,
+                pepFamily: radioVal('pepFamily') === 'si',
+                pepFamiliarDetalle: radioVal('pepFamily') === 'si' ? fe.pepFamiliarDetalle.value.trim() : null,
+                cuentaPropia: radioVal('cuentaPropia') === 'si',
+                beneficiario: radioVal('cuentaPropia') === 'no'
+                    ? { nombre: fe.beneficiarioNombre.value.trim(), relacion: fe.beneficiarioRelacion.value.trim() } : null,
+                residenciaExtranjera: radioVal('residenciaExtranjera') === 'si',
+                paisResidencia: radioVal('residenciaExtranjera') === 'si' ? fe.paisResidencia.value.trim() : null,
+                tinExtranjero: radioVal('residenciaExtranjera') === 'si' ? fe.tinExtranjero.value.trim() : null
+            },
             references: [
                 { nombre: fe.ref1Nombre.value.trim(), telefono: V.validatePhone(fe.ref1Telefono.value).e164, relacion: fe.ref1Relacion.value },
                 { nombre: fe.ref2Nombre.value.trim(), telefono: V.validatePhone(fe.ref2Telefono.value).e164, relacion: fe.ref2Relacion.value }
             ],
             documents: {
                 comprobante: files.comprobante || null,
+                ingresos: files.ingresos || null,
                 ineFrente: files.ineFrente || null,
                 ineReverso: files.ineReverso || null,
-                selfie: files.selfie || null
+                selfie: files.selfie || null,
+                actaConstitutiva: files.actaConstitutiva || null,
+                csf: files.csf || null,
+                poder: files.poder || null
             },
             checks: checks,
             consent: { privacy: fe.consentPrivacy.checked, truth: fe.consentTruth.checked, ts: new Date().toISOString() },
             meta: { userAgent: navigator.userAgent, page: location.href }
         };
 
+        // Clasificación inicial de riesgo (bajo/medio/alto) — se envía al equipo
+        // de cumplimiento junto con los resultados de los motores de detección
+        payload.checks = Object.assign({}, checks, {
+            riskAssessment: V.computeRiskScore({
+                pepSelf: payload.amlProfile.pepSelf,
+                pepFamily: payload.amlProfile.pepFamily,
+                foreignTaxResidency: payload.amlProfile.residenciaExtranjera,
+                sector: payload.amlProfile.sectorEconomico,
+                monthlyVolume: payload.amlProfile.montoMensual,
+                sourceOfFunds: payload.amlProfile.origenRecursos,
+                thirdParty: !payload.amlProfile.cuentaPropia,
+                personType: payload.personType
+            })
+        });
+
+        var body = JSON.stringify(payload);
+        if (body.length > 4.2 * 1024 * 1024) {
+            nextBtn.classList.remove('is-busy');
+            nextBtn.disabled = false;
+            submitError.textContent = 'Tus documentos pesan demasiado en conjunto. Sube versiones más ligeras (fotos en lugar de PDF pesados) e intenta de nuevo.';
+            return;
+        }
+
         fetch('/api/onboarding', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: body
         }).then(function (res) {
             if (!res.ok) return res.json().then(function (b) { throw new Error(b.error || 'Error del servidor (' + res.status + ')'); });
             return res.json();
         }).then(function (body) {
+            track('completed', { meta: { folio: body.folio } });
             showSuccess(body.folio, body.stored);
         }).catch(function (err) {
+            track('submit_error', { meta: { message: err.message } });
             nextBtn.classList.remove('is-busy');
             nextBtn.disabled = false;
             submitError.textContent = 'No pudimos enviar tu solicitud: ' + err.message + '. Intenta de nuevo o escríbenos a direccion@novacoin.mx.';
@@ -760,10 +965,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (stored === false) {
             document.getElementById('successNote').textContent = 'Recibimos tu solicitud. Guarda tu folio — nuestro equipo te contactará por correo para confirmar tu expediente.';
         }
-        try { localStorage.removeItem(DRAFT_KEY); } catch (e) { /* sin almacenamiento */ }
+        try { localStorage.removeItem(DRAFT_KEY); localStorage.removeItem(SESSION_KEY); } catch (e) { /* sin almacenamiento */ }
         stopCamera();
         window.scrollTo({ top: document.getElementById('wizard').offsetTop - 60, behavior: 'smooth' });
     }
 
     renderStep();
+    track('session_start');
 });

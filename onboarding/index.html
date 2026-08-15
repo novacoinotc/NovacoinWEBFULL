@@ -71,32 +71,35 @@
             <form class="onb__card anim" id="onbForm" novalidate>
 
                 <!-- PASO 0: Plataforma -->
-                <fieldset class="onb-step" data-step="0" data-title="Plataforma">
-                    <legend class="onb-step__title">¿Para qué plataforma quieres abrir tu cuenta?</legend>
-                    <p class="onb-step__sub">Puedes elegir una — si necesitas más de una, contáctanos al terminar.</p>
-                    <div class="platform-grid" role="radiogroup" aria-label="Plataforma">
+                <fieldset class="onb-step" data-step="0" data-title="Plataformas">
+                    <legend class="onb-step__title">¿Para qué plataformas quieres abrir tu cuenta?</legend>
+                    <p class="onb-step__sub">Selecciona una o varias — puedes registrarte para todas en simultáneo. Cada producto tiene requisitos propios y, según tu perfil, podremos solicitarte información adicional durante la revisión.</p>
+                    <div class="platform-grid" role="group" aria-label="Plataformas">
                         <label class="platform-card" data-testid="platform-novacore">
-                            <input type="radio" name="platform" value="novacore" required>
+                            <input type="checkbox" name="platforms" value="novacore">
                             <div class="platform-card__inner platform-card__inner--core">
                                 <span class="platform-card__label">Infraestructura</span>
                                 <h3>Novacore</h3>
                                 <p>Core bancario SPEI: cuentas CLABE, dispersiones masivas y nómina para empresas.</p>
+                                <span class="platform-card__req">Pide además: CLABE de tu cuenta</span>
                             </div>
                         </label>
                         <label class="platform-card" data-testid="platform-rfq">
-                            <input type="radio" name="platform" value="rfq" required>
+                            <input type="checkbox" name="platforms" value="rfq">
                             <div class="platform-card__inner platform-card__inner--rfq">
                                 <span class="platform-card__label">Exchange</span>
                                 <h3>RFQ</h3>
                                 <p>Compra y venta de criptomonedas en pesos mexicanos vía SPEI.</p>
+                                <span class="platform-card__req">Requisitos base de identidad</span>
                             </div>
                         </label>
                         <label class="platform-card" data-testid="platform-novapay">
-                            <input type="radio" name="platform" value="novapay" required>
+                            <input type="checkbox" name="platforms" value="novapay">
                             <div class="platform-card__inner platform-card__inner--pay">
                                 <span class="platform-card__label">Pagos</span>
                                 <h3>NovaPay</h3>
                                 <p>Acepta pagos con crypto en tu negocio y recibe pesos mexicanos.</p>
+                                <span class="platform-card__req">Pide además: datos de tu negocio</span>
                             </div>
                         </label>
                     </div>
@@ -124,6 +127,20 @@
                             </div>
                         </div>
                         <p class="field-note">Los siguientes datos corresponden al <strong>representante legal</strong>.</p>
+                    </div>
+                    <div id="novapayFields" hidden>
+                        <div class="field-row field-row--2">
+                            <div class="field">
+                                <label for="nombreComercial">Nombre comercial de tu negocio <span class="label-note">(NovaPay)</span></label>
+                                <input type="text" id="nombreComercial" name="nombreComercial" placeholder="Taquería El Buen Sabor" data-testid="nombre-comercial">
+                                <div class="field-error" data-error-for="nombreComercial"></div>
+                            </div>
+                            <div class="field">
+                                <label for="giroNegocio">Giro del negocio <span class="label-note">(NovaPay)</span></label>
+                                <input type="text" id="giroNegocio" name="giroNegocio" placeholder="Restaurante, tienda, servicios…" data-testid="giro-negocio">
+                                <div class="field-error" data-error-for="giroNegocio"></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="field-row field-row--2">
                         <div class="field">
@@ -283,8 +300,187 @@
                     </div>
                 </fieldset>
 
-                <!-- PASO 5: Referencias -->
-                <fieldset class="onb-step" data-step="5" data-title="Referencias" hidden>
+                <!-- PASO 5: Perfil transaccional / AML -->
+                <fieldset class="onb-step" data-step="5" data-title="Perfil AML" hidden>
+                    <legend class="onb-step__title">Perfil transaccional y origen de recursos</legend>
+                    <p class="onb-step__sub">Como parte de nuestro protocolo de prevención de lavado de dinero (PLD/AML) necesitamos conocer el origen de tus recursos y cómo usarás tu cuenta.</p>
+                    <div class="field-row field-row--2">
+                        <div class="field">
+                            <label for="origenRecursos">Origen de los recursos</label>
+                            <select id="origenRecursos" name="origenRecursos" required data-testid="origen-recursos">
+                                <option value="">Selecciona…</option>
+                                <option value="sueldo">Sueldo o salario</option>
+                                <option value="negocio_propio">Negocio propio</option>
+                                <option value="honorarios">Honorarios profesionales</option>
+                                <option value="inversiones">Rendimientos de inversiones</option>
+                                <option value="ahorro">Ahorros</option>
+                                <option value="herencia_donacion">Herencia o donación</option>
+                                <option value="venta_bienes">Venta de bienes</option>
+                                <option value="efectivo">Actividad en efectivo</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                            <div class="field-error" data-error-for="origenRecursos"></div>
+                        </div>
+                        <div class="field">
+                            <label for="sectorEconomico">Sector de tu actividad económica</label>
+                            <select id="sectorEconomico" name="sectorEconomico" required data-testid="sector">
+                                <option value="">Selecciona…</option>
+                                <option value="comercio">Comercio</option>
+                                <option value="servicios_profesionales">Servicios profesionales</option>
+                                <option value="tecnologia">Tecnología</option>
+                                <option value="manufactura">Manufactura</option>
+                                <option value="agropecuario">Agropecuario</option>
+                                <option value="transporte">Transporte y logística</option>
+                                <option value="salud">Salud</option>
+                                <option value="educacion">Educación</option>
+                                <option value="financiero">Servicios financieros</option>
+                                <option value="gobierno">Gobierno</option>
+                                <option value="inmobiliario">Inmobiliario</option>
+                                <option value="construccion">Construcción</option>
+                                <option value="joyeria_metales">Joyería, metales o piedras preciosas</option>
+                                <option value="arte_antiguedades">Arte y antigüedades</option>
+                                <option value="juegos_apuestas">Juegos con apuesta / sorteos</option>
+                                <option value="prestamos_empeño">Préstamos o casas de empeño</option>
+                                <option value="comercio_exterior">Comercio exterior / aduanas</option>
+                                <option value="blindaje_valores">Blindaje o traslado de valores</option>
+                                <option value="activos_virtuales">Activos virtuales</option>
+                                <option value="efectivo_intensivo">Restaurantes, bares o entretenimiento</option>
+                                <option value="donativos_osc">Organización sin fines de lucro</option>
+                                <option value="otro_sector">Otro</option>
+                            </select>
+                            <div class="field-error" data-error-for="sectorEconomico"></div>
+                        </div>
+                    </div>
+                    <div class="field-row field-row--3">
+                        <div class="field">
+                            <label for="usoCuenta">Uso previsto de la cuenta</label>
+                            <select id="usoCuenta" name="usoCuenta" required data-testid="uso-cuenta">
+                                <option value="">Selecciona…</option>
+                                <option value="compra_venta_ocasional">Compra/venta ocasional</option>
+                                <option value="trading_frecuente">Trading frecuente</option>
+                                <option value="pagos_comercio">Cobrar pagos en mi negocio</option>
+                                <option value="dispersiones_nomina">Dispersiones / nómina</option>
+                                <option value="remesas">Envíos al extranjero</option>
+                                <option value="tesoreria_empresarial">Tesorería empresarial</option>
+                            </select>
+                            <div class="field-error" data-error-for="usoCuenta"></div>
+                        </div>
+                        <div class="field">
+                            <label for="montoMensual">Monto mensual estimado</label>
+                            <select id="montoMensual" name="montoMensual" required data-testid="monto-mensual">
+                                <option value="">Selecciona…</option>
+                                <option value="menos_20k">Menos de $20,000 MXN</option>
+                                <option value="20k_100k">$20,000 – $100,000 MXN</option>
+                                <option value="100k_500k">$100,000 – $500,000 MXN</option>
+                                <option value="mas_500k">Más de $500,000 MXN</option>
+                            </select>
+                            <div class="field-error" data-error-for="montoMensual"></div>
+                        </div>
+                        <div class="field">
+                            <label for="opsMensuales">Operaciones al mes</label>
+                            <select id="opsMensuales" name="opsMensuales" required data-testid="ops-mensuales">
+                                <option value="">Selecciona…</option>
+                                <option value="1_5">1 a 5</option>
+                                <option value="6_20">6 a 20</option>
+                                <option value="21_100">21 a 100</option>
+                                <option value="mas_100">Más de 100</option>
+                            </select>
+                            <div class="field-error" data-error-for="opsMensuales"></div>
+                        </div>
+                    </div>
+
+                    <div class="aml-question" data-testid="pep-self">
+                        <p>¿Desempeñas o has desempeñado en los últimos 2 años un cargo público destacado, en México o el extranjero? <span class="label-note">(Persona Expuesta Políticamente)</span></p>
+                        <div class="radio-row">
+                            <label><input type="radio" name="pepSelf" value="si" required> Sí</label>
+                            <label><input type="radio" name="pepSelf" value="no" required> No</label>
+                        </div>
+                        <div class="field aml-detail" id="pepDetail" hidden>
+                            <label for="pepCargo">Cargo y dependencia</label>
+                            <input type="text" id="pepCargo" name="pepCargo" placeholder="Ej. Director en Secretaría de…" data-testid="pep-cargo">
+                            <div class="field-error" data-error-for="pepCargo"></div>
+                        </div>
+                        <div class="field-error" data-error-for="pepSelf"></div>
+                    </div>
+                    <div class="aml-question" data-testid="pep-family">
+                        <p>¿Tu cónyuge, algún familiar hasta segundo grado o socio cercano es Persona Expuesta Políticamente?</p>
+                        <div class="radio-row">
+                            <label><input type="radio" name="pepFamily" value="si" required> Sí</label>
+                            <label><input type="radio" name="pepFamily" value="no" required> No</label>
+                        </div>
+                        <div class="field aml-detail" id="pepFamilyDetail" hidden>
+                            <label for="pepFamiliarDetalle">Nombre, parentesco y cargo</label>
+                            <input type="text" id="pepFamiliarDetalle" name="pepFamiliarDetalle" placeholder="Ej. Hermano — Regidor municipal" data-testid="pep-familiar">
+                            <div class="field-error" data-error-for="pepFamiliarDetalle"></div>
+                        </div>
+                        <div class="field-error" data-error-for="pepFamily"></div>
+                    </div>
+                    <div class="aml-question" data-testid="cuenta-propia">
+                        <p>¿Operarás por cuenta propia? <span class="label-note">(es decir, los recursos son tuyos y no de un tercero)</span></p>
+                        <div class="radio-row">
+                            <label><input type="radio" name="cuentaPropia" value="si" required> Sí, por cuenta propia</label>
+                            <label><input type="radio" name="cuentaPropia" value="no" required> No, por cuenta de un tercero</label>
+                        </div>
+                        <div class="aml-detail" id="beneficiaryDetail" hidden>
+                            <div class="field-row field-row--2">
+                                <div class="field">
+                                    <label for="beneficiarioNombre">Nombre completo del beneficiario / dueño de los recursos</label>
+                                    <input type="text" id="beneficiarioNombre" name="beneficiarioNombre" data-testid="beneficiario-nombre">
+                                    <div class="field-error" data-error-for="beneficiarioNombre"></div>
+                                </div>
+                                <div class="field">
+                                    <label for="beneficiarioRelacion">Relación con el beneficiario</label>
+                                    <input type="text" id="beneficiarioRelacion" name="beneficiarioRelacion" placeholder="Ej. empleador, familiar…" data-testid="beneficiario-relacion">
+                                    <div class="field-error" data-error-for="beneficiarioRelacion"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field-error" data-error-for="cuentaPropia"></div>
+                    </div>
+                    <div class="aml-question" data-testid="residencia-fiscal">
+                        <p>¿Tienes residencia fiscal en otro país o eres contribuyente en EE. UU.? <span class="label-note">(FATCA / CRS)</span></p>
+                        <div class="radio-row">
+                            <label><input type="radio" name="residenciaExtranjera" value="si" required> Sí</label>
+                            <label><input type="radio" name="residenciaExtranjera" value="no" required> No</label>
+                        </div>
+                        <div class="aml-detail" id="foreignDetail" hidden>
+                            <div class="field-row field-row--2">
+                                <div class="field">
+                                    <label for="paisResidencia">País de residencia fiscal</label>
+                                    <input type="text" id="paisResidencia" name="paisResidencia" data-testid="pais-residencia">
+                                    <div class="field-error" data-error-for="paisResidencia"></div>
+                                </div>
+                                <div class="field">
+                                    <label for="tinExtranjero">Número de identificación fiscal (TIN)</label>
+                                    <input type="text" id="tinExtranjero" name="tinExtranjero" data-testid="tin-extranjero">
+                                    <div class="field-error" data-error-for="tinExtranjero"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field-error" data-error-for="residenciaExtranjera"></div>
+                    </div>
+
+                    <div class="upload-block" data-upload="ingresos">
+                        <label class="upload-block__label">Comprobante de ingresos <span>(recibo de nómina reciente, estados de cuenta de los últimos 3 meses o declaración anual. JPG, PNG o PDF)</span></label>
+                        <div class="upload-drop" tabindex="0" data-testid="upload-ingresos">
+                            <input type="file" id="fileIngresos" name="fileIngresos" accept="image/jpeg,image/png,image/webp,application/pdf" hidden>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg>
+                            <span class="upload-drop__text">Arrastra tu comprobante o <strong>haz clic para subirlo</strong></span>
+                        </div>
+                        <div class="upload-preview" hidden>
+                            <img alt="Vista previa del comprobante de ingresos" hidden>
+                            <div class="upload-preview__info">
+                                <span class="upload-preview__name"></span>
+                                <span class="upload-preview__scan" data-testid="scan-ingresos"></span>
+                            </div>
+                            <button type="button" class="upload-preview__remove" aria-label="Quitar archivo">&times;</button>
+                        </div>
+                        <div class="field-error" data-error-for="fileIngresos"></div>
+                    </div>
+                </fieldset>
+
+                <!-- PASO 6: Referencias -->
+                <fieldset class="onb-step" data-step="6" data-title="Referencias" hidden>
                     <legend class="onb-step__title">Referencias personales</legend>
                     <p class="onb-step__sub">Dos personas que puedan confirmar tu identidad. No deben vivir contigo.</p>
                     <div class="ref-block">
@@ -335,8 +531,8 @@
                     </div>
                 </fieldset>
 
-                <!-- PASO 6: Identificación -->
-                <fieldset class="onb-step" data-step="6" data-title="Identificación" hidden>
+                <!-- PASO 7: Identificación -->
+                <fieldset class="onb-step" data-step="7" data-title="Identificación" hidden>
                     <legend class="onb-step__title">Identificación oficial</legend>
                     <p class="onb-step__sub">INE/IFE vigente (frente y reverso) o pasaporte. Nuestro motor OCR verifica que el documento sea legible y coincida con tus datos.</p>
                     <div class="upload-block" data-upload="ineFrente">
@@ -373,10 +569,65 @@
                         </div>
                         <div class="field-error" data-error-for="fileIneReverso"></div>
                     </div>
+
+                    <div id="moralDocs" hidden>
+                        <p class="field-note" style="margin-top:26px"><strong>Documentos de la empresa</strong> — requeridos para persona moral.</p>
+                        <div class="upload-block" data-upload="actaConstitutiva">
+                            <label class="upload-block__label">Acta constitutiva <span>(con sello de inscripción en el Registro Público. PDF o imagen, máx. 3 MB)</span></label>
+                            <div class="upload-drop" tabindex="0" data-testid="upload-acta">
+                                <input type="file" id="fileActa" name="fileActa" accept="image/jpeg,image/png,image/webp,application/pdf" hidden>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+                                <span class="upload-drop__text">Sube el <strong>acta constitutiva</strong></span>
+                            </div>
+                            <div class="upload-preview" hidden>
+                                <img alt="Vista previa acta constitutiva" hidden>
+                                <div class="upload-preview__info">
+                                    <span class="upload-preview__name"></span>
+                                    <span class="upload-preview__scan" data-testid="scan-acta-constitutiva"></span>
+                                </div>
+                                <button type="button" class="upload-preview__remove" aria-label="Quitar archivo">&times;</button>
+                            </div>
+                            <div class="field-error" data-error-for="fileActa"></div>
+                        </div>
+                        <div class="upload-block" data-upload="csf">
+                            <label class="upload-block__label">Constancia de Situación Fiscal (SAT) <span>(emitida en los últimos 3 meses)</span></label>
+                            <div class="upload-drop" tabindex="0" data-testid="upload-csf">
+                                <input type="file" id="fileCsf" name="fileCsf" accept="image/jpeg,image/png,image/webp,application/pdf" hidden>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+                                <span class="upload-drop__text">Sube tu <strong>constancia de situación fiscal</strong></span>
+                            </div>
+                            <div class="upload-preview" hidden>
+                                <img alt="Vista previa constancia fiscal" hidden>
+                                <div class="upload-preview__info">
+                                    <span class="upload-preview__name"></span>
+                                    <span class="upload-preview__scan" data-testid="scan-csf"></span>
+                                </div>
+                                <button type="button" class="upload-preview__remove" aria-label="Quitar archivo">&times;</button>
+                            </div>
+                            <div class="field-error" data-error-for="fileCsf"></div>
+                        </div>
+                        <div class="upload-block" data-upload="poder">
+                            <label class="upload-block__label">Poder del representante legal <span>(opcional si el acta ya acredita facultades)</span></label>
+                            <div class="upload-drop" tabindex="0" data-testid="upload-poder">
+                                <input type="file" id="filePoder" name="filePoder" accept="image/jpeg,image/png,image/webp,application/pdf" hidden>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 15l-2 5 2-1 2 1-2-5z"/><circle cx="12" cy="9" r="6"/><path d="M9.5 9l1.8 1.8L15 7"/></svg>
+                                <span class="upload-drop__text">Sube el <strong>poder notarial</strong> (opcional)</span>
+                            </div>
+                            <div class="upload-preview" hidden>
+                                <img alt="Vista previa poder" hidden>
+                                <div class="upload-preview__info">
+                                    <span class="upload-preview__name"></span>
+                                    <span class="upload-preview__scan" data-testid="scan-poder"></span>
+                                </div>
+                                <button type="button" class="upload-preview__remove" aria-label="Quitar archivo">&times;</button>
+                            </div>
+                            <div class="field-error" data-error-for="filePoder"></div>
+                        </div>
+                    </div>
                 </fieldset>
 
-                <!-- PASO 7: Selfie -->
-                <fieldset class="onb-step" data-step="7" data-title="Selfie" hidden>
+                <!-- PASO 8: Selfie -->
+                <fieldset class="onb-step" data-step="8" data-title="Selfie" hidden>
                     <legend class="onb-step__title">Selfie sosteniendo tu identificación</legend>
                     <p class="onb-step__sub">Tómate una foto sosteniendo tu INE junto a tu rostro. Ambos deben verse claramente, con buena luz y sin lentes oscuros.</p>
                     <div class="selfie-area">
@@ -411,8 +662,8 @@
                     </div>
                 </fieldset>
 
-                <!-- PASO 8: Revisión -->
-                <fieldset class="onb-step" data-step="8" data-title="Revisión" hidden>
+                <!-- PASO 9: Revisión -->
+                <fieldset class="onb-step" data-step="9" data-title="Revisión" hidden>
                     <legend class="onb-step__title">Revisa tu información</legend>
                     <div class="review" id="reviewSummary" data-testid="review-summary"></div>
                     <div class="consent">

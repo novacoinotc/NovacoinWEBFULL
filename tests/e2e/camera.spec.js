@@ -11,9 +11,9 @@ test('captura selfie con la cámara', async ({ page }) => {
     await page.getByTestId('platform-rfq').click();
     await page.getByTestId('next-btn').click();
     // El paso de selfie exige llegar con datos; verificamos aquí solo el hardware:
-    // abrimos la cámara desde el DOM del paso 7 (oculto ≠ deshabilitado para JS)
+    // abrimos la cámara desde el DOM del paso 8 (oculto ≠ deshabilitado para JS)
     await page.evaluate(() => {
-        document.querySelectorAll('.onb-step').forEach((s) => { s.hidden = s.dataset.step !== '7'; });
+        document.querySelectorAll('.onb-step').forEach((s) => { s.hidden = s.dataset.step !== '8'; });
     });
     await page.getByTestId('open-camera').click();
     await expect(page.locator('#selfieCamera')).toBeVisible();
