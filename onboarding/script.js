@@ -746,7 +746,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }).catch(function (err) {
             nextBtn.classList.remove('is-busy');
             nextBtn.disabled = false;
-            submitError.textContent = 'No pudimos enviar tu solicitud: ' + err.message + '. Intenta de nuevo o escríbenos por WhatsApp.';
+            submitError.textContent = 'No pudimos enviar tu solicitud: ' + err.message + '. Intenta de nuevo o escríbenos a direccion@novacoin.mx.';
         });
     }
 
@@ -758,7 +758,7 @@ document.addEventListener('DOMContentLoaded', function () {
         success.hidden = false;
         document.getElementById('folioNumber').textContent = folio;
         if (stored === false) {
-            document.getElementById('successNote').textContent = 'Recibimos tu solicitud. Guarda tu folio — nuestro equipo te contactará por WhatsApp o correo para confirmar tu expediente.';
+            document.getElementById('successNote').textContent = 'Recibimos tu solicitud. Guarda tu folio — nuestro equipo te contactará por correo para confirmar tu expediente.';
         }
         try { localStorage.removeItem(DRAFT_KEY); } catch (e) { /* sin almacenamiento */ }
         stopCamera();
