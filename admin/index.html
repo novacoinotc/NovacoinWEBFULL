@@ -54,6 +54,28 @@
         a{color:var(--accent);text-decoration:none}
         .muted{color:var(--t3)}
         .mono{font-family:var(--mono)}
+        button.mini{padding:5px 12px;font-size:0.7rem;border-radius:8px}
+        button.ok{background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.4);color:var(--ok)}
+        button.danger{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.4);color:var(--err)}
+        /* Modal expediente */
+        .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:4vh 16px;overflow-y:auto}
+        .modal{background:var(--bg2);border:1px solid var(--border-h);border-radius:20px;max-width:1000px;width:100%;padding:28px clamp(18px,3vw,36px);margin-bottom:6vh}
+        .modal__head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+        .modal__head h3{font-family:var(--mono);font-size:1.1rem;color:var(--accent)}
+        .modal__close{margin-left:auto;font-size:1.4rem;color:var(--t3);background:none;border:none;padding:4px 10px}
+        .modal__close:hover{color:var(--err)}
+        .modal__actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 22px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+        .modal h4{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin:20px 0 8px}
+        .kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:4px 20px;font-size:0.8rem}
+        .kv div{display:flex;justify-content:space-between;gap:10px;padding:3px 0;border-bottom:1px dashed rgba(255,255,255,0.04)}
+        .kv dt{color:var(--t3);flex-shrink:0}
+        .kv dd{color:var(--t1);text-align:right;word-break:break-word}
+        .gallery{display:flex;gap:12px;flex-wrap:wrap}
+        .gallery a{display:block;text-align:center;font-size:0.68rem;color:var(--t3)}
+        .gallery img{width:210px;height:140px;object-fit:cover;border-radius:10px;border:1px solid var(--border-h);display:block;margin-bottom:4px;background:#000}
+        .gallery img:hover{border-color:var(--accent)}
+        .gallery .pdf{width:210px;height:140px;border-radius:10px;border:1px solid var(--border-h);display:flex;align-items:center;justify-content:center;font-family:var(--mono);color:var(--warn);margin-bottom:4px;background:rgba(255,255,255,0.02)}
+        .review-note{margin-top:16px;padding:12px 16px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.02);font-size:0.8rem}
     </style>
 </head>
 <body>
@@ -89,9 +111,27 @@
 
         <h2>Solicitudes completadas</h2>
         <div class="wrap"><table id="requestsTable" data-testid="requests-table">
-            <thead><tr><th>Fecha</th><th>Folio</th><th>Nombre</th><th>Correo</th><th>Teléfono</th><th>RFC</th><th>Plataformas</th><th>Riesgo</th><th>Estatus</th></tr></thead>
+            <thead><tr><th>Fecha</th><th>Folio</th><th>Nombre</th><th>Correo</th><th>Teléfono</th><th>RFC</th><th>Plataformas</th><th>Riesgo</th><th>Estatus</th><th></th></tr></thead>
             <tbody></tbody>
         </table></div>
+    </div>
+
+    <div class="overlay" id="expOverlay" hidden data-testid="expediente-modal">
+        <div class="modal">
+            <div class="modal__head">
+                <h3 id="expFolio"></h3>
+                <span id="expStatus"></span>
+                <span id="expRisk"></span>
+                <button class="modal__close" id="expClose" aria-label="Cerrar" data-testid="exp-close">&times;</button>
+            </div>
+            <div class="muted" id="expMeta" style="font-size:0.75rem"></div>
+            <div class="modal__actions">
+                <button class="ok" id="btnApprove" data-testid="btn-approve">✓ Aprobar expediente</button>
+                <button class="danger" id="btnReject" data-testid="btn-reject">✕ Rechazar</button>
+                <button class="ghost" id="btnReopen" data-testid="btn-reopen">Reabrir a pendiente</button>
+            </div>
+            <div id="expBody">Cargando…</div>
+        </div>
     </div>
 
     <script>
@@ -99,6 +139,7 @@
         'use strict';
         var KEY_STORE = 'novacoin_admin_key';
         var STEP_NAMES = ['Plataformas', 'Datos generales', 'Contacto', 'Domicilio', 'Fiscales', 'Perfil AML', 'Referencias', 'Identificación', 'Selfie', 'Revisión'];
+        var currentKey = '';
         var msg = document.getElementById('statusMsg');
         var content = document.getElementById('content');
         var refreshBtn = document.getElementById('refreshBtn');
@@ -113,6 +154,11 @@
             var d = new Date(s);
             return d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short' }) + ' ' +
                    d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+        }
+        var STATUS_LABELS = { pending_review: ['pendiente', 'warn'], approved: ['aprobado', 'ok'], rejected: ['rechazado', 'err'] };
+        function statusTag(s) {
+            var v = STATUS_LABELS[s] || [s, ''];
+            return '<span class="tag ' + v[1] + '">' + esc(v[0]) + '</span>';
         }
         function riskTag(r) {
             if (!r) return '<span class="tag">—</span>';
@@ -134,6 +180,7 @@
                     if (res.status !== 200 || !res.body.ok) {
                         throw new Error(res.body.error || 'Error ' + res.status);
                     }
+                    currentKey = key;
                     try { localStorage.setItem(KEY_STORE, key); } catch (e) {}
                     refreshBtn.hidden = false;
                     render(res.body);
@@ -161,7 +208,10 @@
                 '<div class="card hl"><b>' + (s.completed || 0) + '</b><span>Onboardings completados</span></div>' +
                 '<div class="card"><b>' + conv + '%</b><span>Conversión</span></div>' +
                 '<div class="card"><b>' + (s.withContact || 0) + '</b><span>Recuperables (dejaron contacto)</span></div>' +
-                '<div class="card risk"><b>' + (s.highRisk || 0) + '</b><span>Solicitudes riesgo alto</span></div>';
+                '<div class="card"><b>' + (s.pending || 0) + '</b><span>Pendientes de revisión</span></div>' +
+                '<div class="card hl"><b>' + (s.approved || 0) + '</b><span>Aprobadas</span></div>' +
+                '<div class="card risk"><b>' + (s.rejected || 0) + '</b><span>Rechazadas</span></div>' +
+                '<div class="card risk"><b>' + (s.highRisk || 0) + '</b><span>Riesgo alto</span></div>';
 
             // funnel
             var byStep = {};
@@ -201,9 +251,125 @@
                     '<td>' + esc(r.nombre || '—') + '</td><td>' + esc(r.correo || '—') + '</td>' +
                     '<td>' + esc(r.telefono || '—') + '</td><td class="mono">' + esc(r.rfc || '—') + '</td>' +
                     '<td>' + esc(r.platform || '—') + '</td><td>' + riskTag(r.risk_level) + '</td>' +
-                    '<td><span class="tag">' + esc(r.status) + '</span></td></tr>';
-            }).join('') || '<tr><td colspan="9" class="muted">Sin solicitudes completadas aún.</td></tr>';
+                    '<td>' + statusTag(r.status) + '</td>' +
+                    '<td><button class="mini" data-folio="' + esc(r.folio) + '" data-testid="btn-revisar">Revisar</button></td></tr>';
+            }).join('') || '<tr><td colspan="10" class="muted">Sin solicitudes completadas aún.</td></tr>';
+            document.querySelectorAll('#requestsTable [data-folio]').forEach(function (b) {
+                b.addEventListener('click', function () { openExpediente(b.dataset.folio); });
+            });
         }
+
+        /* ══ Expediente: detalle, documentos y acciones ══ */
+        var overlay = document.getElementById('expOverlay');
+        var expFolio = '';
+        var DOC_LABELS = { comprobante: 'Comprobante domicilio', ingresos: 'Comprobante ingresos', ineFrente: 'INE frente', ineReverso: 'INE reverso', selfie: 'Selfie con INE', actaConstitutiva: 'Acta constitutiva', csf: 'Constancia fiscal', poder: 'Poder representante' };
+        var AML_LABELS = { origenRecursos: 'Origen de recursos', sectorEconomico: 'Sector', usoCuenta: 'Uso de la cuenta', montoMensual: 'Monto mensual', opsMensuales: 'Operaciones/mes' };
+
+        function kvSection(title, obj, labels) {
+            if (!obj) return '';
+            var rows = Object.keys(obj).map(function (k) {
+                var v = obj[k];
+                if (v === null || v === undefined || v === '' ) return '';
+                if (typeof v === 'boolean') v = v ? 'Sí' : 'No';
+                if (typeof v === 'object') v = Object.values(v).filter(Boolean).join(' — ');
+                return '<div><dt>' + esc((labels && labels[k]) || k) + '</dt><dd>' + esc(v) + '</dd></div>';
+            }).join('');
+            if (!rows) return '';
+            return '<h4>' + esc(title) + '</h4><div class="kv">' + rows + '</div>';
+        }
+
+        function checkSummary(c) {
+            if (!c) return '—';
+            var map = { ok: '✓ ok', unclear: '△ poco legible', manual_review: '△ revisión manual', no_face: '✗ sin rostro', hit: '✗ COINCIDENCIA', clear: '✓ limpio' };
+            return (map[c.status] || c.status) + (c.engine && c.engine !== 'none' ? ' (' + c.engine + ')' : '');
+        }
+
+        function docUrl(folio, k) {
+            return '/api/admin?key=' + encodeURIComponent(currentKey) + '&folio=' + encodeURIComponent(folio) + '&doc=' + encodeURIComponent(k);
+        }
+
+        function openExpediente(folio) {
+            expFolio = folio;
+            overlay.hidden = false;
+            document.getElementById('expFolio').textContent = folio;
+            document.getElementById('expStatus').innerHTML = '';
+            document.getElementById('expRisk').innerHTML = '';
+            document.getElementById('expBody').textContent = 'Cargando…';
+            fetch('/api/admin?folio=' + encodeURIComponent(folio), { headers: { 'x-admin-key': currentKey } })
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    if (!d.ok) throw new Error(d.error || 'Error');
+                    renderExpediente(d);
+                })
+                .catch(function (e) {
+                    document.getElementById('expBody').innerHTML = '<span style="color:var(--err)">' + esc(e.message) + '</span>';
+                });
+        }
+
+        function renderExpediente(d) {
+            document.getElementById('expStatus').innerHTML = statusTag(d.status);
+            document.getElementById('expRisk').innerHTML = riskTag(d.riskLevel);
+            document.getElementById('expMeta').textContent = 'Recibido: ' + fmtDate(d.createdAt) + ' · Plataformas: ' + (d.platform || '—') + ' · ' + (d.personType === 'moral' ? 'Persona moral' : 'Persona física');
+            document.getElementById('btnReopen').hidden = d.status === 'pending_review';
+            document.getElementById('btnApprove').hidden = d.status === 'approved';
+            document.getElementById('btnReject').hidden = d.status === 'rejected';
+
+            var docsHtml = Object.keys(d.documents || {}).map(function (k) {
+                var doc = d.documents[k];
+                var url = docUrl(d.folio, k);
+                var inner = doc.isPdf ? '<span class="pdf">PDF ↗</span>' : '<img src="' + url + '" alt="' + esc(DOC_LABELS[k] || k) + '" loading="lazy">';
+                return '<a href="' + url + '" target="_blank" rel="noopener">' + inner + esc(DOC_LABELS[k] || k) + '</a>';
+            }).join('') || '<span class="muted">Sin documentos.</span>';
+
+            var checksObj = d.checks || {};
+            var motores = {};
+            Object.keys(d.documents || {}).forEach(function (k) { motores[(DOC_LABELS[k] || k)] = checkSummary(checksObj[k]); });
+            var sanc = d.sanctionsScreening || {};
+            motores['Screening OFAC (' + (sanc.listSize || 0) + ' listas)'] = checkSummary(sanc);
+            if (d.serverRisk) motores['Riesgo (' + d.serverRisk.score + ' pts)'] = d.serverRisk.level + (d.serverRisk.reasons && d.serverRisk.reasons.length ? ' — ' + d.serverRisk.reasons.join('; ') : '');
+
+            var reviewHtml = d.review
+                ? '<div class="review-note">Última revisión: <b>' + esc(d.review.status) + '</b> el ' + fmtDate(d.review.at) + (d.review.reason ? ' — Motivo: ' + esc(d.review.reason) : '') + '</div>'
+                : '';
+
+            document.getElementById('expBody').innerHTML =
+                '<h4>Documentos</h4><div class="gallery">' + docsHtml + '</div>' +
+                kvSection('Motores de verificación', motores, null) +
+                kvSection('Datos generales', d.general, { nombre: 'Nombre(s)', apellidoPaterno: 'Apellido paterno', apellidoMaterno: 'Apellido materno', fechaNacimiento: 'Fecha de nacimiento', nacionalidad: 'Nacionalidad', ocupacion: 'Ocupación', razonSocial: 'Razón social', negocio: 'Negocio (NovaPay)' }) +
+                kvSection('Contacto', d.contact, { correo: 'Correo', telefono: 'Teléfono' }) +
+                kvSection('Domicilio', d.address, { calle: 'Calle', numExt: 'Número', colonia: 'Colonia', cp: 'CP', ciudad: 'Ciudad', estado: 'Estado' }) +
+                kvSection('Fiscal', d.fiscal, { rfc: 'RFC', curp: 'CURP', clabe: 'CLABE', regimenFiscal: 'Régimen' }) +
+                kvSection('Perfil AML', d.amlProfile, Object.assign({ pepSelf: 'PEP', pepCargo: 'Cargo PEP', pepFamily: 'Familiar PEP', pepFamiliarDetalle: 'Detalle familiar', cuentaPropia: 'Cuenta propia', beneficiario: 'Beneficiario', residenciaExtranjera: 'Residencia fiscal extranjera', paisResidencia: 'País', tinExtranjero: 'TIN' }, AML_LABELS)) +
+                kvSection('Referencias', (d.references || []).reduce(function (acc, r, i) { acc['Referencia ' + (i + 1)] = r.nombre + ' · ' + r.telefono + ' (' + r.relacion + ')'; return acc; }, {}), null) +
+                reviewHtml;
+        }
+
+        function doAction(action) {
+            var reason = null;
+            if (action === 'reject') {
+                reason = window.prompt('Motivo del rechazo (se guarda en el expediente):');
+                if (reason === null) return;
+            }
+            if (action === 'approve' && !window.confirm('¿Aprobar el expediente ' + expFolio + '?')) return;
+            fetch('/api/admin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-admin-key': currentKey },
+                body: JSON.stringify({ action: action, folio: expFolio, reason: reason })
+            })
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    if (!d.ok) throw new Error(d.error || 'Error');
+                    openExpediente(expFolio);
+                    load(currentKey);
+                })
+                .catch(function (e) { alert('Error: ' + e.message); });
+        }
+        document.getElementById('btnApprove').addEventListener('click', function () { doAction('approve'); });
+        document.getElementById('btnReject').addEventListener('click', function () { doAction('reject'); });
+        document.getElementById('btnReopen').addEventListener('click', function () { doAction('reopen'); });
+        document.getElementById('expClose').addEventListener('click', function () { overlay.hidden = true; });
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.hidden = true; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') overlay.hidden = true; });
 
         document.getElementById('keyForm').addEventListener('submit', function (e) {
             e.preventDefault();

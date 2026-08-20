@@ -442,4 +442,36 @@ test.describe('Dashboard de administración', () => {
         const res = await request.get('/api/admin');
         expect(res.status()).toBe(401);
     });
+
+    test('las acciones de revisión exigen clave y validan la entrada', async ({ request }) => {
+        // sin clave → 401
+        let res = await request.post('/api/admin', { data: { action: 'approve', folio: 'NC-X' } });
+        expect(res.status()).toBe(401);
+        // con clave pero acción inexistente → 422
+        res = await request.post('/api/admin', {
+            headers: { 'x-admin-key': 'test-admin-key' },
+            data: { action: 'hackear', folio: 'NC-X' }
+        });
+        expect(res.status()).toBe(422);
+        // acción válida sin DB configurada (entorno de pruebas) → 503
+        res = await request.post('/api/admin', {
+            headers: { 'x-admin-key': 'test-admin-key' },
+            data: { action: 'approve', folio: 'NC-X' }
+        });
+        expect(res.status()).toBe(503);
+        // detalle de expediente sin DB → 503, y sin clave → 401
+        res = await request.get('/api/admin?folio=NC-X', { headers: { 'x-admin-key': 'test-admin-key' } });
+        expect(res.status()).toBe(503);
+        res = await request.get('/api/admin?folio=NC-X');
+        expect(res.status()).toBe(401);
+    });
+
+    test('el dashboard tiene el modal de expediente con botones de revisión', async ({ page }) => {
+        await page.goto('/admin/');
+        await expect(page.getByTestId('expediente-modal')).toBeHidden();
+        // el modal existe en el DOM con sus tres acciones
+        expect(await page.getByTestId('btn-approve').count()).toBe(1);
+        expect(await page.getByTestId('btn-reject').count()).toBe(1);
+        expect(await page.getByTestId('btn-reopen').count()).toBe(1);
+    });
 });
