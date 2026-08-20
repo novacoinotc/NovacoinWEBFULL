@@ -1,7 +1,9 @@
 // Config Playwright — corre contra el server local o contra el contenedor Docker (BASE_URL)
 const { defineConfig, devices } = require('@playwright/test');
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:8080';
+// Puerto propio de pruebas (8099): nunca colisiona con el server de desarrollo
+// ni con el contenedor Docker, que sí pueden apuntar a la base de datos real.
+const BASE_URL = process.env.BASE_URL || 'http://localhost:8099';
 
 module.exports = defineConfig({
     testDir: './tests/e2e',
@@ -23,9 +25,10 @@ module.exports = defineConfig({
     webServer: {
         command: 'node server.js',
         url: BASE_URL + '/onboarding/',
-        reuseExistingServer: true,
+        // Nunca reutilizar un server ajeno: podría estar conectado a la DB real
+        reuseExistingServer: false,
         timeout: 30000,
         // Las pruebas corren sin DB (no ensucian Neon) y con clave admin propia
-        env: { DATABASE_URL: '', ADMIN_KEY: 'test-admin-key', SANCTIONS_SCREENING: 'off' }
+        env: { PORT: '8099', DATABASE_URL: '', ADMIN_KEY: 'test-admin-key', SANCTIONS_SCREENING: 'off' }
     }
 });

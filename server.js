@@ -21,6 +21,8 @@ const trackHandler = require('./api/track.js');
 const adminHandler = require('./api/admin.js');
 
 const PORT = process.env.PORT || 8080;
+// Salvaguarda: el puerto de pruebas jamás debe hablar con la base de datos real
+if (String(PORT) === '8099') process.env.DATABASE_URL = '';
 const ROOT = __dirname;
 const MIME = {
     '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'application/javascript',
