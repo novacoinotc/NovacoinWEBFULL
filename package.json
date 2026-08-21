@@ -7,7 +7,8 @@
     "start": "node server.js",
     "test:validators": "node tests/validators.test.js",
     "test:e2e": "playwright test",
-    "test": "npm run test:validators && npm run test:e2e"
+    "test": "npm run test:validators && npm run test:e2e",
+    "refresh-lists": "node scripts/refresh-lists.js"
   },
   "dependencies": {
     "pg": "^8.13.0"

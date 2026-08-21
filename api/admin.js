@@ -5,9 +5,13 @@
  *   GET  /api/admin                     → resumen: funnel, sesiones, solicitudes
  *   GET  /api/admin?folio=NC-...        → expediente completo (sin binarios)
  *   GET  /api/admin?folio=NC-...&doc=k  → documento binario (imagen o PDF)
+ *   GET  /api/admin?screen=NOMBRE[&rfc=..][&loose=1] → búsqueda manual en listas
+ *   GET  /api/admin?lists=1             → estado de las listas de sanciones
  *   POST /api/admin {action, folio, reason} → aprobar / rechazar / reabrir
+ *   POST /api/admin {action:'refresh_list', list} → redescarga una lista
  */
 const { getPool, ensureSchema } = require('../lib/db.js');
+const sanctions = require('../lib/sanctions.js');
 
 const ACTIONS = { approve: 'approved', reject: 'rejected', reopen: 'pending_review' };
 
@@ -103,6 +107,16 @@ module.exports = async function handler(req, res) {
     if (req.method === 'POST') {
         let b;
         try { b = await readBody(req); } catch (e) { return json(res, 400, { error: e.message }); }
+        if (b && b.action === 'refresh_list') {
+            if (!pool) return json(res, 503, { error: 'Base de datos no configurada' });
+            if (!sanctions.SOURCES[b.list]) return json(res, 422, { error: 'Lista desconocida' });
+            try {
+                const r = await sanctions.refreshList(b.list, { timeoutMs: 150000 });
+                return json(res, 200, { ok: true, ...r });
+            } catch (e) {
+                return json(res, 502, { error: 'No se pudo actualizar: ' + e.message });
+            }
+        }
         const status = ACTIONS[b && b.action];
         if (!status || !b.folio) return json(res, 422, { error: 'Acción o folio inválidos' });
         if (!pool) return json(res, 503, { error: 'Base de datos no configurada' });
@@ -129,6 +143,29 @@ module.exports = async function handler(req, res) {
     const url = new URL(req.url, 'http://x');
     const folio = url.searchParams.get('folio');
     const doc = url.searchParams.get('doc');
+    const screen = url.searchParams.get('screen');
+    const wantLists = url.searchParams.get('lists');
+
+    if (screen !== null || wantLists) {
+        if (!pool) return json(res, 503, { error: 'Base de datos no configurada' });
+        try {
+            if (wantLists && screen === null) {
+                return json(res, 200, { ok: true, lists: await sanctions.listStatus() });
+            }
+            const term = String(screen || '').trim();
+            const rfc = url.searchParams.get('rfc');
+            if (term.length < 3 && !rfc) return json(res, 422, { error: 'Escribe al menos 3 caracteres' });
+            const t0 = Date.now();
+            const result = await sanctions.screenNames([term], {
+                rfc: rfc || undefined,
+                loose: url.searchParams.get('loose') === '1',
+                limit: 25
+            });
+            return json(res, 200, { ok: true, query: term, ms: Date.now() - t0, ...result });
+        } catch (e) {
+            return json(res, 500, { error: e.message });
+        }
+    }
 
     if (folio && !pool) return json(res, 503, { error: 'Base de datos no configurada' });
 

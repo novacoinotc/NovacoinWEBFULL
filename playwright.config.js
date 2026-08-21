@@ -25,8 +25,10 @@ module.exports = defineConfig({
     webServer: {
         command: 'node server.js',
         url: BASE_URL + '/onboarding/',
-        // Nunca reutilizar un server ajeno: podría estar conectado a la DB real
-        reuseExistingServer: false,
+        // Por defecto nunca se reutiliza un server ajeno (podría estar conectado a
+        // la base real). Solo se permite cuando tú apuntas a un BASE_URL explícito,
+        // por ejemplo para probar el contenedor Docker.
+        reuseExistingServer: !!process.env.BASE_URL,
         timeout: 30000,
         // Las pruebas corren sin DB (no ensucian Neon) y con clave admin propia
         env: { PORT: '8099', DATABASE_URL: '', ADMIN_KEY: 'test-admin-key', SANCTIONS_SCREENING: 'off' }

@@ -161,7 +161,8 @@ module.exports = async function handler(req, res) {
         return res.end(JSON.stringify({ error: 'Datos inválidos', details: errors }));
     }
 
-    // Screening contra listas públicas de sanciones (OFAC SDN) — motor propio.
+    // Screening contra listas públicas (OFAC SDN y no-SDN, ONU, Reino Unido,
+    // Unión Europea y SAT 69-B) más coincidencia por RFC contra EFOS.
     // Un hit no rechaza automáticamente: eleva el riesgo y va a revisión manual.
     const gg = payload.general || {};
     const namesToScreen = [
@@ -169,7 +170,9 @@ module.exports = async function handler(req, res) {
         gg.razonSocial,
         payload.amlProfile && payload.amlProfile.beneficiario ? payload.amlProfile.beneficiario.nombre : null
     ];
-    payload.sanctionsScreening = await sanctions.screenNames(namesToScreen);
+    payload.sanctionsScreening = await sanctions.screenNames(namesToScreen, {
+        rfc: (payload.fiscal || {}).rfc || undefined
+    });
 
     // Scoring de riesgo del lado del servidor (independiente del cliente)
     const aml = payload.amlProfile || {};
@@ -186,7 +189,9 @@ module.exports = async function handler(req, res) {
     if (payload.sanctionsScreening.status === 'hit') {
         payload.serverRisk.score += 60;
         payload.serverRisk.level = 'alto';
-        payload.serverRisk.reasons.push('Posible coincidencia en lista OFAC — verificar manualmente');
+        payload.serverRisk.reasons.push('Posible coincidencia en listas de sanciones ('
+            + payload.sanctionsScreening.matches.map((m) => m.list).filter((v, i, a) => a.indexOf(v) === i).join(', ')
+            + ') — verificar manualmente');
     }
 
     const folio = makeFolio();

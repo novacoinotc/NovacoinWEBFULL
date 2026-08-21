@@ -75,6 +75,14 @@
         .gallery img{width:210px;height:140px;object-fit:cover;border-radius:10px;border:1px solid var(--border-h);display:block;margin-bottom:4px;background:#000}
         .gallery img:hover{border-color:var(--accent)}
         .gallery .pdf{width:210px;height:140px;border-radius:10px;border:1px solid var(--border-h);display:flex;align-items:center;justify-content:center;font-family:var(--mono);color:var(--warn);margin-bottom:4px;background:rgba(255,255,255,0.02)}
+        .screen-box{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+        .screen-box input{flex:1;min-width:240px}
+        .hitrow{display:flex;gap:12px;align-items:baseline;padding:7px 10px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.8rem}
+        .hitrow b{color:var(--t1)}
+        .lists-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+        .listcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-size:0.76rem}
+        .listcard b{display:block;color:var(--t1);font-size:0.8rem;margin-bottom:2px}
+        .listcard .n{font-family:var(--mono);color:var(--accent);font-size:1.1rem}
         .review-note{margin-top:16px;padding:12px 16px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.02);font-size:0.8rem}
     </style>
 </head>
@@ -93,6 +101,22 @@
     <div id="content" hidden>
         <h2>Resumen</h2>
         <div class="cards" id="statsCards" data-testid="stats-cards"></div>
+
+        <h2>Búsqueda en listas de sanciones</h2>
+        <div class="wrap" style="padding:16px">
+            <form class="screen-box" id="screenForm">
+                <input type="text" id="screenName" placeholder="Nombre completo o razón social a consultar" data-testid="screen-input">
+                <input type="text" id="screenRfc" placeholder="RFC (opcional)" style="max-width:190px" data-testid="screen-rfc">
+                <label style="display:flex;align-items:center;gap:6px;font-size:0.76rem;color:var(--t3)">
+                    <input type="checkbox" id="screenLoose" style="width:14px;height:14px"> búsqueda amplia
+                </label>
+                <button type="submit" data-testid="screen-btn">Consultar</button>
+            </form>
+            <div id="screenResult" class="muted" style="font-size:0.8rem">Consulta cualquier nombre contra las listas públicas indexadas.</div>
+        </div>
+
+        <h2>Listas indexadas</h2>
+        <div class="lists-grid" id="listsGrid" data-testid="lists-grid"></div>
 
         <h2>Funnel — hasta qué paso llegan los prospectos</h2>
         <div class="wrap" style="padding:16px"><div class="funnel" id="funnel"></div></div>
@@ -201,6 +225,7 @@
                 msg.textContent = 'La base de datos no está configurada (DATABASE_URL) — no hay datos que mostrar.';
                 return;
             }
+            loadLists();
             var s = data.stats || {};
             var conv = s.totalSessions ? Math.round((s.completed / s.totalSessions) * 100) : 0;
             document.getElementById('statsCards').innerHTML =
@@ -257,6 +282,67 @@
             document.querySelectorAll('#requestsTable [data-folio]').forEach(function (b) {
                 b.addEventListener('click', function () { openExpediente(b.dataset.folio); });
             });
+        }
+
+        /* ══ Búsqueda manual en listas de sanciones ══ */
+        function renderScreen(d) {
+            var el = document.getElementById('screenResult');
+            if (d.status === 'unavailable') {
+                el.innerHTML = '<span style="color:var(--warn)">Listas no disponibles (' + esc(d.error || '') + '). Actualízalas abajo.</span>';
+                return;
+            }
+            if (d.status === 'clear' || !d.matches.length) {
+                el.innerHTML = '<span class="tag ok">SIN COINCIDENCIAS</span> &nbsp;"' + esc(d.query) + '" no aparece en ' +
+                    (d.entriesSearched || 0).toLocaleString('es-MX') + ' registros de ' + (d.listsSearched || 0) + ' listas · ' + d.ms + ' ms';
+                return;
+            }
+            el.innerHTML = '<span class="tag err">' + d.matches.length + ' POSIBLE(S) COINCIDENCIA(S)</span> ' +
+                '<span class="muted">para "' + esc(d.query) + '" · revisa fecha de nacimiento y nacionalidad antes de concluir</span>' +
+                d.matches.map(function (m) {
+                    return '<div class="hitrow"><span class="tag info">' + esc(m.list) + '</span>' +
+                        '<b>' + esc(m.name) + '</b>' +
+                        '<span class="muted">' + esc(m.program || '') + (m.rfc ? ' · RFC ' + esc(m.rfc) : '') +
+                        (m.shared ? ' · ' + m.shared + '/' + m.of + ' palabras' : m.byRfc ? ' · coincidencia por RFC' : '') + '</span></div>';
+                }).join('');
+        }
+
+        document.getElementById('screenForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var name = document.getElementById('screenName').value.trim();
+            var rfc = document.getElementById('screenRfc').value.trim();
+            var loose = document.getElementById('screenLoose').checked ? '&loose=1' : '';
+            if (name.length < 3 && !rfc) { document.getElementById('screenResult').textContent = 'Escribe al menos 3 caracteres.'; return; }
+            document.getElementById('screenResult').textContent = 'Consultando…';
+            fetch('/api/admin?screen=' + encodeURIComponent(name) + '&rfc=' + encodeURIComponent(rfc) + loose,
+                { headers: { 'x-admin-key': currentKey } })
+                .then(function (r) { return r.json(); })
+                .then(function (d) { if (!d.ok) throw new Error(d.error); renderScreen(d); })
+                .catch(function (err) { document.getElementById('screenResult').innerHTML = '<span style="color:var(--err)">' + esc(err.message) + '</span>'; });
+        });
+
+        function loadLists() {
+            fetch('/api/admin?lists=1', { headers: { 'x-admin-key': currentKey } })
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    if (!d.ok) return;
+                    document.getElementById('listsGrid').innerHTML = d.lists.map(function (l) {
+                        return '<div class="listcard"><b>' + esc(l.label) + '</b>' +
+                            '<span class="n">' + (l.indexed || 0).toLocaleString('es-MX') + '</span> registros<br>' +
+                            '<span class="muted">' + (l.updated_at ? 'act. ' + fmtDate(l.updated_at) : 'nunca descargada') + '</span>' +
+                            (l.last_error ? '<br><span style="color:var(--err)">⚠ ' + esc(l.last_error) + '</span>' : '') +
+                            '<br><button class="mini ghost" style="margin-top:8px" data-list="' + esc(l.list) + '">Actualizar</button></div>';
+                    }).join('');
+                    document.querySelectorAll('#listsGrid [data-list]').forEach(function (b) {
+                        b.addEventListener('click', function () {
+                            b.textContent = 'Actualizando…'; b.disabled = true;
+                            fetch('/api/admin', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-admin-key': currentKey },
+                                body: JSON.stringify({ action: 'refresh_list', list: b.dataset.list }) })
+                                .then(function (r) { return r.json(); })
+                                .then(function (d) { if (!d.ok) throw new Error(d.error); loadLists(); })
+                                .catch(function (e) { alert('Error: ' + e.message); b.textContent = 'Actualizar'; b.disabled = false; });
+                        });
+                    });
+                }).catch(function () {});
         }
 
         /* ══ Expediente: detalle, documentos y acciones ══ */
@@ -325,7 +411,11 @@
             var motores = {};
             Object.keys(d.documents || {}).forEach(function (k) { motores[(DOC_LABELS[k] || k)] = checkSummary(checksObj[k]); });
             var sanc = d.sanctionsScreening || {};
-            motores['Screening OFAC (' + (sanc.listSize || 0) + ' listas)'] = checkSummary(sanc);
+            var sancTxt = checkSummary(sanc);
+            if (sanc.entriesSearched) sancTxt += ' — ' + sanc.entriesSearched.toLocaleString('es-MX') + ' registros / ' + sanc.listsSearched + ' listas';
+            else if (sanc.listSize) sancTxt += ' — ' + sanc.listSize.toLocaleString('es-MX') + ' registros (OFAC)';
+            if (sanc.matches && sanc.matches.length) sancTxt += ' · ' + sanc.matches.map(function (m) { return m.list + ': ' + m.name; }).join(' | ');
+            motores['Screening listas'] = sancTxt;
             if (d.serverRisk) motores['Riesgo (' + d.serverRisk.score + ' pts)'] = d.serverRisk.level + (d.serverRisk.reasons && d.serverRisk.reasons.length ? ' — ' + d.serverRisk.reasons.join('; ') : '');
 
             var reviewHtml = d.review

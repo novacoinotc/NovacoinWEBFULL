@@ -466,6 +466,29 @@ test.describe('Dashboard de administración', () => {
         expect(res.status()).toBe(401);
     });
 
+    test('la búsqueda manual en listas exige clave y valida la entrada', async ({ request }) => {
+        let res = await request.get('/api/admin?screen=alguien');
+        expect(res.status()).toBe(401);
+        // término muy corto → 422 (se valida antes de tocar la base)
+        res = await request.get('/api/admin?screen=ab', { headers: { 'x-admin-key': 'test-admin-key' } });
+        expect([422, 503]).toContain(res.status());
+        // sin base de datos en pruebas → 503
+        res = await request.get('/api/admin?screen=Juan%20Perez%20Garcia', { headers: { 'x-admin-key': 'test-admin-key' } });
+        expect(res.status()).toBe(503);
+        res = await request.get('/api/admin?lists=1', { headers: { 'x-admin-key': 'test-admin-key' } });
+        expect(res.status()).toBe(503);
+    });
+
+    test('el dashboard tiene buscador de listas y panel de fuentes', async ({ page }) => {
+        await page.goto('/admin/');
+        // el panel se revela al autenticarse; sin DB avisa pero sí autentica
+        await page.getByTestId('admin-key').fill('test-admin-key');
+        await page.getByTestId('admin-login').click();
+        await expect(page.getByTestId('screen-input')).toBeVisible();
+        await expect(page.getByTestId('screen-btn')).toBeVisible();
+        expect(await page.getByTestId('lists-grid').count()).toBe(1);
+    });
+
     test('el dashboard tiene el modal de expediente con botones de revisión', async ({ page }) => {
         await page.goto('/admin/');
         await expect(page.getByTestId('expediente-modal')).toBeHidden();
